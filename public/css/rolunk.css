@@ -1,0 +1,16 @@
+.szovegdoboz{
+    text-align: center;
+    padding: 10px 10px 10px 10px;
+    border-radius: 10px;
+    margin-right: 1%;
+    margin-left: 1%;
+    margin-bottom: 30px;
+}
+
+img{
+    max-width: 20%;
+    max-height: 50%;
+    width: 100%;
+    border-radius: 25%;
+    padding-top: 2%;
+}

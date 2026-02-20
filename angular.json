@@ -30,7 +30,15 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "public/css/kozos.css",
+              "public/css/index.css",
+              "public/css/tavak.css",
+              "public/css/hirek.css",
+              "public/css/versenyek.css",
+              "public/css/galeria.css",
+              "public/css/rolunk.css",
+              "public/css/regisztracio.css"
             ]
           },
           "configurations": {
