@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Rolunk } from './rolunk';
+import { Rolunk } from './rolunk.component';
 
 describe('Rolunk', () => {
   let component: Rolunk;

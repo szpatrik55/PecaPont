@@ -1,0 +1,32 @@
+.auth-container {
+  width: 350px;
+  margin: auto;
+  margin-top: 120px;
+  padding: 40px;
+  background: #2e2e2e;
+  border-radius: 10px;
+}
+
+input {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background: #3b82f6;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.google {
+  background: #db4437;
+}
+
+.divider {
+  text-align: center;
+  margin: 15px 0;
+}

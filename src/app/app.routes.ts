@@ -1,24 +1,40 @@
 import { Routes } from '@angular/router';
 
-import { Home } from './pages/home/home';
-import { Tavak } from './pages/tavak/tavak';
-import { Hirek } from './pages/hirek/hirek';
-import { Versenyek } from './pages/versenyek/versenyek';
-import { Galeria } from './pages/galeria/galeria';
-import { Rolunk } from './pages/rolunk/rolunk';
-import { Regisztracio } from './pages/regisztracio/regisztracio';
-import { Bejelentkezes } from './pages/bejelentkezes/bejelentkezes';
+import { HomeComponent } from './pages/home/home.component';
+import { ToListaComponent } from './pages/tavak/tavak.component';
+import { ToReszletekComponent } from './pages/to-reszletek/to-reszletek.component';
+import { HirekComponent } from './pages/hirek/hirek.component';
+import { VersenyekComponent } from './pages/versenyek/versenyek.component';
+import { GalleryComponent } from './pages/galeria/galeria.component';
+import { GalleryUploadComponent } from './pages/galeria/gallery-upload.component';
+import { RolunkComponent } from './pages/rolunk/rolunk.component';
+import { RegisztracioComponent } from './pages/regisztracio/regisztracio.component';
+import { BejelentkezesComponent } from './pages/bejelentkezes/bejelentkezes.component';
+import { AdminComponent } from './pages/admin/admin.component';
+import { ProfilComponent } from './pages/profil/profil.component';
+import { authGuard } from './guards/auth-guard';
+import { adminGuard } from './guards/admin-guard';
 
 export const routes: Routes = [
-  { path: '', component: Home },
+  { path: '', component: HomeComponent }, // Főoldal útvonala
 
-  { path: 'tavak', component: Tavak },
-  { path: 'hirek', component: Hirek },
-  { path: 'versenyek', component: Versenyek },
-  { path: 'galeria', component: Galeria },
-  { path: 'rolunk', component: Rolunk },
-  { path: 'regisztracio', component: Regisztracio },
-  { path: 'bejelentkezes', component: Bejelentkezes },
+  { path: 'tavak', component: ToListaComponent }, // TóLista oldal útvonala
+  { path: 'tavak/:id', component: ToReszletekComponent}, // TóRészletek oldal útvonala
 
-  { path: '**', redirectTo: '' },
+  { path: 'hirek', component: HirekComponent }, // Hírek oldal útvonala
+
+  { path: 'versenyek', component: VersenyekComponent }, // Versenyek oldal útvonala
+
+  { path: 'galeria', component: GalleryComponent }, // Galéria oldal útvonala
+  { path: 'kepfeltoltes', component: GalleryUploadComponent}, // Kép feltöltés oldal útvonala
+
+  { path: 'rolunk', component: RolunkComponent }, // Rólunk oldal útvonala
+
+  { path: 'regisztracio', component: RegisztracioComponent }, // Regisztrációs oldal útvonala
+  { path: 'bejelentkezes', component: BejelentkezesComponent }, // Bejelentkezés oldal útvonala
+  { path: 'profil', component: ProfilComponent, canActivate: [authGuard] }, // Profil oldal útvonala, csak bejelentkezve
+
+  { path: 'admin', component: AdminComponent, canActivate: [adminGuard] }, // Admin felület útvonala, csak adminként bejelentkezve
+
+  { path: '**', redirectTo: '' }, // Üres/Hiba visszavezet a főoldalra
 ];

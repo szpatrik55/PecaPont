@@ -1,0 +1,21 @@
+<div class="auth-container">
+
+  <h2>Regisztráció</h2>
+
+  <input
+    type="email"
+    placeholder="Email"
+    [(ngModel)]="email"
+  />
+
+  <input
+    type="password"
+    placeholder="Jelszó"
+    [(ngModel)]="password"
+  />
+
+  <button (click)="register()">
+    Regisztráció
+  </button>
+
+</div>

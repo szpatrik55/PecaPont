@@ -1,0 +1,32 @@
+<div class="auth-container">
+    
+    <h2>Bejelentkezés</h2>
+
+    <input
+        type="email"
+        placeholder="Email"
+        [(ngModel)]="email"
+    />
+
+    <input
+        type="password"
+        placeholder="Jelszó"
+        [(ngModel)]="password"
+    />
+
+    <button (click)="login()">
+        Bejelentkezés
+    </button>
+
+    <div class="divider"></div>
+
+    <button class="google" (click)="google()">
+        Google fiók használata
+    </button>
+
+    <p class="register-link">
+        Nincs még fiókod?
+        <a routerLink="/regisztracio">Regisztrálj itt!</a>
+    </p>
+
+</div>

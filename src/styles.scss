@@ -1,1 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+:root{
+
+  --bg-main:#2f2f2f;
+  --bg-secondary:#3a3a3a;
+  --card-bg:#f2f2f2;
+
+  --text-dark:#1f1f1f;
+  --text-light:#ffffff;
+
+  --accent:#4CAF50;
+  --accent-hover:#388E3C;
+
+}
+
+body {
+    background-color: var(--bg-main);
+    text-align: center;
+    font-size: 19px;
+    border-spacing: 10px;
+}

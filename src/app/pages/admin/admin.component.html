@@ -1,0 +1,58 @@
+<div class="admin-wrapper">
+  <div class="admin-card">
+    <div class="card-header">
+      <span class="material-icons header-icon">sailing</span>
+      <h2>Új horgászvíz rögzítése</h2>
+    </div>
+
+    <form (ngSubmit)="toHozzaadasa()" class="admin-form">
+      
+      <div class="input-row">
+        <div class="input-group">
+          <label><span class="material-icons">label</span> Vízterület neve</label>
+          <input type="text" [(ngModel)]="ujTo.nev" name="nev" placeholder="Pl: Alcsi-Holt-Tisza" required>
+        </div>
+        <div class="input-group">
+          <label><span class="material-icons">place</span> Település</label>
+          <input type="text" [(ngModel)]="ujTo.telepules" name="telepules" placeholder="Város/Község" required>
+        </div>
+      </div>
+
+      <div class="input-row three-col">
+        <div class="input-group">
+          <label><span class="material-icons">straighten</span> Terület (ha)</label>
+          <input type="number" [(ngModel)]="ujTo.terulet_ha" name="terulet_ha" placeholder="0.0">
+        </div>
+        <div class="input-group">
+          <label><span class="material-icons">height</span> Mélység (m)</label>
+          <input type="number" [(ngModel)]="ujTo.vizmelyseg" name="vizmelyseg" placeholder="Átlag m">
+        </div>
+        <div class="input-group">
+          <label><span class="material-icons">group</span> Helyek (db)</label>
+          <input type="number" [(ngModel)]="ujTo.helyek_szama" name="helyek_szama" placeholder="Kapacitás">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label><span class="material-icons">category</span> A víz típusa</label>
+        <input type="text" [(ngModel)]="ujTo.tipus" name="tipus" placeholder="Pl: magán tó, folyó, egyesületi víz">
+      </div>
+
+      <div class="input-group">
+        <label><span class="material-icons">phishing</span> Ajánlott módszerek</label>
+        <input type="text" [(ngModel)]="ujTo.ajanlott_modszerek" name="ajanlott_modszerek" placeholder="finomszerelék, method, rakósbot">
+        <small>Vesszővel elválasztva add meg őket!</small>
+      </div>
+
+      <div class="input-group">
+        <label><span class="material-icons">description</span> Részletes leírás</label>
+        <textarea [(ngModel)]="ujTo.leiras" name="leiras" rows="4" placeholder="Szabályok, nyitvatartás, egyéb információk..."></textarea>
+      </div>
+
+        <button type="submit" class="submit-btn" [disabled]="mentesFolyamatban()">
+            <span class="material-icons">save</span>
+            <span>Tó mentése az adatbázisba</span>
+        </button>
+    </form>
+  </div>
+</div>

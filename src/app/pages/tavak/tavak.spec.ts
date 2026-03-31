@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Tavak } from './tavak';
+import { ToLista } from './tavak.component';
 
 describe('Tavak', () => {
-  let component: Tavak;
-  let fixture: ComponentFixture<Tavak>;
+  let component: ToLista;
+  let fixture: ComponentFixture<ToLista>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Tavak]
+      imports: [ToLista]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Tavak);
+    fixture = TestBed.createComponent(ToLista);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

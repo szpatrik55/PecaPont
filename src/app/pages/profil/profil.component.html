@@ -1,0 +1,41 @@
+<div class="profile-container" *ngIf="auth.user$ | async as user">
+
+<h1>Profil</h1>
+
+<div class="profile-card">
+
+<h2>{{ user.displayName || 'Felhasználó' }}</h2>
+
+<p class="email">{{ user.email }}</p>
+
+<hr>
+
+<h3>Név módosítása</h3>
+
+<input #nameInput placeholder="Új név">
+
+<button (click)="updateName(nameInput.value)">
+Név frissítése
+</button>
+
+<hr>
+
+<h3>Jelszó módosítása</h3>
+
+<input
+  #passwordInput
+  type="password"
+  placeholder="Új jelszó"
+/>
+
+<button (click)="changePassword(passwordInput.value)">
+Jelszó módosítása
+</button>
+
+<button (click)="logout()">
+Kijelentkezés
+</button>
+
+</div>
+
+</div>

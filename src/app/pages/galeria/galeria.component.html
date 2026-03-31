@@ -1,0 +1,25 @@
+<h2>Horgász Galéria</h2>
+
+<div class="gallery">
+
+  <div class="card" *ngFor="let post of posts$ | async">
+
+    <img [src]="post.imageUrl">
+
+    <div class="info">
+
+      <p>{{post.description}}</p>
+
+      <p>
+        🌊 {{post.fishingspot}}
+      </p>
+
+      <p>
+        🎣 {{post.method}}
+      </p>
+
+    </div>
+
+  </div>
+
+</div>

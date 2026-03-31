@@ -1,0 +1,19 @@
+<div class="tavak-container">
+  <h2>Elérhető horgászvizek</h2>
+
+  @if (betoltes()) {
+    <p>Adatok betöltése a hálózatról...</p>
+  } @else {
+    <div class="tavak-grid">
+      @for (to of tavak(); track to.id) {
+        <div class="to-card" [routerLink]="['/tavak', to.id]" style="border: 1px solid #ccc; padding: 15px; margin: 10px; border-radius: 8px;">
+          <h3>{{ to.nev }}</h3>
+          <p>{{ to.telepules }}</p>
+          <button>Részletek</button>
+        </div>
+      } @empty {
+        <p>A kapcsolat jó, de nem találtam tavat a 'lakes' kollekcióban.</p>
+      }
+    </div>
+  }
+</div>

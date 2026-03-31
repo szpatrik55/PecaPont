@@ -1,0 +1,46 @@
+<div class="adatlap-wrapper" style="padding: 20px;">
+  @if (toAdat(); as to) {
+    <div class="adatlap">
+      <button routerLink="/tavak" class="back-btn">← Vissza a listához</button>
+      
+      <header>
+        <h1>{{ to.nev }}</h1>
+        <p class="subtitle"><strong>Típus:</strong> {{ to.tipus }} | <strong>Település:</strong> {{ to.telepules }}</p>
+      </header>
+
+      <hr>
+
+      <div class="details-grid">
+        <div class="detail-item">
+          <strong>Terület:</strong> {{ to.terulet_ha }} ha
+        </div>
+        <div class="detail-item">
+          <strong>Vízmélység:</strong> {{ to.vizmelyseg }} m
+        </div>
+        <div class="detail-item">
+          <strong>Helyek száma:</strong> {{ to.helyek_szama }} fő
+        </div>
+      </div>
+
+      <div class="description-section">
+        <h3>Leírás</h3>
+        <p>{{ to.leiras }}</p>
+      </div>
+
+      <div class="methods-section">
+        <h3>Ajánlott módszerek</h3>
+        <p>{{ to.ajanlott_modszerek }}</p>
+      </div>
+
+      @if (to.kep_url && to.kep_url !== 'kep') {
+        <div class="image-section">
+          <img [src]="to.kep_url" [alt]="to.nev" style="max-width: 100%; border-radius: 12px; margin-top: 20px;">
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="loader">
+      <p>Tó adatainak betöltése a szerverről...</p>
+    </div>
+  }
+</div>

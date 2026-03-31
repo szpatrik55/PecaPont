@@ -24,21 +24,11 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "public/css/kozos.css",
-              "public/css/index.css",
-              "public/css/tavak.css",
-              "public/css/hirek.css",
-              "public/css/versenyek.css",
-              "public/css/galeria.css",
-              "public/css/rolunk.css",
-              "public/css/regisztracio.css"
+              "src/styles.scss"
             ]
           },
           "configurations": {
