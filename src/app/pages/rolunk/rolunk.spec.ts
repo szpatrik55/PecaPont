@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Rolunk } from './rolunk.component';
+import { RolunkComponent } from './rolunk.component';
 
 describe('Rolunk', () => {
-  let component: Rolunk;
-  let fixture: ComponentFixture<Rolunk>;
+  let component: RolunkComponent;
+  let fixture: ComponentFixture<RolunkComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Rolunk]
+      imports: [RolunkComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Rolunk);
+    fixture = TestBed.createComponent(RolunkComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

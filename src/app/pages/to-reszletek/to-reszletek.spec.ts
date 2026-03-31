@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ToReszletek } from './to-reszletek.component';
+import { ToReszletekComponent } from './to-reszletek.component';
 
 describe('ToReszletek', () => {
-  let component: ToReszletek;
-  let fixture: ComponentFixture<ToReszletek>;
+  let component: ToReszletekComponent;
+  let fixture: ComponentFixture<ToReszletekComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ToReszletek]
+      imports: [ToReszletekComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ToReszletek);
+    fixture = TestBed.createComponent(ToReszletekComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

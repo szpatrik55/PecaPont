@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Hirek } from './hirek.component';
+import { HirekComponent } from './hirek.component';
 
 describe('Hirek', () => {
-  let component: Hirek;
-  let fixture: ComponentFixture<Hirek>;
+  let component: HirekComponent;
+  let fixture: ComponentFixture<HirekComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Hirek]
+      imports: [HirekComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Hirek);
+    fixture = TestBed.createComponent(HirekComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

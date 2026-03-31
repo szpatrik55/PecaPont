@@ -21,6 +21,8 @@ export class NavbarComponent {
     private router: Router
   ) {}
 
+  menuOpen = false;
+
   async logout() {
     await this.auth.logout();
     this.router.navigate(['/']);
