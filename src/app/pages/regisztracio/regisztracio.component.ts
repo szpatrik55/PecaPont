@@ -2,10 +2,12 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth';
 import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
+
 
 @Component({
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './regisztracio.component.html',
   styleUrl: './regisztracio.component.scss'
 })
