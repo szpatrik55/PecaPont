@@ -18,6 +18,7 @@
       
       <a routerLink="/profil">Profil</a>
       <a routerLink="/kepfeltoltes">Kép feltöltése</a>
+      <a routerLink="/admin">Admin</a>
 
     @if (auth.appUser$ | async; as user) {
       @if (user?.role === 'admin') {

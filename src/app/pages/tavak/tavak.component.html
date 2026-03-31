@@ -1,19 +1,52 @@
-<div class="tavak-container">
-  <h2>Elérhető horgászvizek</h2>
+<div class="tavak-page">
+  <section class="hero-mini">
+    <h1>Fedezd fel Magyarország legjobb horgásztavait</h1>
+  </section>
 
-  @if (betoltes()) {
-    <p>Adatok betöltése a hálózatról...</p>
-  } @else {
-    <div class="tavak-grid">
-      @for (to of tavak(); track to.id) {
-        <div class="to-card" [routerLink]="['/tavak', to.id]" style="border: 1px solid #ccc; padding: 15px; margin: 10px; border-radius: 8px;">
-          <h3>{{ to.nev }}</h3>
-          <p>{{ to.telepules }}</p>
-          <button>Részletek</button>
+  <div class="toolbar">
+    <input
+      type="text"
+      placeholder="Keresés név vagy település szerint..."
+      [ngModel]="keresoSzoveg()"
+      (ngModelChange)="keresoSzoveg.set($event)"
+    />
+
+    <select
+      [ngModel]="rendezes()"
+      (ngModelChange)="rendezes.set($event)"
+    >
+      <option value="nev">Név szerint</option>
+      <option value="telepules">Település szerint</option>
+    </select>
+  </div>
+
+  <section class="tavak-grid">
+    @for (to of rendezettTavak(); track to.id) {
+  <div
+    class="to-card"
+    [routerLink]="['/tavak', to.id]"
+    [ngStyle]="{
+      'background-image':
+        'linear-gradient(rgba(15,23,42,0.25), rgba(15,23,42,0.85)), url(' +
+        (to.kepUrl || 'assets/images/fallback-lake.jpg') +
+        ')'
+    }"
+  >
+
+        <div class="card-overlay">
+          <span class="lake-badge">Népszerű víz</span>
+
+          <div class="card-content">
+            <h3>{{ to.nev }}</h3>
+            <p>{{ to.telepules }}</p>
+
+            <button class="view-btn">
+              Részletek →
+            </button>
+          </div>
         </div>
-      } @empty {
-        <p>A kapcsolat jó, de nem találtam tavat a 'lakes' kollekcióban.</p>
-      }
-    </div>
-  }
+      </div>
+    }
+  </section>
+
 </div>

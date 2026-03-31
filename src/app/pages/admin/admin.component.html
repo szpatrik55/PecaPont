@@ -1,58 +1,145 @@
-<div class="admin-wrapper">
-  <div class="admin-card">
-    <div class="card-header">
-      <span class="material-icons header-icon">sailing</span>
-      <h2>Új horgászvíz rögzítése</h2>
-    </div>
+<div class="admin-page">
+  <div class="page-header">
+    <h1>Új horgásztó</h1>
+    <p>Adj hozzá új vízterületet a rendszerhez</p>
+  </div>
 
-    <form (ngSubmit)="toHozzaadasa()" class="admin-form">
-      
+  <form (ngSubmit)="toHozzaadasa()" class="admin-layout">
+
+    <section class="form-section">
+      <h3>Alapadatok</h3>
+
       <div class="input-row">
         <div class="input-group">
-          <label><span class="material-icons">label</span> Vízterület neve</label>
-          <input type="text" [(ngModel)]="ujTo.nev" name="nev" placeholder="Pl: Alcsi-Holt-Tisza" required>
+          <label>Név</label>
+          <input
+            type="text"
+            [(ngModel)]="ujTo.nev"
+            name="nev"
+            placeholder="Pl: Patkó tó"
+            required
+          />
         </div>
+
         <div class="input-group">
-          <label><span class="material-icons">place</span> Település</label>
-          <input type="text" [(ngModel)]="ujTo.telepules" name="telepules" placeholder="Város/Község" required>
+          <label>Település</label>
+          <input
+            type="text"
+            [(ngModel)]="ujTo.telepules"
+            name="telepules"
+            placeholder="Pl: Szeged"
+            required
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="form-section">
+      <h3>Kép feltöltés</h3>
+
+      <div class="input-group">
+        <label>Kép kiválasztása</label>
+        <input
+          type="file"
+          accept="image/*"
+          (change)="kepFeltoltes($event)"
+        />
+        <small>
+          A kép automatikusan feltöltődik a Firebase Storage-ba
+        </small>
+      </div>
+
+      @if (ujTo.kepUrl) {
+        <div class="input-group">
+          <label>Előnézet</label>
+          <img
+            [src]="ujTo.kepUrl"
+            alt="Tó képe"
+            class="image-preview"
+          />
+        </div>
+      }
+    </section>
+
+    <section class="form-section">
+      <h3>Jellemzők</h3>
+
+      <div class="input-row">
+        <div class="input-group">
+          <label>Terület (ha)</label>
+          <input
+            type="number"
+            [(ngModel)]="ujTo.terulet_ha"
+            name="terulet_ha"
+          />
+        </div>
+
+        <div class="input-group">
+          <label>Mélység (m)</label>
+          <input
+            type="number"
+            [(ngModel)]="ujTo.vizmelyseg"
+            name="vizmelyseg"
+          />
         </div>
       </div>
 
-      <div class="input-row three-col">
+      <div class="input-row">
         <div class="input-group">
-          <label><span class="material-icons">straighten</span> Terület (ha)</label>
-          <input type="number" [(ngModel)]="ujTo.terulet_ha" name="terulet_ha" placeholder="0.0">
+          <label>Helyek száma</label>
+          <input
+            type="number"
+            [(ngModel)]="ujTo.helyek_szama"
+            name="helyek_szama"
+          />
         </div>
+
         <div class="input-group">
-          <label><span class="material-icons">height</span> Mélység (m)</label>
-          <input type="number" [(ngModel)]="ujTo.vizmelyseg" name="vizmelyseg" placeholder="Átlag m">
+          <label>Típus</label>
+          <input
+            type="text"
+            [(ngModel)]="ujTo.tipus"
+            name="tipus"
+            placeholder="Pl: magán tó"
+          />
         </div>
-        <div class="input-group">
-          <label><span class="material-icons">group</span> Helyek (db)</label>
-          <input type="number" [(ngModel)]="ujTo.helyek_szama" name="helyek_szama" placeholder="Kapacitás">
-        </div>
+      </div>
+    </section>
+
+    <section class="form-section">
+      <h3>További adatok</h3>
+
+      <div class="input-group">
+        <label>Ajánlott módszerek</label>
+        <input
+          type="text"
+          [(ngModel)]="ujTo.ajanlott_modszerek"
+          name="ajanlott_modszerek"
+          placeholder="method, feeder, bojli"
+        />
       </div>
 
       <div class="input-group">
-        <label><span class="material-icons">category</span> A víz típusa</label>
-        <input type="text" [(ngModel)]="ujTo.tipus" name="tipus" placeholder="Pl: magán tó, folyó, egyesületi víz">
+        <label>Leírás</label>
+        <textarea
+          [(ngModel)]="ujTo.leiras"
+          name="leiras"
+          rows="5"
+          placeholder="Részletes információk..."
+        ></textarea>
       </div>
+    </section>
 
-      <div class="input-group">
-        <label><span class="material-icons">phishing</span> Ajánlott módszerek</label>
-        <input type="text" [(ngModel)]="ujTo.ajanlott_modszerek" name="ajanlott_modszerek" placeholder="finomszerelék, method, rakósbot">
-        <small>Vesszővel elválasztva add meg őket!</small>
-      </div>
-
-      <div class="input-group">
-        <label><span class="material-icons">description</span> Részletes leírás</label>
-        <textarea [(ngModel)]="ujTo.leiras" name="leiras" rows="4" placeholder="Szabályok, nyitvatartás, egyéb információk..."></textarea>
-      </div>
-
-        <button type="submit" class="submit-btn" [disabled]="mentesFolyamatban()">
-            <span class="material-icons">save</span>
-            <span>Tó mentése az adatbázisba</span>
-        </button>
-    </form>
-  </div>
+    <button
+      type="submit"
+      class="submit-btn"
+      [disabled]="mentesFolyamatban()"
+    >
+      {{
+        mentesFolyamatban()
+          ? 'Mentés folyamatban...'
+          : 'Tó mentése'
+      }}
+    </button>
+  </form>
 </div>
