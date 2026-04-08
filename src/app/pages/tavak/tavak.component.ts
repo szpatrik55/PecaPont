@@ -10,6 +10,11 @@ import {
   collection,
   getDocs
 } from '@angular/fire/firestore';
+import {
+  doc,
+  updateDoc,
+  increment
+} from '@angular/fire/firestore';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -68,4 +73,12 @@ export class ToListaComponent implements OnInit {
       console.error('Firebase hiba:', error);
     }
   }
+
+  async novelMegtekintes(toId: string) {
+  const lakeRef = doc(this.firestore, 'lakes', toId);
+
+  await updateDoc(lakeRef, {
+    megtekintesek: increment(1)
+  });
+}
 }

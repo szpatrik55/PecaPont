@@ -1,9 +1,9 @@
 export interface GalleryPost {
   id?: string;
-  userId: string;
-  imageUrl: string;
+  title: string;
   description: string;
-  fishingspot: string;
-  method: string;
+  water: string;
+  imageUrl: string;
+  uid: string;
   createdAt: Date;
 }

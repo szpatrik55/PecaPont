@@ -25,6 +25,7 @@
   <div
     class="to-card"
     [routerLink]="['/tavak', to.id]"
+    (click)="novelMegtekintes(to.id)"
     [ngStyle]="{
       'background-image':
         'linear-gradient(rgba(15,23,42,0.25), rgba(15,23,42,0.85)), url(' +

@@ -1,0 +1,24 @@
+<h2>Horgászaink fogásai</h2>
+
+<div class="gallery" *ngIf="posts$ | async as posts">
+
+  <div class="card" *ngFor="let post of posts">
+
+    <img
+      [src]="post.imageUrl || 'assets/no-image.jpg'"
+      [alt]="post.title"
+      loading="lazy"
+      (error)="post.imageUrl = 'assets/no-image.jpg'"
+    >
+
+    <div class="info">
+      <h3>{{ post.title }}</h3>
+
+      <p>{{ post.description }}</p>
+
+      <p>🌊 {{ post.water }}</p>
+    </div>
+
+  </div>
+
+</div>

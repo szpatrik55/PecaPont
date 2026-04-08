@@ -20,7 +20,8 @@ export class AdminComponent {
   private firestore = inject(Firestore);
   private storage = inject(Storage);
 
-  ujTo = {
+  private getAlapTo() {
+  return {
     nev: '',
     telepules: '',
     kepUtvonal: '',
@@ -30,8 +31,12 @@ export class AdminComponent {
     helyek_szama: null as number | null,
     tipus: '',
     ajanlott_modszerek: '',
-    leiras: ''
+    leiras: '',
+    megtekintesek: 0
   };
+}
+
+  ujTo = this.getAlapTo();
 
   mentesFolyamatban = signal(false);
 
@@ -65,51 +70,38 @@ export class AdminComponent {
   }
 
   async toHozzaadasa(): Promise<void> {
-    if (!this.ujTo.nev || !this.ujTo.telepules) {
-      alert('A név és a település kötelező!');
-      return;
-    }
-
-    if (!this.ujTo.kepUrl) {
-      alert('Kérlek tölts fel egy képet!');
-      return;
-    }
-
-    this.mentesFolyamatban.set(true);
-
-    try {
-      const colRef = collection(this.firestore, 'lakes');
-
-      const mentesreVaroAdat = {
-        ...this.ujTo,
-        ajanlott_modszerek: this.ujTo.ajanlott_modszerek
-          ? this.ujTo.ajanlott_modszerek
-              .split(',')
-              .map((m) => m.trim())
-          : []
-      };
-
-      await addDoc(colRef, mentesreVaroAdat);
-
-      alert('Sikeres mentés!');
-
-      this.ujTo = {
-        nev: '',
-        telepules: '',
-        kepUtvonal: '',
-        kepUrl: '',
-        terulet_ha: null,
-        vizmelyseg: null,
-        helyek_szama: null,
-        tipus: '',
-        ajanlott_modszerek: '',
-        leiras: ''
-      };
-    } catch (error) {
-      console.error('Mentési hiba:', error);
-      alert('Hiba történt a mentés során!');
-    } finally {
-      this.mentesFolyamatban.set(false);
-    }
+  if (!this.ujTo.nev || !this.ujTo.telepules) {
+    alert('A név és a település kötelező!');
+    return;
   }
+
+  if (!this.ujTo.kepUrl) {
+    alert('Kérlek tölts fel egy képet!');
+    return;
+  }
+
+  this.mentesFolyamatban.set(true);
+
+  try {
+    const colRef = collection(this.firestore, 'lakes');
+
+    const mentesreVaroAdat = {
+      ...this.ujTo,
+      ajanlott_modszerek: this.ujTo.ajanlott_modszerek
+        ? this.ujTo.ajanlott_modszerek
+          .split(',')
+          .map((m) => m.trim())
+      : []
+    };
+
+    await addDoc(colRef, mentesreVaroAdat);
+
+    alert('Sikeres mentés!');
+  } catch (error) {
+    console.error('Mentési hiba:', error);
+    alert('Hiba történt a mentés során!');
+  } finally {
+    this.mentesFolyamatban.set(false);
+  }
+}
 }

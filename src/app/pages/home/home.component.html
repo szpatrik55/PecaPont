@@ -12,17 +12,19 @@
     </p>
 
     <div class="stats">
-      <div><strong>1200+</strong><span>fogás</span></div>
-      <div><strong>300+</strong><span>tó</span></div>
-      <div><strong>5000+</strong><span>tag</span></div>
+      <div><strong>12+</strong><span>fogás</span></div>
+      <div><strong>3+</strong><span>tó</span></div>
+      <div><strong>1+</strong><span>tag</span></div>
     </div>
 
-    <a routerLink="/tavak" class="cta-button">
+    <a routerLink="/tavak" class="button">
       Fedezd fel tavainkat!
     </a>
 
   </div>
 </section>
+
+<!--<div class="scroll-indicator">↓</div>-->
 
 <section class="quick-menu" fade-up>
   <h2>Fedezd fel</h2>
@@ -51,17 +53,26 @@
 
   <h2>Legújabb fogások</h2>
 
-  <div class="gallery-preview">
+  <div class="gallery-preview" *ngIf="latestPosts$ | async as posts">
 
-    <img src="kepek/demo/hal1.jpg">
-    <img src="kepek/demo/hal2.jpg">
-    <img src="kepek/demo/hal3.jpg">
-    <img src="kepek/demo/hal4.jpg">
+  <div class="catch-card" *ngFor="let post of posts" routerLink="/galeria">
+    <img
+      [src]="post.imageUrl || 'assets/no-image.jpg'"
+      [alt]="post.title"
+      loading="lazy"
+      (error)="post.imageUrl = 'assets/no-image.jpg'"
+    >
 
+    <div class="overlay">
+      <h3>{{ post.title }}</h3>
+      <p>{{ post.water }}</p>
+    </div>
   </div>
 
-  <a routerLink="/galeria" class="more-link">
-    Összes fogás →
+</div>
+
+  <a routerLink="/galeria" class="button">
+    Összes fogás
   </a>
 
 </section>
@@ -72,22 +83,18 @@
   <h2>Népszerű tavak</h2>
 
   <div class="lake-cards">
-
-    <div class="lake-card">
-      <img src="kepek/demo/to1.jpg">
-      <h3>Balaton</h3>
+    <div
+      class="lake-card"
+      *ngFor="let to of popularLakes"
+      [routerLink]="['/tavak', to.id]"
+    >
+      <img
+        [src]="to.kepUrl || 'assets/images/fallback-lake.jpg'"
+        [alt]="to.nev"
+      >
+      <h3>{{ to.nev }}</h3>
+      <p>{{ to.telepules }}</p>
     </div>
-
-    <div class="lake-card">
-      <img src="kepek/demo/to2.jpg">
-      <h3>Tisza-tó</h3>
-    </div>
-
-    <div class="lake-card">
-      <img src="kepek/demo/to3.jpg">
-      <h3>Deseda</h3>
-    </div>
-
   </div>
 
 </section>
@@ -118,18 +125,18 @@
 
 </section>
 
-
 <section class="community" fade-up>
 
-  <h2>Csatlakozz a közösséghez!</h2>
+  <h2>Légy te is a közösség tagja!</h2>
 
   <p>
-    Oszd meg fogásaid, fedezd fel a tavakat,
-    és beszélgess más horgászokkal.
+    Csatlakozz több száz szenvedélyes horgászhoz,
+    oszd meg élményeidet, mutasd meg fogásaidat,
+    és fedezd fel a legjobb horgászhelyeket mások ajánlásai alapján.
   </p>
 
-  <a routerLink="/regisztracio" class="cta-button">
-    Csatlakozás
+  <a routerLink="/regisztracio" class="button">
+    Regisztrálok
   </a>
 
 </section>
