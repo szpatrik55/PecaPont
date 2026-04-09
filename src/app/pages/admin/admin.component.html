@@ -6,6 +6,7 @@
 
   <form (ngSubmit)="toHozzaadasa()" class="admin-layout">
 
+    <!-- ALAPADATOK -->
     <section class="form-section">
       <h3>Alapadatok</h3>
 
@@ -32,8 +33,31 @@
           />
         </div>
       </div>
+
+      <div class="input-row">
+        <div class="input-group">
+          <label>Cím</label>
+          <input
+            type="text"
+            [(ngModel)]="ujTo.cim"
+            name="cim"
+            placeholder="Pl: Szeged, Holtág út 12."
+          />
+        </div>
+
+        <div class="input-group">
+          <label>Típus</label>
+          <input
+            type="text"
+            [(ngModel)]="ujTo.tipus"
+            name="tipus"
+            placeholder="Pl: magán tó"
+          />
+        </div>
+      </div>
     </section>
 
+    <!-- KÉP -->
     <section class="form-section">
       <h3>Kép feltöltés</h3>
 
@@ -44,9 +68,6 @@
           accept="image/*"
           (change)="kepFeltoltes($event)"
         />
-        <small>
-          A kép automatikusan feltöltődik a Firebase Storage-ba
-        </small>
       </div>
 
       @if (ujTo.kepUrl) {
@@ -61,6 +82,7 @@
       }
     </section>
 
+    <!-- JELLEMZŐK -->
     <section class="form-section">
       <h3>Jellemzők</h3>
 
@@ -95,19 +117,29 @@
         </div>
 
         <div class="input-group">
-          <label>Típus</label>
+          <label>Sport napijegy ár (Ft)</label>
           <input
-            type="text"
-            [(ngModel)]="ujTo.tipus"
-            name="tipus"
-            placeholder="Pl: magán tó"
+            type="number"
+            [(ngModel)]="ujTo.sport_napijegy_ar"
+            name="napijegy_ar"
           />
         </div>
       </div>
     </section>
 
+    <!-- HALFajok + SZABÁLYOK -->
     <section class="form-section">
-      <h3>További adatok</h3>
+      <h3>Halfajok és szabályok</h3>
+
+      <div class="input-group">
+        <label>Halfajok</label>
+        <input
+          type="text"
+          [(ngModel)]="ujTo.halfajok"
+          name="halfajok"
+          placeholder="ponty, amur, csuka, harcsa"
+        />
+      </div>
 
       <div class="input-group">
         <label>Ajánlott módszerek</label>
@@ -120,16 +152,56 @@
       </div>
 
       <div class="input-group">
-        <label>Leírás</label>
+        <label>Szabályok</label>
+        <input
+          type="text"
+          [(ngModel)]="ujTo.szabalyok"
+          name="szabalyok"
+          placeholder="éjszakai, pergetés, etetőhajó"
+        />
+      </div>
+
+      <div class="input-row">
+        <div class="input-group checkbox-group">
+          <label>
+            <input
+              type="checkbox"
+              [(ngModel)]="ujTo.ejszakai_horgaszat"
+              name="ejszakai_horgaszat"
+            />
+            Éjszakai horgászat
+          </label>
+        </div>
+
+        <div class="input-group checkbox-group">
+          <label>
+            <input
+              type="checkbox"
+              [(ngModel)]="ujTo.csonak_hasznalat"
+              name="csonak_hasznalat"
+            />
+            Csónakhasználat
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEÍRÁS -->
+    <section class="form-section">
+      <h3>Leírás</h3>
+
+      <div class="input-group">
+        <label>Részletes leírás</label>
         <textarea
           [(ngModel)]="ujTo.leiras"
           name="leiras"
-          rows="5"
-          placeholder="Részletes információk..."
+          rows="6"
+          placeholder="Részletes információk a tóról..."
         ></textarea>
       </div>
     </section>
 
+    <!-- MENTÉS -->
     <button
       type="submit"
       class="submit-btn"

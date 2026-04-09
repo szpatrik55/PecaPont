@@ -26,13 +26,26 @@ export class AdminComponent {
     telepules: '',
     kepUtvonal: '',
     kepUrl: '',
+
     terulet_ha: null as number | null,
     vizmelyseg: null as number | null,
     helyek_szama: null as number | null,
     tipus: '',
+
+    sport_napijegy_ar: null as number | null,
+    cim: '',
+
+    halfajok: '',
+    szabalyok: '',
+
+    ejszakai_horgaszat: false,
+    csonak_hasznalat: false,
+
     ajanlott_modszerek: '',
     leiras: '',
-    megtekintesek: 0
+
+    megtekintesek: 0,
+    letrehozva: new Date()
   };
 }
 
@@ -87,19 +100,28 @@ export class AdminComponent {
 
     const mentesreVaroAdat = {
       ...this.ujTo,
+
+      halfajok: this.ujTo.halfajok
+        ? this.ujTo.halfajok.split(',').map(f => f.trim())
+        : [],
+
+      szabalyok: this.ujTo.szabalyok
+        ? this.ujTo.szabalyok.split(',').map(s => s.trim())
+        : [],
+
       ajanlott_modszerek: this.ujTo.ajanlott_modszerek
-        ? this.ujTo.ajanlott_modszerek
-          .split(',')
-          .map((m) => m.trim())
-      : []
+        ? this.ujTo.ajanlott_modszerek.split(',').map(m => m.trim())
+        : []
     };
 
     await addDoc(colRef, mentesreVaroAdat);
 
     alert('Sikeres mentés!');
+    this.ujTo = this.getAlapTo();
+
   } catch (error) {
-    console.error('Mentési hiba:', error);
-    alert('Hiba történt a mentés során!');
+    console.error(error);
+    alert('Hiba történt');
   } finally {
     this.mentesFolyamatban.set(false);
   }
