@@ -1,1 +1,37 @@
-<p>hirek works!</p>
+<div class="news-page">
+  <h1>Hírek</h1>
+
+  <div class="news-grid">
+    @for (news of (news$ | async); track news.id) {
+      <article class="news-card">
+
+        @if (news.kepUrl) {
+          <img
+            [src]="news.kepUrl"
+            [alt]="news.cim"
+            class="news-image"
+          />
+        }
+
+        <div class="news-content">
+          <h2>{{ news.cim }}</h2>
+
+          <p class="short-desc">
+            {{ news.rovidLeiras }}
+          </p>
+
+          <p class="news-text">
+            {{ news.tartalom }}
+          </p>
+
+          <small>
+            {{
+              news.letrehozva?.toDate?.()
+                | date:'yyyy.MM.dd HH:mm'
+            }}
+          </small>
+        </div>
+      </article>
+    }
+  </div>
+</div>

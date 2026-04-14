@@ -24,7 +24,6 @@
   </div>
 </section>
 
-<!--<div class="scroll-indicator">↓</div>-->
 
 <section class="quick-menu" fade-up>
   <h2>Fedezd fel</h2>
@@ -50,53 +49,46 @@
 
 
 <section class="latest-catches" fade-up>
-
   <h2>Legújabb fogások</h2>
 
-  <div class="gallery-preview" *ngIf="latestPosts$ | async as posts">
-
-  <div class="catch-card" *ngFor="let post of posts" routerLink="/galeria">
-    <img
-      [src]="post.imageUrl || 'assets/no-image.jpg'"
-      [alt]="post.title"
-      loading="lazy"
-      (error)="post.imageUrl = 'assets/no-image.jpg'"
-    >
-
-    <div class="overlay">
-      <h3>{{ post.title }}</h3>
-      <p>{{ post.water }}</p>
+  @if (latestPosts$ | async; as posts) {
+    <div class="gallery-preview">
+      @for (post of posts; track post.id) {
+        <div class="catch-card" routerLink="/galeria">
+          <img
+            [src]="post.imageUrl || 'assets/no-image.jpg'"
+            [alt]="post.title"
+            loading="lazy"
+          >
+          <div class="overlay">
+            <h3>{{ post.title }}</h3>
+            <p>{{ post.water }}</p>
+          </div>
+        </div>
+      }
     </div>
-  </div>
+  }
 
-</div>
-
-  <a routerLink="/galeria" class="button">
-    Összes fogás
-  </a>
-
+  <a routerLink="/galeria" class="button">Összes fogás</a>
 </section>
 
-
 <section class="popular-lakes" fade-up>
-
   <h2>Népszerű tavak</h2>
 
-  <div class="lake-cards">
-    <div
-      class="lake-card"
-      *ngFor="let to of popularLakes"
-      [routerLink]="['/tavak', to.id]"
-    >
-      <img
-        [src]="to.kepUrl || 'assets/images/fallback-lake.jpg'"
-        [alt]="to.nev"
-      >
-      <h3>{{ to.nev }}</h3>
-      <p>{{ to.telepules }}</p>
+  @if (popularLakes$ | async; as lakes) {
+    <div class="lake-cards">
+      @for (to of lakes; track to.id) {
+        <div class="lake-card" [routerLink]="['/tavak', to.id]">
+          <img
+            [src]="to.kepUrl || 'assets/images/fallback-lake.jpg'"
+            [alt]="to.nev"
+          >
+          <h3>{{ to.nev }}</h3>
+          <p>{{ to.telepules }}</p>
+        </div>
+      }
     </div>
-  </div>
-
+  }
 </section>
 
 

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, NgZone, OnDestroy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {
@@ -7,10 +7,9 @@ import {
   query,
   orderBy,
   limit,
-  onSnapshot,
-  getDocs
+  collectionData
 } from '@angular/fire/firestore';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable, shareReplay, catchError, of, map } from 'rxjs';
 import { GalleryPost } from '../../models/gallery-post';
 
 interface To {
@@ -25,65 +24,34 @@ interface To {
   standalone: true,
   imports: [RouterLink, CommonModule],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
+  styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent {
   private firestore = inject(Firestore);
-  private zone = inject(NgZone);
 
-  private latestPostsSubject = new BehaviorSubject<GalleryPost[]>([]);
-  latestPosts$: Observable<GalleryPost[]> =
-    this.latestPostsSubject.asObservable();
-
-  popularLakes: To[] = [];
-
-  private unsubscribe: any;
-
-  async ngOnInit(): Promise<void> {
-    this.loadPopularLakes();
-
-    this.zone.runOutsideAngular(() => {
-      const colRef = collection(this.firestore, 'gallery');
-
-      const q = query(
-        colRef,
-        orderBy('createdAt', 'desc'),
-        limit(4)
-      );
-
-      this.unsubscribe = onSnapshot(q, (snapshot) => {
-        this.zone.run(() => {
-          const posts = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          })) as GalleryPost[];
-
-          this.latestPostsSubject.next(posts);
-        });
-      });
-    });
-  }
-
-  async loadPopularLakes() {
-  const colRef = collection(this.firestore, 'lakes');
-
-  const q = query(
-    colRef,
-    orderBy('megtekintesek', 'desc'),
-    limit(3)
+  latestPosts$: Observable<GalleryPost[]> = collectionData(
+    query(
+      collection(this.firestore, 'gallery'),
+      orderBy('createdAt', 'desc'),
+      limit(4)
+    ),
+    { idField: 'id' }
+  ).pipe(
+    map(data => data as GalleryPost[]),
+    catchError(() => of([])),
+    shareReplay(1)
   );
 
-  const snapshot = await getDocs(q);
-
-  this.popularLakes = snapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data()
-  })) as To[];
-}
-
-  ngOnDestroy(): void {
-    if (this.unsubscribe) {
-      this.unsubscribe();
-    }
-  }
+  popularLakes$: Observable<To[]> = collectionData(
+    query(
+      collection(this.firestore, 'lakes'),
+      orderBy('megtekintesek', 'desc'),
+      limit(3)
+    ),
+    { idField: 'id' }
+  ).pipe(
+    map(data => data as To[]),
+    catchError(() => of([])),
+    shareReplay(1)
+  );
 }

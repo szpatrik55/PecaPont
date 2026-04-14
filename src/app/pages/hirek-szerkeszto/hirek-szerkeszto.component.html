@@ -1,0 +1,32 @@
+<div class="admin-page">
+  <h1>Új hír írása</h1>
+
+  <form (ngSubmit)="hirMentese()">
+    <input
+      type="text"
+      [(ngModel)]="article.cim"
+      name="cim"
+      placeholder="Cím"
+      required
+    />
+
+    <input
+      type="text"
+      [(ngModel)]="article.rovidLeiras"
+      name="rovidLeiras"
+      placeholder="Rövid leírás"
+    />
+
+    <textarea
+      [(ngModel)]="article.tartalom"
+      name="tartalom"
+      rows="10"
+      placeholder="Tartalom"
+      required
+    ></textarea>
+
+    <button type="submit">
+      Hír mentése
+    </button>
+  </form>
+</div>

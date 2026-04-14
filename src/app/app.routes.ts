@@ -14,6 +14,7 @@ import { AdminComponent } from './pages/admin/admin.component';
 import { ProfilComponent } from './pages/profil/profil.component';
 import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
+import { NewsEditorComponent } from './pages/hirek-szerkeszto/hirek-szerkeszto.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Főoldal útvonala
@@ -22,6 +23,7 @@ export const routes: Routes = [
   { path: 'tavak/:id', component: ToReszletekComponent}, // TóRészletek oldal útvonala
 
   { path: 'hirek', component: HirekComponent }, // Hírek oldal útvonala
+  { path: 'hirek-szerkeszto', component: NewsEditorComponent}, // Szerkesztő útvonala
 
   { path: 'versenyek', component: VersenyekComponent }, // Versenyek oldal útvonala
 

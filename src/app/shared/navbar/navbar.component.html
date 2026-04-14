@@ -1,34 +1,36 @@
 <nav class="top-nav">
-  
-  <div class="logo">
-    PecaPont
-  </div>
+  <div class="logo">PecaPont</div>
 
   <button class="menu-toggle" (click)="menuOpen = !menuOpen">
     ☰
   </button>
-  
+
   <div class="nav-links" [class.open]="menuOpen">
-  <a routerLink="/">Főoldal</a>
-  <a routerLink="/tavak">Tavak</a>
-  <a routerLink="/hirek">Hírek</a>
-  <a routerLink="/versenyek">Versenyek</a>
-  <a routerLink="/galeria">Fogások</a>
-  <a routerLink="/rolunk">Rólunk</a>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Főoldal</a>
+    <a routerLink="/tavak" routerLinkActive="active">Tavak</a>
+    <a routerLink="/hirek" routerLinkActive="active">Hírek</a>
+    <a routerLink="/versenyek" routerLinkActive="active">Versenyek</a>
+    <a routerLink="/galeria" routerLinkActive="active">Fogások</a>
+    <a routerLink="/rolunk" routerLinkActive="active">Rólunk</a>
 
-  @if (user$ | async) {
-    <a routerLink="/profil">Profil</a>
-    <a routerLink="/kepfeltoltes">Kép feltöltése</a>
+    @if (user$ | async) {
+      <a routerLink="/profil" routerLinkActive="active">Profil</a>
+      <a routerLink="/kepfeltoltes" routerLinkActive="active">Kép feltöltése</a>
 
-    @if (isAdmin$ | async) {
-      <a routerLink="/admin">Admin</a>
+      @if (isEditor$ | async) {
+        <a routerLink="/hirek-szerkeszto" routerLinkActive="active">Hír írás</a>
+      }
+
+      @if (isAdmin$ | async) {
+        <a routerLink="/hirek-szerkeszto" routerLinkActive="active">Hír írás</a>
+        <a routerLink="/admin" routerLinkActive="active">Admin</a>
+      }
+
+      <button class="logout-btn" (click)="logout()">
+        Kijelentkezés
+      </button>
+    } @else {
+      <a routerLink="/bejelentkezes" routerLinkActive="active">Bejelentkezés</a>
     }
-
-    <button class="logout-btn" (click)="logout()">
-      Kijelentkezés
-    </button>
-  } @else {
-    <a routerLink="/bejelentkezes">Bejelentkezés</a>
-  }
-</div>  
+  </div>
 </nav>

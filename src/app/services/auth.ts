@@ -23,7 +23,7 @@ import { switchMap, map } from 'rxjs/operators';
 export interface AppUser {
   uid: string;
   email: string | null;
-  role: 'user' | 'admin';
+  role: 'user' | 'admin' | 'news';
   name?: string | null;
   photo?: string | null;
   createdAt?: any;
@@ -38,6 +38,7 @@ export class AuthService {
   appUser$: Observable<AppUser | null>;
   isAdmin$: Observable<boolean>;
   userRole$: Observable<string | null>;
+  isEditor$: Observable<boolean>;
 
   constructor(
     private auth: Auth,
@@ -80,6 +81,10 @@ export class AuthService {
     // Admin check
     this.isAdmin$ = this.userRole$.pipe(
       map(role => role === 'admin')
+    );
+
+    this.isEditor$ = this.userRole$.pipe(
+      map(role => role === 'admin' || role === 'news')
     );
   }
 
