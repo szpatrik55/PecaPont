@@ -1,0 +1,46 @@
+flowchart TD
+
+    START([▶ Belépési pont])
+
+    S01[S01 - Főoldal]
+    S02[S02 - Tavak]
+    S03[S03 - Tavak listája]
+    S04[S04 - Hírek]
+    S05[S05 - Hírek írása 🔒]
+    S06[S06 - Fogások]
+    S07[S07 - Rólunk]
+    S08[S08 - Kép feltöltése 🔒]
+    S09[S09 - Profil 🔒]
+    S10[S10 - Admin 🔒]
+    S11[S11 - Bejelentkezés]
+    S12[S12 - Regisztráció]
+
+    D01{♦ Hír szerkesztő modál}
+    D02{♦ Kép feltöltés modál}
+
+    START -->|app indul| S01
+
+    S01 -->|navbar: Tavak| S02
+    S01 -->|navbar: Hírek| S04
+    S01 -->|navbar: Fogások| S06
+    S01 -->|navbar: Rólunk| S07
+    S01 -->|navbar: Bejelentkezés| S11
+    S01 -->|profil ikon| S09
+
+    S02 -->|lista megnyitása| S03
+    S03 -->|vissza| S02
+
+    S04 -->|admin/news: Új hír gomb| S05
+    S05 -->|szerkesztés| D01
+    D01 -->|Mentés| S04
+
+    S09 -->|kép feltöltés| S08
+    S08 -->|feltöltés| D02
+    D02 -->|Sikeres mentés| S09
+
+    S09 -->|admin role| S10
+    S10 -->|vissza| S09
+
+    S11 -->|regisztráció| S12
+    S11 -->|sikeres login| S09
+    S12 -->|sikeres regisztráció| S11
