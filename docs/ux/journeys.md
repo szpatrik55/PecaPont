@@ -17,15 +17,15 @@ App icon → S01 (Főoldal)
 2. **S11 — Bejelentkezés**  
    A user kitölti az email és jelszó mezőket.  
    **Művelet:** „Bejelentkezés” gomb megnyomása.  
-   → siker esetén **S09 — Profil** jelenik meg.  
+   → siker esetén **S01 — Főoldal** jelenik meg.  
    **Hibaág:** hibás email vagy jelszó esetén piros hibaüzenet jelenik meg.
 
-3. **S09 — Profil**  
-   A rendszer betölti a felhasználó adatait és korábbi feltöltéseit.  
+3. **S01 — Főoldal**  
+   A főoldal és a navigációs sáv jelenik meg benne a profil és kijelentkezés menüponttal.
    A user sikeresen belépett.
 
 **Sikerkritérium:**  
-A felhasználó eléri a profil oldalát és látja a saját adatait.
+A felhasználó eléri a főoldalt és látja a navigációs menüben az új füleket.
 
 **Mért időtartam:**  
 10–15 másodperc / 3 kattintás
@@ -47,12 +47,11 @@ App icon → S01 (Főoldal)
 
 2. **S02 — Tavak**  
    A user megnyitja a tólistát.  
-   **Művelet:** „Lista megnyitása” gomb.  
-   → **S03 — Tavak listája**
+   **Művelet:** „Részletek” gomb.  
+   → **S03 — Tó részletek**
 
-3. **S03 — Tavak listája**  
-   A rendszer betölti a tavak listáját.  
-   A user kiválaszt egy tavat.  
+3. **S03 — Tó részletek**  
+   A rendszer betölti a kiválasztott tó részleteit.  
    → részletes információk jelennek meg.  
    **Hibaág:** ha nincs találat, empty state üzenet jelenik meg.
 
@@ -79,7 +78,7 @@ App icon → S01 (Főoldal) → bejelentkezett admin user
 
 2. **S04 — Hírek**  
    A rendszer betölti az aktuális híreket.  
-   **Művelet:** „Új hír” gomb megnyomása.  
+   **Művelet:** „Hírek írása” menüpont megnyomása.  
    → **S05 — Hírek írása**
 
 3. **S05 — Hírek írása**  
