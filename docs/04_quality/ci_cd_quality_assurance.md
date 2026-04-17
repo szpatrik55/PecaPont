@@ -22,7 +22,13 @@ A CI folyamat GitHub Actions környezetben került megvalósításra.
 
 A workflow definíció az alábbi útvonalon található:
 
+<<<<<<< HEAD
 .github/workflows/ci.yml
+=======
+```text id="wfpath"
+.github/workflows/ci.yml
+```
+>>>>>>> 640bd2f7ef45eb239578fcedeb032d1840602f38
 
 A workflow automatikusan lefut az alábbi eseményekre:
 
@@ -41,8 +47,15 @@ A pipeline több egymásra épülő lépésből áll.
 
 A forráskód automatikus letöltése történik a GitHub repositoryból.
 
+<<<<<<< HEAD
 - name: Checkout repository
   uses: actions/checkout@v5
+=======
+```yaml id="step1"
+- name: Checkout repository
+  uses: actions/checkout@v5
+```
+>>>>>>> 640bd2f7ef45eb239578fcedeb032d1840602f38
 
 ---
 
@@ -50,8 +63,15 @@ A forráskód automatikus letöltése történik a GitHub repositoryból.
 
 A build környezet reprodukálhatósága érdekében dedikált Node.js futtatókörnyezet kerül létrehozásra.
 
+<<<<<<< HEAD
 - name: Setup Node.js
   uses: actions/setup-node@v5
+=======
+```yaml id="step2"
+- name: Setup Node.js
+  uses: actions/setup-node@v5
+```
+>>>>>>> 640bd2f7ef45eb239578fcedeb032d1840602f38
 
 ---
 
@@ -61,7 +81,13 @@ A függőségek telepítése npm segítségével történik.
 
 A projekt során Angular és AngularFire verzióütközés lépett fel, ezért az alábbi stratégia került alkalmazásra:
 
+<<<<<<< HEAD
 run: npm install --legacy-peer-deps
+=======
+```yaml id="step3"
+run: npm install --legacy-peer-deps
+```
+>>>>>>> 640bd2f7ef45eb239578fcedeb032d1840602f38
 
 Ez biztosította a kompatibilitási problémák áthidalását.
 
@@ -71,7 +97,13 @@ Ez biztosította a kompatibilitási problémák áthidalását.
 
 A pipeline legfontosabb része a build validáció.
 
+<<<<<<< HEAD
 run: npm run build
+=======
+```yaml id="step4"
+run: npm run build
+```
+>>>>>>> 640bd2f7ef45eb239578fcedeb032d1840602f38
 
 Ez a lépés biztosítja, hogy a rendszer release-kompatibilis állapotban legyen.
 
@@ -102,7 +134,13 @@ A hiba oka:
 
 A probléma ideiglenes mérnöki megoldása:
 
+<<<<<<< HEAD
 legacy peer dependency resolution
+=======
+```text id="depfix"
+legacy peer dependency resolution
+```
+>>>>>>> 640bd2f7ef45eb239578fcedeb032d1840602f38
 
 ---
 
