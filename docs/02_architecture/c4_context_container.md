@@ -7,16 +7,21 @@ flowchart LR
     User[Horgász felhasználó]
     PecaPont[PecaPont Web Application]
     External[Nyilvános horgászati adatforrások]
+    Firebase[Firebase (Auth + DB)]
 
     User -->|HTTP / Browser| PecaPont
     PecaPont -->|adatlekérés| External
+    PecaPont -->|auth / user adatok| Firebase
 ```
 
 ### Leírás
 
 A rendszer elsődleges szereplője a horgász felhasználó, aki böngészőn keresztül éri el a PecaPont alkalmazást.
 
-A rendszer külső adatforrásokból jelenít meg híreket, tavakat és versenyeket.
+A PecaPont alkalmazás:
+
+* külső adatforrásokból jelenít meg információkat (tavak, hírek, versenyek)
+* Firebase szolgáltatáson keresztül kezeli a felhasználói autentikációt és adatokat
 
 ---
 
@@ -25,16 +30,20 @@ A rendszer külső adatforrásokból jelenít meg híreket, tavakat és versenye
 ```mermaid
 flowchart LR
     Browser[Angular Frontend]
+    Services[Application Services Layer]
     Static[Static JS data modules]
-    Assets[Public assets]
-    Docs[Documentation layer]
+    Firebase[Firebase Auth]
+    External[External APIs]
 
-    Browser --> Static
-    Browser --> Assets
-    Browser --> Docs
+    Browser --> Services
+    Services --> Static
+    Services --> Firebase
+    Services --> External
 ```
 
 ### Konténerek
+
+---
 
 ### Angular Frontend
 
@@ -45,6 +54,20 @@ Felelőssége:
 * routing
 * UI rendering
 * komponensek kezelése
+* felhasználói interakciók kezelése
+
+---
+
+### Application Services Layer
+
+A frontend logika központi rétege.
+
+Felelőssége:
+
+* API hívások kezelése
+* Firebase autentikáció integráció
+* state kezelés
+* role-based access control (RBAC)
 
 ---
 
@@ -58,14 +81,18 @@ Jelenleg a domain logika és adatbetöltés egy része itt található:
 
 ---
 
-### Dokumentációs réteg
+### Firebase
 
-A szakdolgozati és rendszer dokumentáció.
+Külső szolgáltatás:
 
-* product
-* architecture
-* quality
-* AI docs
+* felhasználói autentikáció
+* felhasználói adatok tárolása
+
+---
+
+### Külső adatforrások
+
+Nyilvános horgászati API-k vagy statikus adatok.
 
 ---
 
@@ -74,5 +101,6 @@ A szakdolgozati és rendszer dokumentáció.
 * Angular
 * TypeScript
 * SCSS
+* Firebase Authentication
 * Static JavaScript modules
 * GitHub repository

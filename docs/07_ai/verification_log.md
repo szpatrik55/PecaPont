@@ -64,3 +64,46 @@ Az Angular megfelelő választásnak bizonyult a komponens-alapú architektúrá
 
 **Következtetés:**
 A tesztszám növelése szükséges.
+
+## V-005 – Firebase Authentication és Role-based Authorization validáció
+
+**AI állítás:**  
+A Firebase Authentication biztonságos megoldás felhasználói hitelesítéshez, és kiegészíthető role-based access control (RBAC) rendszerrel.
+
+**Kockázat:**  
+Hibás konfiguráció esetén:
+- jogosulatlan hozzáférés admin funkciókhoz
+- felhasználói adatok szivárgása
+- role ellenőrzés hiánya miatt privilege escalation
+- nem védett route-ok elérése autentikáció nélkül
+
+**Ellenőrzés módja:**
+
+* Firebase Authentication konfiguráció ellenőrzése
+* manuális login teszt különböző role-okkal:
+  - user
+  - admin
+  - news
+* role alapú route védelem tesztelése (Angular route guards)
+* admin funkciók hozzáférésének ellenőrzése
+* nem megfelelő role esetén hozzáférés tiltás tesztelése
+* hibás bejelentkezés teszt (invalid credentials)
+
+**Eredmény:** PASS
+
+**Bizonyíték (evidence):**
+
+* különböző role-okkal eltérő UI és funkcionalitás jelenik meg
+* admin funkciók csak admin role-lal érhetők el
+* nem autentikált felhasználó nem fér hozzá védett oldalakhoz
+* nem megfelelő role esetén hozzáférés megtagadva
+* Firebase-ben a felhasználók megfelelően azonosíthatók
+
+**Következtetés:**
+A rendszer megfelelően implementálja a hitelesítést és az authorization logikát.  
+A role-based access control biztosítja, hogy a felhasználók csak a jogosultságuknak megfelelő funkciókat érjék el.
+
+**További fejlesztési lehetőségek:**
+- role-ok központi kezelése (pl. Firestore)
+- finomabb jogosultsági szintek
+- audit log admin műveletekre

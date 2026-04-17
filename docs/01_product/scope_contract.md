@@ -38,11 +38,38 @@ Felhasználóként szeretnék horgászattal kapcsolatos híreket olvasni.
 
 ---
 
+### US-04 – Felhasználói regisztráció és bejelentkezés
+
+Felhasználóként szeretnék regisztrálni és bejelentkezni, hogy személyre szabott funkciókat használhassak.
+
+**Acceptance criteria**
+
+* regisztráció email + jelszó segítségével
+* sikeres login esetén a felhasználó bejelentkezett állapotba kerül
+* hibás adatok esetén hibaüzenet jelenik meg
+* kijelentkezés működik
+
+---
+
+### US-05 – Szerepkör alapú hozzáférés (RBAC)
+
+Felhasználóként csak a jogosultságomnak megfelelő funkciókat szeretném elérni.
+
+**Acceptance criteria**
+
+* user role → alap funkciók elérése
+* admin role → admin funkciók elérése
+* news role → hírek kezelése (ha van ilyen funkció)
+* nem megfelelő role esetén hozzáférés tiltva
+
+---
+
 ## 2. Stretch célok
 
 * keresési funkció
 * szűrés tó típus szerint
-* felhasználói profil
+* felhasználói profil bővítése
+* role-ok finomítása (pl. több jogosultsági szint)
 
 ---
 
@@ -50,7 +77,8 @@ Felhasználóként szeretnék horgászattal kapcsolatos híreket olvasni.
 
 * web platform
 * Angular frontend
-* statikus vagy külső adatforrás
+* Firebase Authentication használata
+* külső adatforrások / statikus adatok
 
 ---
 
@@ -63,3 +91,4 @@ Egy funkció akkor tekinthető késznek, ha:
 * legalább 1 automata teszt védi
 * dokumentációban szerepel
 * hibakezelés legalább alapszinten megoldott
+* jogosultságkezelés megfelelően működik (ha releváns)

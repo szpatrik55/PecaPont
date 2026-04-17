@@ -16,12 +16,14 @@ A PecaPont célja, hogy egy központi, könnyen használható digitális platfor
 * hétvégi horgászatokat tervez
 * fontos számára a tavak és halfajok információja
 * gyors, mobilbarát használatot vár el
+* rendelkezhet felhasználói fiókkal
 
 ### Persona 2 – Versenyhorgász
 
 * rendszeresen részt vesz eseményeken
 * figyeli a versenynaptárt
 * gyors hozzáférést szeretne a nevezési információkhoz
+* bejelentkezve követi a versenyeket
 
 ---
 
@@ -32,7 +34,8 @@ A PecaPont egy olyan integrált platform, amely:
 * összegyűjti a tavak adatait
 * megjeleníti a horgászversenyeket
 * híreket és aktuális információkat biztosít
-* javítja a felhasználói élményt modern webes felületen
+* lehetővé teszi felhasználói fiókok használatát (pl. személyre szabott élmény)
+* javítja a felhasználói élményt modern, reszponzív webes felületen
 
 ---
 
@@ -55,7 +58,7 @@ A PecaPont egy olyan integrált platform, amely:
 A jelenlegi scope-ban a rendszer nem célja:
 
 * online jegyvásárlás
-* közösségi chat funkció
+* közösségi funkciók (pl. chat, kommentelés)
 * fizetési integráció
 * natív mobilalkalmazás
 
@@ -63,8 +66,9 @@ A jelenlegi scope-ban a rendszer nem célja:
 
 ## 6. Kockázatok és mitigációk
 
-| Kockázat              | Hatás                | Mitigáció                   |
-| --------------------- | -------------------- | --------------------------- |
-| Hiányos adatforrások  | pontatlan információ | manuális validáció          |
-| UI komplexitás        | rossz UX             | iteratív tesztelés          |
-| teljesítményproblémák | lassú oldal          | lazy loading, optimalizálás |
+| Kockázat                     | Hatás                | Mitigáció                                    |
+| ---------------------------- | -------------------- | -------------------------------------------- |
+| Hiányos adatforrások         | pontatlan információ | manuális validáció                           |
+| UI komplexitás               | rossz UX             | iteratív tesztelés                           |
+| teljesítményproblémák        | lassú oldal          | lazy loading, optimalizálás                  |
+| Felhasználói adatok kezelése | adatvédelmi kockázat | Firebase Authentication + biztonságos config |
