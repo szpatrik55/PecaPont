@@ -38,7 +38,11 @@ export class HomeComponent {
     { idField: 'id' }
   ).pipe(
     map(data => data as GalleryPost[]),
-    catchError(() => of([])),
+    catchError(err => {
+      console.error('Firestore hiba:', err);
+      console.log('Firestore instance:', this.firestore);
+      return of([]);
+    }),
     shareReplay(1)
   );
 
