@@ -3,25 +3,29 @@
   <h2>Regisztráció</h2>
   <p class="subtitle">Hozd létre új fiókodat</p>
 
-  <input
-    type="email"
-    placeholder="Email cím"
-    [(ngModel)]="email"
-  />
+  <form>
+    <input
+      type="email"
+      placeholder="Email cím"
+      [(ngModel)]="email"
+      name="email"
+    />
 
-  <input
-    type="password"
-    placeholder="Jelszó"
-    [(ngModel)]="password"
-  />
+    <input
+      type="password"
+      placeholder="Jelszó"
+      [(ngModel)]="password"
+      name="password"
+    />
 
-  <button (click)="register()">
-    Regisztráció
-  </button>
+    <button type="button" (click)="register()">
+      Regisztráció
+    </button>
+  </form>
 
   <p class="login-link">
-  Van már fiókod?
-  <a routerLink="/bejelentkezes">Jelentkezz be</a>
-</p>
+    Van már fiókod?
+    <a routerLink="/bejelentkezes">Jelentkezz be</a>
+  </p>
 
 </div>

@@ -27,6 +27,51 @@
 ## Residual Risk
 
 Alacsony–közepes.
+# Threat Model
+
+## Attack surface
+
+* Web UI (Angular alkalmazás)
+* Firebase Authentication (login / user kezelés)
+* Firebase Firestore (adatbázis)
+* Firebase Storage (képfeltöltés)
+* Routing és route guard logika
+
+---
+
+## Threats
+
+| Threat                   | Impact | Likelihood | Mitigation                                                                    |
+| ------------------------ | ------ | ---------- | ----------------------------------------------------------------------------- |
+| XSS                      | High   | Medium     | Angular beépített sanitization + input validáció                              |
+| Unauthorized access      | High   | Medium     | Firebase Authentication + Firestore security rules                            |
+| Privilege escalation     | High   | Medium     | Role-based access control (RBAC) + role mező immutability Firestore rules-ben |
+| Authentication bypass    | High   | Low        | Firebase Authentication token alapú ellenőrzés                                |
+| Data leak (PII)          | High   | Low        | Firestore access rules + korlátozott read hozzáférés                          |
+| File upload abuse        | Medium | Medium     | Csak bejelentkezett felhasználó tölthet fel (Storage rules)                   |
+| Dependency vulnerability | High   | Low        | npm audit + dependency update                                                 |
+
+---
+
+## Residual Risk
+
+Alacsony–közepes.
+
+Indoklás:
+
+* Firebase Authentication kezeli a hitelesítést
+* Firestore security rules enforce-olják a hozzáférést backend oldalon
+* Role alapú jogosultságkezelés csökkenti a privilege escalation kockázatát
+
+---
+
+## Verification
+
+* Manuális teszt: jogosultság nélküli módosítás elutasítva Firestore által
+* Role módosítás teszt: felhasználó nem tudja saját role-ját megváltoztatni
+* Auth teszt: nem bejelentkezett user nem tud adatot létrehozni
+* npm audit futtatása
+* Firebase security rules tesztelése (Firebase emulator / console)
 
 Indoklás:
 

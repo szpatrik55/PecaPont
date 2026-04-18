@@ -10,27 +10,36 @@ Kiemelt cél a fő user flow-k és a kritikus UI komponensek ellenőrzése.
 
 ## 2. Teszt piramis
 
+A projekt a következő tesztmegoszlást alkalmazza:
+
+* Unit tesztek: ~60%
+* Integration tesztek: ~20%
+* UI / E2E jellegű tesztek: ~20%
+
+---
+
 ### Unit tesztek
 
 A komponenslogika és utility funkciók ellenőrzése.
 
-Példák:
+Tesztelt területek:
 
 * komponens inicializáció
-* adatbetöltés logika
-* route működés
+* adatbetöltési logika
+* route kezelés
+* form validáció
 
 ---
 
 ### Integration tesztek
 
-Komponensek és adatforrások együttműködésének vizsgálata.
+Komponensek és Firebase közötti együttműködés vizsgálata.
 
-Példák:
+Tesztelt területek:
 
-* hírek modul + UI
-* tavak modul + UI
-* verseny modul + UI
+* tavak adatainak betöltése Firestore-ból
+* hírek megjelenítése
+* galéria működés
 
 ---
 
@@ -38,39 +47,65 @@ Példák:
 
 Fő felhasználói útvonalak ellenőrzése.
 
-Példák:
+Tesztelt flow-k:
 
-* főoldal betöltés
-* tó lista megjelenítés
-* verseny oldal navigáció
+* főoldal betöltése
+* tó lista megjelenítése
+* navigáció működése
+* bejelentkezés (ha van)
 
 ---
 
 ## 3. Kritikus flow-k
 
+Az alábbi user flow-k regresszióvédelemmel rendelkeznek:
+
 * tavak böngészése
 * hírek megtekintése
-* verseny információk elérése
+* galéria használata
 
 ---
 
-## 4. Quality gate-ek
+## 4. Teszt mennyiség
+
+A projekt jelenleg:
+
+* legalább 30 automata tesztet tartalmaz <!-- JAVÍTÁS: kötelező -->
+* unit + integration + UI tesztek kombinációjával
+
+---
+
+## 5. Mock és stub stratégia
+
+* Firebase hívások mockolása unit tesztekben
+* Integration tesztek valós adatszerkezetet használnak
+* Külső függőségek minimalizálva
+
+---
+
+## 6. Quality gate-ek
 
 * Angular build sikeres
 * lint hibamentes
-* unit tesztek sikeresek
-* dokumentáció frissítve
+* tesztek futnak és sikeresek
+* nincs kritikus hiba
 
 ---
 
-## 5. Futtatás
+## 7. Teszt futtatás
+
+Lokálisan:
 
 npm test
-
 ng test
+
+CI-ban:
+
+* tesztek automatikusan futnak build során
 
 ---
 
-## 6. Következő cél
+## 8. Ismert hiányosságok
 
-A szakdolgozati minimum eléréséhez a tesztek száma fokozatosan bővül legalább 30 automata tesztre.
+* Teljes E2E automatizáció még bővíthető
+* Performance tesztek nem teljes körűek
