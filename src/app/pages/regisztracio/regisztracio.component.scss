@@ -36,6 +36,40 @@ h2 {
   color: rgba(255, 255, 255, 0.7);
 }
 
+/* HIBAÜZENET STÍLUSA */
+.error-container {
+  max-height: 0;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  margin-bottom: 0;
+
+  &.show {
+    max-height: 100px;
+    opacity: 1;
+    margin-bottom: 20px;
+  }
+}
+
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(254, 226, 226, 0.1); 
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-left: 4px solid #ef4444; 
+  color: #fca5a5; 
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.4;
+
+  .error-icon {
+    font-size: 16px;
+  }
+}
+
 input {
   width: 100%;
   padding: 14px 16px;
@@ -48,16 +82,27 @@ input {
   outline: none;
   transition: all 0.25s ease;
   box-sizing: border-box;
-}
 
-input::placeholder {
-  color: rgba(255, 255, 255, 0.55);
-}
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.55);
+  }
 
-input:focus {
-  border-color: #60a5fa;
-  box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.15);
-  background: rgba(255, 255, 255, 0.08);
+  &:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  &.input-error {
+    border-color: rgba(239, 68, 68, 0.4) !important;
+    background: rgba(239, 68, 68, 0.05) !important;
+    color: #fecaca;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 button {
@@ -68,15 +113,25 @@ button {
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: white;
   transition: all 0.25s ease;
   margin-top: 6px;
-}
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
 
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.35);
+  &:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.35);
+  }
+
+  &:not(:disabled):active {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    filter: saturate(0.5);
+    cursor: not-allowed;
+  }
 }
 
 .login-link {
@@ -84,14 +139,14 @@ button:hover {
   text-align: center;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.75);
-}
 
-.login-link a {
-  color: #60a5fa;
-  text-decoration: none;
-  font-weight: 600;
-}
+  a {
+    color: #60a5fa;
+    text-decoration: none;
+    font-weight: 600;
 
-.login-link a:hover {
-  text-decoration: underline;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }

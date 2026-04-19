@@ -1,32 +1,59 @@
 <div class="auth-container">
-    
     <h2>Bejelentkezés</h2>
 
-    <input
-        type="email"
-        placeholder="Email"
-        [(ngModel)]="email"
-    />
+    <form (ngSubmit)="login()" novalidate>
+        
+        <div class="error-container" [class.show]="errorMessage">
+            <div class="error-banner">
+                <div class="error-icon">⚠️</div>
+                <div class="error-text">{{ errorMessage }}</div>
+            </div>
+        </div>
 
-    <input
-        type="password"
-        placeholder="Jelszó"
-        [(ngModel)]="password"
-    />
+        <div class="input-group">
+            <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                [(ngModel)]="email"
+                (ngModelChange)="onInputChange()"
+                [class.input-error]="errorMessage"
+                [disabled]="isLoading"
+                required
+            />
+        </div>
 
-    <button (click)="login()">
-        Bejelentkezés
-    </button>
+        <div class="input-group">
+            <input
+                type="password"
+                name="password"
+                placeholder="Jelszó"
+                [(ngModel)]="password"
+                (ngModelChange)="onInputChange()"
+                [class.input-error]="errorMessage"
+                [disabled]="isLoading"
+                required
+            />
+        </div>
+
+        <button type="submit" [disabled]="isLoading" class="login-btn">
+            <span *ngIf="!isLoading">Bejelentkezés</span>
+            <span *ngIf="isLoading" class="loading-state">
+                <span class="spinner"></span> Kérlek várj...
+            </span>
+        </button>
+
+    </form>
 
     <div class="divider">vagy</div>
 
-    <button class="google" (click)="google()">
-        Google fiók használata
+    <button type="button" class="google-btn" (click)="google()" [disabled]="isLoading">
+        <img src="assets/google-icon.svg" alt="" *ngIf="!isLoading">
+        <span>Google fiók használata</span>
     </button>
 
     <p class="register-link">
         Nincs még fiókod?
         <a routerLink="/regisztracio">Regisztrálj itt!</a>
     </p>
-
 </div>

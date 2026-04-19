@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Observable, shareReplay } from 'rxjs';
 
-// KIZÁRÓLAG a sima firebase csomagból importálunk!
+// KIZÁRÓLAG a sima firebase csomagból importálunk a konzisztencia miatt
 import { initializeApp, getApp, getApps } from 'firebase/app';
 import { 
   getFirestore, 
@@ -25,6 +25,14 @@ interface To {
   megtekintesek?: number;
 }
 
+interface NewsItem {
+  id: string;
+  cim: string;
+  rovidLeiras: string;
+  tartalom: string;
+  letrehozva: any;
+}
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -37,8 +45,8 @@ export class HomeComponent implements OnInit {
   
   latestPosts$: Observable<GalleryPost[]> | undefined;
   popularLakes$: Observable<To[]> | undefined;
+  latestNews$: Observable<NewsItem[]> | undefined; // Új Observable a híreknek
 
-  // A config-ot itt is használjuk, hogy biztosak legyünk a példányban
   private firebaseConfig = {
     apiKey: "AIzaSyB7k-N4xhzNaPt2pZc48kd4aAeyoLWKs_o",
     authDomain: "pecapont-50489.firebaseapp.com",
@@ -50,11 +58,10 @@ export class HomeComponent implements OnInit {
   };
 
   ngOnInit() {
-    // Inicializáljuk vagy lekérjük a létező Firebase appot
     const app = !getApps().length ? initializeApp(this.firebaseConfig) : getApp();
     this.db = getFirestore(app);
 
-    // 1. Galéria lekérése
+    // 1. Legfrissebb fogások lekérése (4 db)
     this.latestPosts$ = new Observable<GalleryPost[]>(subscriber => {
       const q = query(
         collection(this.db, 'gallery'),
@@ -71,7 +78,7 @@ export class HomeComponent implements OnInit {
       }, (err) => subscriber.error(err));
     }).pipe(shareReplay(1));
 
-    // 2. Tavak lekérése
+    // 2. Népszerű tavak lekérése (3 db)
     this.popularLakes$ = new Observable<To[]>(subscriber => {
       const q = query(
         collection(this.db, 'lakes'),
@@ -85,6 +92,23 @@ export class HomeComponent implements OnInit {
           ...doc.data() 
         } as To));
         subscriber.next(lakes);
+      }, (err) => subscriber.error(err));
+    }).pipe(shareReplay(1));
+
+    // 3. Friss hírek lekérése (3 db)
+    this.latestNews$ = new Observable<NewsItem[]>(subscriber => {
+      const q = query(
+        collection(this.db, 'news'),
+        orderBy('letrehozva', 'desc'),
+        limit(3)
+      );
+
+      return onSnapshot(q, (snapshot) => {
+        const news = snapshot.docs.map(doc => ({ 
+          id: doc.id, 
+          ...doc.data() 
+        } as NewsItem));
+        subscriber.next(news);
       }, (err) => subscriber.error(err));
     }).pipe(shareReplay(1));
   }

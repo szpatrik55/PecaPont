@@ -1,13 +1,21 @@
 <div class="news-page">
   <header class="page-header">
     <h1>Hírek & Újdonságok</h1>
+    <div class="search-container">
+      <input 
+        type="text" 
+        [ngModel]="searchTerm()" 
+        (ngModelChange)="searchTerm.set($event)" 
+        placeholder="Keresés..."
+        class="search-input"
+      />
+    </div>
   </header>
 
-  <div class="news-grid" *ngIf="news$ | async as newsList; else loading">
-    <article class="news-card" *ngFor="let hir of newsList">
+  <div class="news-grid" *ngIf="allNews().length > 0; else loading">
+    <article class="news-card" *ngFor="let hir of filteredNews()">
       <div class="news-image-wrapper">
         <img [src]="hir.kepUrl || 'assets/images/default-news.jpg'" [alt]="hir.cim" class="news-image">
-        
         <div class="date-badge" *ngIf="hir.letrehozva">
           <span class="day">{{ hir.letrehozva.toDate() | date:'dd' }}</span>
           <span class="month">{{ hir.letrehozva.toDate() | date:'MMM' }}</span>
@@ -18,11 +26,8 @@
         <h2 class="news-title">{{ hir.cim }}</h2>
         <p class="short-desc">{{ hir.rovidLeiras }}</p>
         <div class="divider"></div>
-        
         <div class="card-footer">
-          <a [routerLink]="['/hirek', hir.id]" class="read-more">
-            Részletek megtekintése
-          </a>
+          <a [routerLink]="['/hirek', hir.id]" class="read-more">Részletek megtekintése</a>
         </div>
       </div>
     </article>
@@ -31,7 +36,7 @@
   <ng-template #loading>
     <div class="loader-container">
       <div class="spinner"></div>
-      <p>Hírek frissítése...</p>
+      <p>Betöltés...</p>
     </div>
   </ng-template>
-</div>  
+</div>

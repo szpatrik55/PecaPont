@@ -1,99 +1,76 @@
-$primary: #2b6cb0;
-$dark: #1a202c;
-$gray: #4a5568;
+$primary-gradient: linear-gradient(135deg, #0ea5e9, #2563eb);
+$bg-dark: #0f172a;
+$card-bg: rgba(30, 41, 59, 0.8);
+$text-light: #f8fafc;
+$text-gray: #94a3b8;
 
 .article-page {
-  background-color: #fff;
   min-height: 100vh;
-  padding: 2rem 0;
+  background: radial-gradient(circle at top right, #1e293b, #0f172a);
+  padding: 40px 20px;
+  color: $text-light;
+  overflow-x: hidden; // Megelőzi a vízszintes görgetést animáció alatt
 
   .container {
     max-width: 900px;
     margin: 0 auto;
-    padding: 0 1.5rem;
   }
 }
 
-.back-nav {
-  margin-bottom: 3rem;
-  .back-link {
-    color: $gray;
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.2s;
-    &:hover { color: $primary; }
-    .arrow { margin-right: 5px; }
+.full-article {
+  animation: fadeIn 0.4s ease-out forwards;
+  will-change: opacity, transform;
+
+  .article-image {
+    width: 100%;
+    margin-bottom: 50px;
+    border-radius: 24px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.2); // Placeholder amíg a kép tölt
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+  }
+
+  .article-body {
+    background: $card-bg;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px); // Safari támogatás
+    padding: 40px;
+    border-radius: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    will-change: backdrop-filter;
+
+    .content-text {
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+    }
   }
 }
 
-.article-header {
-  margin-bottom: 2.5rem;
-
-  .meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: $primary;
-    font-weight: 700;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-    .separator { color: #cbd5e0; }
-    .date { color: #a0aec0; font-weight: 400; }
-  }
-
-  h1 {
-    font-size: 3.5rem;
-    color: $dark;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
-    letter-spacing: -1px;
-  }
-
-  .lead {
-    font-size: 1.4rem;
-    color: $gray;
-    line-height: 1.6;
-    border-left: 4px solid $primary;
-    padding-left: 1.5rem;
-  }
+// Gyorsabb animáció
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.article-image {
-  width: 100%;
-  border-radius: 20px;
-  overflow: hidden;
-  margin-bottom: 3rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  img { width: 100%; height: auto; display: block; }
+// Spinner javítás
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(14, 165, 233, 0.1);
+  border-top: 3px solid #0ea5e9;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
-.article-body {
-  .content-text {
-    font-size: 1.2rem;
-    line-height: 2;
-    color: #2d3748;
-    white-space: pre-wrap; // Megtartja a bekezdéseket
-  }
-}
-
-.loader-container {
-  text-align: center;
-  padding: 5rem 0;
-  .spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid $primary;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 1rem;
-  }
-}
-
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-@media (max-width: 768px) {
-  .article-header h1 { font-size: 2.2rem; }
-  .article-header .lead { font-size: 1.1rem; }
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

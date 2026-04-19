@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NewsService } from '../../services/news'; // Igazítsd az elérési utat
+import { NewsService } from '../../services/news';
 
 @Component({
   selector: 'app-hirek-szerkeszto',

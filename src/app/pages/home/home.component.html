@@ -1,14 +1,10 @@
 <section class="hero">
   <div class="hero-content">
     <h1>PecaPont</h1>
-
     <h2>A magyar horgászok közösségi oldala</h2>
-    
     <p>
-    Fedezd fel Magyarország legjobb horgásztavait, ismerd meg a legfogósabb helyeket, és csatlakozz egy szenvedélyes közösséghez!<br>
-    Oszd meg legszebb fogásaidat, tapasztalataidat és kedvenc módszereidet más horgászokkal. Kövesd a legfrissebb híreket, vízparti információkat, telepítéseket és horgászati tippeket egy helyen.<br>
-    Legyen szó pontyozásról, pergetésről vagy feeder horgászatról, nálunk mindig találsz inspirációt, hasznos tanácsokat és új horgászhelyeket a következő kalandodhoz.
-
+      Fedezd fel Magyarország legjobb horgásztavait, ismerd meg a legfogósabb helyeket, és csatlakozz egy szenvedélyes közösséghez!<br>
+      Oszd meg legszebb fogásaidat, tapasztalataidat és kedvenc módszereidet más horgászokkal.
     </p>
 
     <div class="stats">
@@ -17,49 +13,17 @@
       <div><strong>1+</strong><span>tag</span></div>
     </div>
 
-    <a routerLink="/tavak" class="button">
-      Fedezd fel tavainkat!
-    </a>
-
+    <a routerLink="/tavak" class="button">Fedezd fel tavainkat!</a>
   </div>
 </section>
-
-
-<section class="quick-menu" fade-up>
-  <h2>Fedezd fel</h2>
-
-  <div class="card-container">
-    <a routerLink="/tavak" class="card">
-      <img src="assets/images/main/tavak.png" alt="Tavak">
-    </a>
-
-    <a routerLink="/galeria" class="card">
-      <img src="assets/images/main/fogasok.png" alt="Fogások">
-    </a>
-
-    <a routerLink="/hirek" class="card">
-      <img src="assets/images/main/hirek.png" alt="Hírek">
-    </a>
-
-    <a routerLink="/versenyek" class="card">
-      <img src="assets/images/main/versenyek.png" alt="Versenyek">
-    </a>
-  </div>
-</section>
-
 
 <section class="latest-catches" fade-up>
   <h2>Legújabb fogások</h2>
-
   @if (latestPosts$ | async; as posts) {
     <div class="gallery-preview">
       @for (post of posts; track post.id) {
         <div class="catch-card" routerLink="/galeria">
-          <img
-            [src]="post.imageUrl || 'assets/no-image.jpg'"
-            [alt]="post.title"
-            loading="lazy"
-          >
+          <img [src]="post.imageUrl || 'assets/no-image.jpg'" [alt]="post.title" loading="lazy">
           <div class="overlay">
             <h3>{{ post.title }}</h3>
             <p>{{ post.water }}</p>
@@ -68,21 +32,16 @@
       }
     </div>
   }
-
   <a routerLink="/galeria" class="button">Összes fogás</a>
 </section>
 
 <section class="popular-lakes" fade-up>
   <h2>Népszerű tavak</h2>
-
   @if (popularLakes$ | async; as lakes) {
     <div class="lake-cards">
       @for (to of lakes; track to.id) {
         <div class="lake-card" [routerLink]="['/tavak', to.id]">
-          <img
-            [src]="to.kepUrl || 'assets/images/fallback-lake.jpg'"
-            [alt]="to.nev"
-          >
+          <img [src]="to.kepUrl || 'assets/images/fallback-lake.jpg'" [alt]="to.nev">
           <h3>{{ to.nev }}</h3>
           <p>{{ to.telepules }}</p>
         </div>
@@ -91,54 +50,33 @@
   }
 </section>
 
-
 <section class="latest-news" fade-up>
-
   <h2>Friss hírek</h2>
-
-  <div class="news-preview">
-
-    <div class="news-card">
-      <h3>Új horgászverseny a Tisza tavon</h3>
-      <p>Idén nyáron új versenyt rendeznek...</p>
+  @if (latestNews$ | async; as newsList) {
+    <div class="news-preview">
+      @for (hir of newsList; track hir.id) {
+        <div class="news-card" [routerLink]="['/hirek', hir.id]">
+          <div class="news-tag">Friss</div>
+          <h3>{{ hir.cim }}</h3>
+          <p>{{ hir.rovidLeiras }}</p>
+          <span class="read-more">Elolvasom a cikket →</span>
+        </div>
+      }
     </div>
-
-    <div class="news-card">
-      <h3>Rekord ponty a Balatonból</h3>
-      <p>Egy horgász 28kg-os pontyot fogott...</p>
-    </div>
-
-    <div class="news-card">
-      <h3>Új horgászati szabályok</h3>
-      <p>2025-től változik néhány szabály...</p>
-    </div>
-
+  } @else {
+    <div class="loader-placeholder">Hírek betöltése...</div>
+  }
+  <div style="text-align: center; margin-top: 2rem;">
+    <a routerLink="/hirek" class="button outline">Összes hír</a>
   </div>
-
 </section>
 
 <section class="community" fade-up>
-
   <h2>Légy te is a közösség tagja!</h2>
-
-  <p>
-    Csatlakozz több száz szenvedélyes horgászhoz,
-    oszd meg élményeidet, mutasd meg fogásaidat,
-    és fedezd fel a legjobb horgászhelyeket mások ajánlásai alapján.
-  </p>
-
-  <a routerLink="/regisztracio" class="button">
-    Regisztrálok
-  </a>
-
+  <p>Csatlakozz több száz szenvedélyes horgászhoz, oszd meg élményeidet!</p>
+  <a routerLink="/regisztracio" class="button">Regisztrálok</a>
 </section>
 
-
 <footer>
-
-  <p>
-    PecaPont <br>
-    Email: szabo.patrik.peter [kukac] gmail.com
-  </p>
-
+  <p>PecaPont <br> Email: szabo.patrik.peter [kukac] gmail.com</p>
 </footer>

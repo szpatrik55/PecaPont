@@ -356,26 +356,96 @@ img {
 ========================= */
 .latest-news {
   background: var(--bg-main);
+  text-align: center; /* Hogy a h2 és a lenti gomb középen legyen */
+}
+
+.news-preview {
+  text-align: left; /* A kártyák tartalma maradjon balra igazítva */
 }
 
 .news-card {
-  min-height: 180px;
+  cursor: pointer;
+  min-height: 220px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
 
-  padding: 28px;
+  padding: clamp(20px, 3vw, 32px);
   border-radius: var(--radius-lg);
   background: var(--bg-card);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   box-shadow: var(--shadow-main);
-  transition: all 0.25s ease;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .news-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.3);
+  transform: translateY(-8px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Hír kategória/idő címke */
+.news-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(14, 165, 233, 0.15);
+  color: var(--primary-light);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  width: fit-content;
+}
+
+.news-card h3 {
+  font-size: 1.35rem;
+  margin-bottom: 12px;
+  line-height: 1.3;
+  color: var(--text-main);
+}
+
+.news-card p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  flex-grow: 1;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.news-card .read-more {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap 0.2s ease;
+}
+
+.news-card:hover .read-more {
+  gap: 10px;
+}
+
+.latest-news .button {
+  margin-top: 50px;
+}
+
+/* =========================
+   ADDITIONAL HELPERS
+========================= */
+.loader-placeholder {
+  grid-column: 1 / -1;
+  padding: 40px;
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
 }
 
 /* =========================

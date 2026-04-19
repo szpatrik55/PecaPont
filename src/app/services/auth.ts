@@ -24,7 +24,8 @@ export interface AppUser {
   uid: string;
   email: string | null;
   role: 'user' | 'admin' | 'news';
-  name?: string | null;
+  displayName?: string | null; // A teljes névnek
+  username?: string | null;    // A felhasználónévnek
   photo?: string | null;
   createdAt?: any;
 }
@@ -44,41 +45,36 @@ export class AuthService {
     private auth: Auth,
     private firestore: Firestore
   ) {
-
-    // Firebase auth user
+    // Aktuális Firebase auth állapot figyelése
     this.user$ = authState(this.auth);
 
-    // Firestore user document
+    // Felhasználói dokumentum lekérése a Firestore-ból az Auth állapot alapján
     this.appUser$ = this.user$.pipe(
-  switchMap(user => {
-    if (!user) return of(null);
+      switchMap(user => {
+        if (!user) return of(null);
 
-    const ref = doc(this.firestore, `users/${user.uid}`);
+        const ref = doc(this.firestore, `users/${user.uid}`);
 
-    return docData(ref, { idField: 'uid' }).pipe(
-      map((data: any) => {
-        console.log('🔥 FIRESTORE USER:', data);
-
-        if (!data) {
-          return {
-            uid: user.uid,
-            email: user.email,
-            role: 'user'
-          } as AppUser;
-        }
-
-        return data as AppUser;
+        return docData(ref, { idField: 'uid' }).pipe(
+          map((data: any) => {
+            if (!data) {
+              return {
+                uid: user.uid,
+                email: user.email,
+                role: 'user'
+              } as AppUser;
+            }
+            return data as AppUser;
+          })
+        );
       })
     );
-  })
-);
 
-    // Role
+    // Jogkörök kezelése
     this.userRole$ = this.appUser$.pipe(
       map(user => user?.role ?? null)
     );
 
-    // Admin check
     this.isAdmin$ = this.userRole$.pipe(
       map(role => role === 'admin')
     );
@@ -89,19 +85,22 @@ export class AuthService {
   }
 
   // =========================
-  // REGISTER
+  // REGISTER (Módosítva a névvel és felhasználónévvel)
   // =========================
-  async register(email: string, password: string) {
-
+  async register(email: string, password: string, displayName: string, username: string) {
+    // 1. Létrehozzuk a fiókot az Auth modulban
     const cred = await createUserWithEmailAndPassword(
       this.auth,
       email,
       password
     );
 
+    // 2. Elmentjük a kiegészítő adatokat a Firestore-ba
     await setDoc(doc(this.firestore, 'users', cred.user.uid), {
       uid: cred.user.uid,
       email: cred.user.email,
+      displayName: displayName,
+      username: username,
       role: 'user',
       createdAt: new Date()
     });
@@ -111,6 +110,7 @@ export class AuthService {
   // LOGIN
   // =========================
   login(email: string, password: string) {
+    // Közvetlenül visszaadjuk a Promise-t, hogy a komponens el tudja kapni a hibát
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
@@ -118,15 +118,14 @@ export class AuthService {
   // GOOGLE LOGIN
   // =========================
   async googleLogin() {
-
     const provider = new GoogleAuthProvider();
-
     const result = await signInWithPopup(this.auth, provider);
 
+    // Google login esetén frissítjük vagy létrehozzuk a profilt (merge: true)
     await setDoc(doc(this.firestore, 'users', result.user.uid), {
       uid: result.user.uid,
       email: result.user.email,
-      name: result.user.displayName,
+      displayName: result.user.displayName,
       photo: result.user.photoURL,
       role: 'user'
     }, { merge: true });

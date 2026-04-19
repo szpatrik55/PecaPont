@@ -25,6 +25,7 @@ export class GalleryUploadComponent implements OnInit {
   fishCategories: { [key: string]: string[] } = {
     'Békés halak': ['Ponty', 'Amur', 'Dévérkeszeg', 'Kárász', 'Compó'],
     'Ragadozó halak': ['Csuka', 'Süllő', 'Harcsa', 'Balin', 'Sügér'],
+    'Teríték fotó': ['Békés halak', 'Ragadozó halak', 'Vegyes fogás'],
     'Egyéb': ['Törpeharcsa', 'Angolna', 'Tokhal']
   };
 

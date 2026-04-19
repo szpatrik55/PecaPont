@@ -1,7 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Firestore, doc, getDoc } from '@angular/fire/firestore';
+import { NewsService } from '../../services/news';
+import { Subscription, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-hir-reszletek',
@@ -10,30 +11,40 @@ import { Firestore, doc, getDoc } from '@angular/fire/firestore';
   templateUrl: './hir-reszletek.component.html',
   styleUrls: ['./hir-reszletek.component.scss']
 })
-export class HirReszletekComponent implements OnInit {
+export class HirReszletekComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
-  private firestore = inject(Firestore);
+  private newsService = inject(NewsService);
+  protected cdr = inject(ChangeDetectorRef);
   
   hir: any = null;
   loading = true;
+  private routeSub?: Subscription;
 
-  async ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-
-    if (id) {
-      try {
-        // Fontos: a doc() függvénynek átadjuk az injektált firestore-t
-        const docRef = doc(this.firestore, `news/${id}`);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          this.hir = { id: docSnap.id, ...docSnap.data() };
-        }
-      } catch (error) {
-        console.error("Hiba a hír betöltésekor:", error);
-      } finally {
+  ngOnInit() {
+    // A paramMap-re való feliratkozás biztosítja, hogy ID váltáskor újra lefusson a lekérés
+    this.routeSub = this.route.paramMap.pipe(
+      switchMap(params => {
+        this.loading = true;
+        this.cdr.markForCheck(); // Jelezzük a változást
+        const id = params.get('id');
+        return id ? this.newsService.getNewsById(id) : Promise.resolve(null);
+      })
+    ).subscribe({
+      next: (data) => {
+        this.hir = data;
         this.loading = false;
+        this.cdr.detectChanges(); // Azonnali UI frissítés az aszinkron hívás után
+      },
+      error: (err) => {
+        console.error("Hiba a hír betöltésekor:", err);
+        this.loading = false;
+        this.cdr.detectChanges();
       }
-    }
+    });
+  }
+
+  ngOnDestroy() {
+    // Memóriaszivárgás megelőzése
+    this.routeSub?.unsubscribe();
   }
 }

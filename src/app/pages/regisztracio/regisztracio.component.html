@@ -3,23 +3,62 @@
   <h2>Regisztráció</h2>
   <p class="subtitle">Hozd létre új fiókodat</p>
 
-  <form>
+  <form (ngSubmit)="register()" novalidate>
+    
+    <div class="error-container" [class.show]="errorMessage">
+      <div class="error-banner">
+        <span class="error-icon">⚠️</span>
+        <span class="error-text">{{ errorMessage }}</span>
+      </div>
+    </div>
+
+    <input
+      type="text"
+      placeholder="Teljes név"
+      [(ngModel)]="displayName"
+      name="displayName"
+      (ngModelChange)="onInputChange()"
+      [disabled]="isLoading"
+      [class.input-error]="errorMessage && !displayName"
+      required
+    />
+
+    <input
+      type="text"
+      placeholder="Felhasználónév"
+      [(ngModel)]="username"
+      name="username"
+      (ngModelChange)="onInputChange()"
+      [disabled]="isLoading"
+      [class.input-error]="errorMessage && !username"
+      required
+    />
+
     <input
       type="email"
       placeholder="Email cím"
       [(ngModel)]="email"
       name="email"
+      (ngModelChange)="onInputChange()"
+      [disabled]="isLoading"
+      [class.input-error]="errorMessage && (!email || errorMessage.includes('email'))"
+      required
     />
 
     <input
       type="password"
-      placeholder="Jelszó"
+      placeholder="Jelszó (min. 8 karakter, nagybetű, szám)"
       [(ngModel)]="password"
       name="password"
+      (ngModelChange)="onInputChange()"
+      [disabled]="isLoading"
+      [class.input-error]="errorMessage && (!password || errorMessage.includes('jelszó'))"
+      required
     />
 
-    <button type="button" (click)="register()">
-      Regisztráció
+    <button type="submit" [disabled]="isLoading">
+      <span *ngIf="!isLoading">Regisztráció</span>
+      <span *ngIf="isLoading">Fiók létrehozása...</span>
     </button>
   </form>
 
