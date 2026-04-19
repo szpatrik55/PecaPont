@@ -1,32 +1,32 @@
-<div class="admin-page">
-  <h1>Új hír írása</h1>
+<div class="admin-container">
+  <div class="editor-card">
+    <header class="editor-header">
+      <h1>Hír Létrehozása</h1>
+      <p>Töltsd fel a hírt és a kapcsolódó borítóképet a <strong>news</strong> mappába.</p>
+    </header>
 
-  <form (ngSubmit)="hirMentese()">
-    <input
-      type="text"
-      [(ngModel)]="article.cim"
-      name="cim"
-      placeholder="Cím"
-      required
-    />
+    <form (ngSubmit)="hirMentese()" #newsForm="ngForm">
+      <div class="form-group">
+        <label>Hír címe</label>
+        <input type="text" [(ngModel)]="article.cim" name="cim" placeholder="Add meg a címet" required />
+      </div>
 
-    <input
-      type="text"
-      [(ngModel)]="article.rovidLeiras"
-      name="rovidLeiras"
-      placeholder="Rövid leírás"
-    />
+      <div class="form-group">
+        <label>Kép feltöltése (Storage: news/)</label>
+        <div class="file-drop-zone">
+          <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+          <p class="file-name" *ngIf="selectedFile">Kiválasztott fájl: {{ selectedFile.name }}</p>
+        </div>
+      </div>
 
-    <textarea
-      [(ngModel)]="article.tartalom"
-      name="tartalom"
-      rows="10"
-      placeholder="Tartalom"
-      required
-    ></textarea>
+      <div class="form-group">
+        <label>Tartalom</label>
+        <textarea [(ngModel)]="article.tartalom" name="tartalom" rows="10" placeholder="Írd ide a hír szövegét..." required></textarea>
+      </div>
 
-    <button type="submit">
-      Hír mentése
-    </button>
-  </form>
+      <button type="submit" [disabled]="mentesFolyamatban() || !newsForm.valid" class="save-btn">
+        {{ mentesFolyamatban() ? 'Mentés folyamatban...' : 'Hír Publikálása' }}
+      </button>
+    </form>
+  </div>
 </div>

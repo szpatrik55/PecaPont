@@ -1,37 +1,35 @@
 <div class="news-page">
-  <h1>Hírek</h1>
+  <header class="page-header">
+    <h1>Hírek & Újdonságok</h1>
+    <p class="subtitle">Értesülj elsőként a legfrissebb vízparti eseményekről</p>
+  </header>
 
-  <div class="news-grid">
-    @for (news of (news$ | async); track news.id) {
-      <article class="news-card">
-
-        @if (news.kepUrl) {
-          <img
-            [src]="news.kepUrl"
-            [alt]="news.cim"
-            class="news-image"
-          />
-        }
-
-        <div class="news-content">
-          <h2>{{ news.cim }}</h2>
-
-          <p class="short-desc">
-            {{ news.rovidLeiras }}
-          </p>
-
-          <p class="news-text">
-            {{ news.tartalom }}
-          </p>
-
-          <small>
-            {{
-              news.letrehozva?.toDate?.()
-                | date:'yyyy.MM.dd HH:mm'
-            }}
-          </small>
+  <div class="news-grid" *ngIf="news$ | async as newsList; else loading">
+    <article class="news-card" *ngFor="let hir of newsList">
+      <div class="news-image-wrapper">
+        <img [src]="hir.kepUrl || 'assets/images/default-news.jpg'" [alt]="hir.cim" class="news-image">
+        <div class="date-badge">
+          <span class="day">{{ hir.letrehozva.toDate() | date:'dd' }}</span>
+          <span class="month">{{ hir.letrehozva.toDate() | date:'MMM' }}</span>
         </div>
-      </article>
-    }
+      </div>
+
+      <div class="news-content">
+        <h2 class="news-title">{{ hir.cim }}</h2>
+        <p class="short-desc">{{ hir.rovidLeiras }}</p>
+        <div class="divider"></div>
+        <p class="news-text">{{ hir.tartalom }}</p>
+        <div class="card-footer">
+          <a class="read-more">Részletek megtekintése</a>
+        </div>
+      </div>
+    </article>
   </div>
+
+  <ng-template #loading>
+    <div class="loader-container">
+      <div class="spinner"></div>
+      <p>Hírek frissítése...</p>
+    </div>
+  </ng-template>
 </div>
