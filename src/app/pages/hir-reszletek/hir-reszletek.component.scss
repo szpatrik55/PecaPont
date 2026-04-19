@@ -1,0 +1,99 @@
+$primary: #2b6cb0;
+$dark: #1a202c;
+$gray: #4a5568;
+
+.article-page {
+  background-color: #fff;
+  min-height: 100vh;
+  padding: 2rem 0;
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+}
+
+.back-nav {
+  margin-bottom: 3rem;
+  .back-link {
+    color: $gray;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+    &:hover { color: $primary; }
+    .arrow { margin-right: 5px; }
+  }
+}
+
+.article-header {
+  margin-bottom: 2.5rem;
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: $primary;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    .separator { color: #cbd5e0; }
+    .date { color: #a0aec0; font-weight: 400; }
+  }
+
+  h1 {
+    font-size: 3.5rem;
+    color: $dark;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -1px;
+  }
+
+  .lead {
+    font-size: 1.4rem;
+    color: $gray;
+    line-height: 1.6;
+    border-left: 4px solid $primary;
+    padding-left: 1.5rem;
+  }
+}
+
+.article-image {
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 3rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  img { width: 100%; height: auto; display: block; }
+}
+
+.article-body {
+  .content-text {
+    font-size: 1.2rem;
+    line-height: 2;
+    color: #2d3748;
+    white-space: pre-wrap; // Megtartja a bekezdéseket
+  }
+}
+
+.loader-container {
+  text-align: center;
+  padding: 5rem 0;
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid $primary;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+  }
+}
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+@media (max-width: 768px) {
+  .article-header h1 { font-size: 2.2rem; }
+  .article-header .lead { font-size: 1.1rem; }
+}

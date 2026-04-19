@@ -3,6 +3,7 @@ $primary-blue: #2b6cb0;
 $primary-hover: #2c5282;
 $text-dark: #1a202c;
 $text-medium: #4a5568;
+$text-light: #718096; // Ez hiányzott!
 $bg-light: #f7fafc;
 $border-color: #edf2f7;
 
@@ -20,7 +21,7 @@ $border-color: #edf2f7;
   max-width: 850px;
   background: white;
   padding: 3rem;
-  border-radius: 24px; // Főoldali kerekített sarkok
+  border-radius: 24px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
   border: 1px solid $border-color;
 
@@ -61,7 +62,7 @@ $border-color: #edf2f7;
     width: 100%;
     padding: 1.2rem;
     border: 2px solid $border-color;
-    border-radius: 16px; // Kerekített beviteli mezők
+    border-radius: 16px;
     font-size: 1rem;
     color: $text-dark;
     background-color: white;
@@ -82,6 +83,7 @@ $border-color: #edf2f7;
   textarea {
     line-height: 1.6;
     resize: vertical;
+    min-height: 150px;
   }
 }
 
@@ -108,6 +110,7 @@ $border-color: #edf2f7;
     left: 0;
     opacity: 0;
     cursor: pointer;
+    z-index: 2;
   }
 
   .file-name {
@@ -125,8 +128,7 @@ $border-color: #edf2f7;
     }
   }
   
-  &::after {
-    content: 'Kattints ide a kép tallózásához (vagy húzd ide)';
+  .drop-zone-text {
     display: block;
     color: $text-light;
     font-weight: 500;
@@ -153,29 +155,10 @@ $border-color: #edf2f7;
     box-shadow: 0 20px 25px -5px rgba(43, 108, 176, 0.4);
   }
 
-  &:active:not(:disabled) {
-    transform: translateY(0);
-  }
-
   &:disabled {
     background: #cbd5e0;
     cursor: not-allowed;
     box-shadow: none;
     transform: none;
-  }
-}
-
-// Mobilos optimalizálás
-@media (max-width: 640px) {
-  .admin-container {
-    padding: 2rem 1rem;
-  }
-  
-  .editor-card {
-    padding: 2rem 1.5rem;
-    
-    .editor-header h1 {
-      font-size: 1.8rem;
-    }
   }
 }

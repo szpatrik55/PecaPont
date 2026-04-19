@@ -1,11 +1,7 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-// Firebase SDK importok a típus-összeütközések elkerülése érdekében
-import { initializeApp, getApp, getApps } from 'firebase/app';
-import { getFirestore, collection, addDoc, Timestamp, Firestore } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL, FirebaseStorage } from 'firebase/storage';
+import { NewsService } from '../../services/news'; // Igazítsd az elérési utat
 
 @Component({
   selector: 'app-hirek-szerkeszto',
@@ -14,20 +10,8 @@ import { getStorage, ref, uploadBytes, getDownloadURL, FirebaseStorage } from 'f
   templateUrl: './hirek-szerkeszto.component.html',
   styleUrls: ['./hirek-szerkeszto.component.scss']
 })
-export class NewsEditorComponent implements OnInit {
-  private db!: Firestore;
-  private storage!: FirebaseStorage;
-
-  // Konfiguráció az újrapéldányosításhoz
-  private firebaseConfig = {
-    apiKey: "AIzaSyB7k-N4xhzNaPt2pZc48kd4aAeyoLWKs_o",
-    authDomain: "pecapont-50489.firebaseapp.com",
-    projectId: "pecapont-50489",
-    storageBucket: "pecapont-50489.firebasestorage.app",
-    messagingSenderId: "1029335197913",
-    appId: "1:1029335197913:web:f84de64072a44a2d0eb6c8",
-    measurementId: "G-KYYVJJTTSN"
-  };
+export class NewsEditorComponent {
+  private newsService = inject(NewsService);
 
   article = {
     cim: '',
@@ -37,19 +21,18 @@ export class NewsEditorComponent implements OnInit {
   };
 
   selectedFile: File | null = null;
+  previewUrl: string | null = null;
   mentesFolyamatban = signal(false);
 
-  ngOnInit() {
-    // Saját példányok létrehozása a kompatibilitásért
-    const app = !getApps().length ? initializeApp(this.firebaseConfig) : getApp();
-    this.db = getFirestore(app);
-    this.storage = getStorage(app);
-  }
-
   onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
+    const file = event.target.files[0] as File;
+    if (file && file.type.startsWith('image/')) {
       this.selectedFile = file;
+      
+      // Előnézet generálása
+      const reader = new FileReader();
+      reader.onload = () => this.previewUrl = reader.result as string;
+      reader.readAsDataURL(file);
     }
   }
 
@@ -59,36 +42,27 @@ export class NewsEditorComponent implements OnInit {
       return;
     }
 
-    this.mentesFolyamatban.set(true);
-
     try {
-      let uploadedImageUrl = this.article.kepUrl;
+      this.mentesFolyamatban.set(true);
+      let finalImageUrl = '';
 
-      // Kép feltöltése a Storage 'news' mappájába
+      // 1. Kép feltöltése, ha van kiválasztva
       if (this.selectedFile) {
-        const filePath = `news/${Date.now()}_${this.selectedFile.name}`;
-        const storageRef = ref(this.storage, filePath);
-        
-        // Feltöltési folyamat
-        await uploadBytes(storageRef, this.selectedFile);
-        
-        // Publikus URL lekérése a hírbe mentéshez
-        uploadedImageUrl = await getDownloadURL(storageRef);
+        finalImageUrl = await this.newsService.uploadNewsImage(this.selectedFile);
       }
 
-      // Hír mentése Firestore-ba
-      await addDoc(collection(this.db, 'news'), {
+      // 2. Adatok mentése Firestore-ba
+      await this.newsService.createNews({
         ...this.article,
-        kepUrl: uploadedImageUrl,
-        letrehozva: Timestamp.now()
+        kepUrl: finalImageUrl
       });
 
       alert('Hír sikeresen közzétéve!');
       this.resetForm();
 
     } catch (error) {
-      console.error('Hiba:', error);
-      alert('Hiba történt a mentés során!');
+      console.error('Hiba a mentés során:', error);
+      alert('Hiba történt a mentés során! Ellenőrizd a jogosultságokat.');
     } finally {
       this.mentesFolyamatban.set(false);
     }
@@ -97,6 +71,6 @@ export class NewsEditorComponent implements OnInit {
   resetForm() {
     this.article = { cim: '', rovidLeiras: '', tartalom: '', kepUrl: '' };
     this.selectedFile = null;
-    // Az input file mezőt a template-ben lévő (change) kezeli
+    this.previewUrl = null;
   }
 }

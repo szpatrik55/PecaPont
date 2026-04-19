@@ -34,7 +34,9 @@ $bg-light: #f7fafc;
 .news-grid {
   display: grid;
   gap: 2.5rem;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  // auto-fill helyett auto-fit, hogy jobban kitöltse a teret, ha kevés hír van
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  align-items: start; // Fontos, hogy ne nyúljanak meg a kártyák egymás mellett
 }
 
 .news-card {
@@ -44,12 +46,28 @@ $bg-light: #f7fafc;
   flex-direction: column;
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  height: 100%;
+  height: auto; // Dinamikus magasság
   border: 1px solid #edf2f7;
+  overflow: hidden;
 
   &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  // Amikor a hír ki van nyitva
+  &.expanded {
+    grid-column: 1 / -1; // Opcionális: kinyitáskor ugorjon ki teljes szélességre
+    transform: none;
+    
+    .news-image-wrapper {
+      height: 400px; // Nagyobb kép a teljes cikkhez
+    }
+
+    .news-text {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
   }
 }
 
@@ -57,7 +75,7 @@ $bg-light: #f7fafc;
   position: relative;
   height: 240px;
   overflow: hidden;
-  border-radius: 24px 24px 0 0;
+  transition: height 0.4s ease;
 
   .news-image {
     width: 100%;
@@ -77,6 +95,7 @@ $bg-light: #f7fafc;
     align-items: center;
     line-height: 1;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    z-index: 2;
 
     .day {
       font-size: 1.2rem;
@@ -98,48 +117,56 @@ $bg-light: #f7fafc;
   padding: 2.5rem;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
 
   .news-title {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     color: $text-dark;
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     line-height: 1.2;
   }
 
   .short-desc {
     color: $primary-blue;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     letter-spacing: 0.5px;
   }
 
   .divider {
-    width: 40px;
-    height: 3px;
-    background-color: #e2e8f0;
-    margin-bottom: 1.5rem;
+    width: 60px;
+    height: 4px;
+    background-color: $primary-blue;
+    opacity: 0.2;
+    margin-bottom: 2rem;
+    border-radius: 2px;
   }
 
   .news-text {
     color: $text-medium;
-    font-size: 1.05rem;
-    line-height: 1.8; // Megnövelt sormagasság az olvashatóságért
-    margin-bottom: 2rem;
-    flex-grow: 1;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    white-space: pre-wrap; // Megtartja a bekezdéseket!
   }
 
-  .read-more {
+  .card-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+  }
+
+  .read-more-btn {
+    background: transparent;
+    border: none;
+    padding: 0;
     font-weight: 700;
     color: $text-dark;
-    text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 1rem;
     display: inline-flex;
     align-items: center;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: all 0.2s;
 
     &::after {
       content: '→';
@@ -151,12 +178,26 @@ $bg-light: #f7fafc;
       color: $primary-blue;
       &::after { transform: translateX(5px); }
     }
+
+    // Ha be kell csukni, fordítsuk meg a nyilat vagy változtassuk meg a szöveget
+    &.active {
+       color: $primary-blue;
+       &::after { content: '←'; transform: translateX(-5px); }
+    }
   }
+}
+
+// Egyszerű megjelenési animáció
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 // Mobilos finomítások
 @media (max-width: 640px) {
-  .news-page { padding: 3rem 1.5rem; }
+  .news-page { padding: 3rem 1rem; }
   .news-grid { grid-template-columns: 1fr; }
   .news-page .page-header h1 { font-size: 2.2rem; }
+  .news-card.expanded .news-image-wrapper { height: 250px; }
+  .news-content { padding: 1.5rem; }
 }

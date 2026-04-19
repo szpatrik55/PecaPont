@@ -1,0 +1,44 @@
+<div class="article-page">
+  <div class="container" *ngIf="!loading; else loadingTpl">
+    
+    <nav class="back-nav">
+      <a routerLink="/hirek" class="back-link">
+        <span class="arrow">←</span> Vissza a hírekhez
+      </a>
+    </nav>
+
+    <article *ngIf="hir" class="full-article">
+      <header class="article-header">
+        <div class="meta">
+          <span class="category">Hírek</span>
+          <span class="separator">•</span>
+          <span class="date">{{ hir.letrehozva?.toDate() | date:'yyyy. MMMM dd.' }}</span>
+        </div>
+        <h1>{{ hir.cim }}</h1>
+        <p class="lead">{{ hir.rovidLeiras }}</p>
+      </header>
+
+      <div class="article-image">
+        <img [src]="hir.kepUrl || 'assets/images/default-news.jpg'" [alt]="hir.cim">
+      </div>
+
+      <div class="article-body">
+        <p class="content-text">{{ hir.tartalom }}</p>
+      </div>
+    </article>
+
+    <div *ngIf="!hir" class="not-found">
+      <h2>A hír nem található</h2>
+      <p>Sajnos a keresett tartalom már nem érhető el.</p>
+      <button routerLink="/hirek" class="btn-primary">Vissza a főoldalra</button>
+    </div>
+
+  </div>
+
+  <ng-template #loadingTpl>
+    <div class="loader-container">
+      <div class="spinner"></div>
+      <p>Cikk betöltése...</p>
+    </div>
+  </ng-template>
+</div>

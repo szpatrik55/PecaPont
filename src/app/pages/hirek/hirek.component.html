@@ -1,14 +1,14 @@
 <div class="news-page">
   <header class="page-header">
     <h1>Hírek & Újdonságok</h1>
-    <p class="subtitle">Értesülj elsőként a legfrissebb vízparti eseményekről</p>
   </header>
 
   <div class="news-grid" *ngIf="news$ | async as newsList; else loading">
     <article class="news-card" *ngFor="let hir of newsList">
       <div class="news-image-wrapper">
         <img [src]="hir.kepUrl || 'assets/images/default-news.jpg'" [alt]="hir.cim" class="news-image">
-        <div class="date-badge">
+        
+        <div class="date-badge" *ngIf="hir.letrehozva">
           <span class="day">{{ hir.letrehozva.toDate() | date:'dd' }}</span>
           <span class="month">{{ hir.letrehozva.toDate() | date:'MMM' }}</span>
         </div>
@@ -18,9 +18,11 @@
         <h2 class="news-title">{{ hir.cim }}</h2>
         <p class="short-desc">{{ hir.rovidLeiras }}</p>
         <div class="divider"></div>
-        <p class="news-text">{{ hir.tartalom }}</p>
+        
         <div class="card-footer">
-          <a class="read-more">Részletek megtekintése</a>
+          <a [routerLink]="['/hirek', hir.id]" class="read-more">
+            Részletek megtekintése
+          </a>
         </div>
       </div>
     </article>
@@ -32,4 +34,4 @@
       <p>Hírek frissítése...</p>
     </div>
   </ng-template>
-</div>
+</div>  
