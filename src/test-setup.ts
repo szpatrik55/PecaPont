@@ -2,29 +2,29 @@ import { vi } from 'vitest';
 import { of } from 'rxjs';
 
 /**
- * 🔥 FIRESTORE MOCK – TELJES
+ * 🔥 FIRESTORE MOCK – FIXED
  */
 vi.mock('@angular/fire/firestore', async (importOriginal) => {
   const actual = (await importOriginal()) as any;
 
-  // 👇 fake class-ek
-  class FakeQuery {}
-  class FakeDocRef {}
-
   return {
     ...actual,
 
-    collection: vi.fn(() => new FakeQuery()),
-    doc: vi.fn(() => new FakeDocRef()),
+    // ❗ NINCS FakeQuery / FakeDocRef
+    collection: vi.fn(() => ({})),
+    doc: vi.fn(() => ({})),
 
+    // ✅ EZ A LÉNYEG
     collectionData: vi.fn(() => of([])),
     docData: vi.fn(() => of({})),
 
-    addDoc: vi.fn(() => Promise.resolve({})),
+    // async műveletek
+    addDoc: vi.fn(() => Promise.resolve({ id: '123' })),
     updateDoc: vi.fn(() => Promise.resolve()),
     deleteDoc: vi.fn(() => Promise.resolve()),
 
-    query: vi.fn(() => new FakeQuery()),
+    // query builder-ek (nem kell típus!)
+    query: vi.fn(() => ({})),
     where: vi.fn(() => ({})),
     orderBy: vi.fn(() => ({})),
     limit: vi.fn(() => ({})),
@@ -34,7 +34,7 @@ vi.mock('@angular/fire/firestore', async (importOriginal) => {
 });
 
 /**
- * 🔥 AUTH MOCK
+ * 🔥 AUTH MOCK (ez oké volt)
  */
 vi.mock('@angular/fire/auth', async (importOriginal) => {
   const actual = (await importOriginal()) as any;
@@ -48,6 +48,12 @@ vi.mock('@angular/fire/auth', async (importOriginal) => {
     signOut: vi.fn(),
   };
 });
+
+vi.mock('firebase/firestore', () => ({
+  collection: vi.fn(() => ({})),
+  doc: vi.fn(() => ({})),
+  getDoc: vi.fn(() => Promise.resolve({ data: () => ({}) })),
+}));
 
 /**
  * 🔥 ALERT MOCK

@@ -1,15 +1,20 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import {
-  Firestore,
-  collection,
-  query,
-  orderBy,
-  limit,
-  collectionData
-} from '@angular/fire/firestore';
-import { Observable, shareReplay, catchError, of, map } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
+
+// KIZÁRÓLAG a sima firebase csomagból importálunk!
+import { initializeApp, getApp, getApps } from 'firebase/app';
+import { 
+  getFirestore, 
+  collection, 
+  query, 
+  orderBy, 
+  limit, 
+  onSnapshot,
+  Firestore 
+} from 'firebase/firestore';
+
 import { GalleryPost } from '../../models/gallery-post';
 
 interface To {
@@ -17,6 +22,7 @@ interface To {
   nev: string;
   telepules: string;
   kepUrl?: string;
+  megtekintesek?: number;
 }
 
 @Component({
@@ -26,36 +32,60 @@ interface To {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
-  private firestore = inject(Firestore);
+export class HomeComponent implements OnInit {
+  private db!: Firestore;
+  
+  latestPosts$: Observable<GalleryPost[]> | undefined;
+  popularLakes$: Observable<To[]> | undefined;
 
-  latestPosts$: Observable<GalleryPost[]> = collectionData(
-    query(
-      collection(this.firestore, 'gallery'),
-      orderBy('createdAt', 'desc'),
-      limit(4)
-    ),
-    { idField: 'id' }
-  ).pipe(
-    map(data => data as GalleryPost[]),
-    catchError(err => {
-      console.error('Firestore hiba:', err);
-      console.log('Firestore instance:', this.firestore);
-      return of([]);
-    }),
-    shareReplay(1)
-  );
+  // A config-ot itt is használjuk, hogy biztosak legyünk a példányban
+  private firebaseConfig = {
+    apiKey: "AIzaSyB7k-N4xhzNaPt2pZc48kd4aAeyoLWKs_o",
+    authDomain: "pecapont-50489.firebaseapp.com",
+    projectId: "pecapont-50489",
+    storageBucket: "pecapont-50489.firebasestorage.app",
+    messagingSenderId: "1029335197913",
+    appId: "1:1029335197913:web:f84de64072a44a2d0eb6c8",
+    measurementId: "G-KYYVJJTTSN"
+  };
 
-  popularLakes$: Observable<To[]> = collectionData(
-    query(
-      collection(this.firestore, 'lakes'),
-      orderBy('megtekintesek', 'desc'),
-      limit(3)
-    ),
-    { idField: 'id' }
-  ).pipe(
-    map(data => data as To[]),
-    catchError(() => of([])),
-    shareReplay(1)
-  );
+  ngOnInit() {
+    // Inicializáljuk vagy lekérjük a létező Firebase appot
+    const app = !getApps().length ? initializeApp(this.firebaseConfig) : getApp();
+    this.db = getFirestore(app);
+
+    // 1. Galéria lekérése
+    this.latestPosts$ = new Observable<GalleryPost[]>(subscriber => {
+      const q = query(
+        collection(this.db, 'gallery'),
+        orderBy('createdAt', 'desc'),
+        limit(4)
+      );
+      
+      return onSnapshot(q, (snapshot) => {
+        const posts = snapshot.docs.map(doc => ({ 
+          id: doc.id, 
+          ...doc.data() 
+        } as GalleryPost));
+        subscriber.next(posts);
+      }, (err) => subscriber.error(err));
+    }).pipe(shareReplay(1));
+
+    // 2. Tavak lekérése
+    this.popularLakes$ = new Observable<To[]>(subscriber => {
+      const q = query(
+        collection(this.db, 'lakes'),
+        orderBy('megtekintesek', 'desc'),
+        limit(3)
+      );
+
+      return onSnapshot(q, (snapshot) => {
+        const lakes = snapshot.docs.map(doc => ({ 
+          id: doc.id, 
+          ...doc.data() 
+        } as To));
+        subscriber.next(lakes);
+      }, (err) => subscriber.error(err));
+    }).pipe(shareReplay(1));
+  }
 }
