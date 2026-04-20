@@ -13,6 +13,7 @@ import { GalleryService } from '../../services/gallery';
   styleUrl: './gallery-upload.component.scss'
 })
 export class GalleryUploadComponent implements OnInit {
+
   private fb = inject(FormBuilder);
   private auth = inject(Auth);
   private galleryService = inject(GalleryService);
@@ -29,12 +30,11 @@ export class GalleryUploadComponent implements OnInit {
     'Egyéb': ['Törpeharcsa', 'Angolna', 'Tokhal']
   };
 
-  methodOptions = ['Feeder', 'Spicc', 'Pergetés', 'Fenék', 'Úszós'];
+  methodOptions = ['Feeder', 'Method', 'Spicc', 'Pergetés', 'Fenék', 'Úszós'];
   baitOptions = ['Kukorica', 'Bojli', 'Giliszta', 'Műcsali', 'Wobbler', 'Pellet'];
   timeOptions = ['Reggel', 'Délután', 'Este', 'Éjszaka'];
-  
+
   selectedFishList: string[] = [];
-  // Ezt a nevet használjuk a HTML-ben a kategóriák ciklusához
   fishCategoryKeys = Object.keys(this.fishCategories);
 
   ngOnInit() {
@@ -49,8 +49,11 @@ export class GalleryUploadComponent implements OnInit {
       spot: [''],
       fishGroup: ['', Validators.required],
       species: ['', Validators.required],
-      weight: [null, [Validators.required, Validators.min(0.1)]],
-      length: [null, [Validators.required, Validators.min(1)]],
+
+      // ❗ már NEM kötelező alapból
+      weight: [null],
+      length: [null],
+
       bait: [''],
       method: [''],
       catchDate: [new Date().toISOString().substring(0, 10), Validators.required],
@@ -61,6 +64,27 @@ export class GalleryUploadComponent implements OnInit {
     this.form.get('fishGroup')?.valueChanges.subscribe(group => {
       this.selectedFishList = this.fishCategories[group] || [];
       this.form.get('species')?.setValue('');
+
+      const weightCtrl = this.form.get('weight');
+      const lengthCtrl = this.form.get('length');
+
+      if (group === 'Békés halak') {
+        weightCtrl?.setValidators([Validators.required, Validators.min(0.1)]);
+        lengthCtrl?.clearValidators();
+        lengthCtrl?.setValue(null);
+      } 
+      else if (group === 'Ragadozó halak') {
+        lengthCtrl?.setValidators([Validators.required, Validators.min(1)]);
+        weightCtrl?.clearValidators();
+        weightCtrl?.setValue(null);
+      } 
+      else {
+        weightCtrl?.clearValidators();
+        lengthCtrl?.clearValidators();
+      }
+
+      weightCtrl?.updateValueAndValidity();
+      lengthCtrl?.updateValueAndValidity();
     });
   }
 
@@ -74,6 +98,7 @@ export class GalleryUploadComponent implements OnInit {
     }
 
     this.selectedFile = file;
+
     const reader = new FileReader();
     reader.onload = () => {
       this.previewUrl = reader.result as string;
@@ -89,44 +114,50 @@ export class GalleryUploadComponent implements OnInit {
     }
 
     if (!this.selectedFile) {
-      alert('Válassz ki egy képet a fogásról!');
+      alert('Válassz ki egy képet!');
       return;
     }
 
     const user = this.auth.currentUser;
     if (!user) {
-      alert('A feltöltéshez be kell jelentkezned!');
+      alert('Be kell jelentkezned!');
       return;
     }
 
     try {
       this.uploading = true;
+
       const imageUrl = await this.galleryService.uploadImage(this.selectedFile, user.uid);
 
       const postData = {
         ...this.form.value,
-        weight: Number(this.form.value.weight),
-        length: Number(this.form.value.length),
-        imageUrl: imageUrl,
+
+        // 🔥 csak akkor mentjük, ha van
+        weight: this.form.value.weight ? Number(this.form.value.weight) : null,
+        length: this.form.value.length ? Number(this.form.value.length) : null,
+
+        imageUrl,
         uid: user.uid,
         userName: user.displayName || 'Névtelen horgász',
         createdAt: Timestamp.now()
       };
 
       await this.galleryService.createPost(postData);
-      alert('Gratulálunk a fogáshoz! Sikeres feltöltés.');
+
+      alert('Sikeres feltöltés!');
 
       this.form.reset({
         catchDate: new Date().toISOString().substring(0, 10),
         released: false
       });
+
       this.selectedFile = null;
       this.previewUrl = null;
       this.selectedFishList = [];
 
     } catch (error) {
-      console.error('Feltöltési hiba:', error);
-      alert('Hiba történt a mentés során.');
+      console.error(error);
+      alert('Hiba történt.');
     } finally {
       this.uploading = false;
     }

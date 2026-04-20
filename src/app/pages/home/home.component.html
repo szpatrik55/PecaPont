@@ -27,6 +27,12 @@
           <div class="overlay">
             <h3>{{ post.title }}</h3>
             <p>{{ post.water }}</p>
+            <p class="stat" *ngIf="post.fishGroup === 'Békés halak' || post.fishGroup === 'Teríték fotó' && post.weight">
+              ⚖️ {{ post.weight }} kg
+            </p>
+            <p class="stat" *ngIf="post.fishGroup === 'Ragadozó halak' && post.length">
+              📏 {{ post.length }} cm
+            </p>
           </div>
         </div>
       }

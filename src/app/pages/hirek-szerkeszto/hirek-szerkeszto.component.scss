@@ -1,164 +1,165 @@
-// Színkonstansok a főoldali harmóniához
-$primary-blue: #2b6cb0;
-$primary-hover: #2c5282;
-$text-dark: #1a202c;
-$text-medium: #4a5568;
-$text-light: #718096; // Ez hiányzott!
-$bg-light: #f7fafc;
-$border-color: #edf2f7;
+// SZÍNEK (egységes a galériával)
+$bg-gradient: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+
+$card-bg: #ffffff;
+$text-dark: #0f172a;
+$text-medium: #475569;
+$text-light: #94a3b8;
+
+$primary-blue: #3b82f6;
+$primary-hover: #2563eb;
+
+$border-color: #e2e8f0;
+
+// CONTAINER
 
 .admin-container {
   min-height: 100vh;
-  padding: 5rem 1.5rem;
-  background-color: $bg-light;
+  padding: 60px 20px;
+  background: $bg-gradient;
   display: flex;
   justify-content: center;
   align-items: flex-start;
 }
 
+// CARD
+
 .editor-card {
   width: 100%;
   max-width: 850px;
-  background: white;
-  padding: 3rem;
-  border-radius: 24px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-  border: 1px solid $border-color;
+  background: $card-bg;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
 
   .editor-header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
 
     h1 {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       color: $text-dark;
       font-weight: 800;
-      margin-bottom: 1rem;
-      letter-spacing: -1px;
+      margin-bottom: 0.6rem;
     }
 
     p {
       color: $text-medium;
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
   }
 }
 
+// FORM
+
 .form-group {
-  margin-bottom: 2rem;
+  margin-bottom: 1.8rem;
 
   label {
     display: block;
-    font-weight: 700;
-    margin-bottom: 0.75rem;
-    color: $text-dark;
-    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: $text-medium;
+    font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
   }
 
-  input[type="text"], 
-  textarea {
+  input[type="text"],
+  textarea,
+  select,
+  input[type="date"],
+  input[type="number"] {
     width: 100%;
-    padding: 1.2rem;
-    border: 2px solid $border-color;
-    border-radius: 16px;
-    font-size: 1rem;
+    padding: 0.9rem 1rem;
+    border: 1.5px solid $border-color;
+    border-radius: 12px;
+    font-size: 0.95rem;
     color: $text-dark;
-    background-color: white;
-    transition: all 0.3s ease;
+    background: #f8fafc;
+    transition: all 0.25s ease;
 
     &::placeholder {
-      color: #a0aec0;
+      color: $text-light;
     }
 
     &:focus {
       outline: none;
       border-color: $primary-blue;
-      box-shadow: 0 0 0 4px rgba(43, 108, 176, 0.08);
-      background-color: #fff;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
     }
   }
 
   textarea {
-    line-height: 1.6;
+    min-height: 120px;
     resize: vertical;
-    min-height: 150px;
   }
 }
 
+// FILE UPLOAD
+
 .file-drop-zone {
   position: relative;
-  border: 2px dashed #cbd5e0;
-  padding: 3rem 2rem;
-  border-radius: 20px;
+  border: 2px dashed #cbd5e1;
+  padding: 2.5rem 1.5rem;
+  border-radius: 16px;
   text-align: center;
-  background: #f8fafc;
-  transition: all 0.3s ease;
+  background: #f1f5f9;
+  transition: all 0.25s ease;
   cursor: pointer;
 
   &:hover {
     border-color: $primary-blue;
-    background: #ebf8ff;
+    background: #e0f2fe;
   }
 
   input[type="file"] {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
+    inset: 0;
     opacity: 0;
     cursor: pointer;
-    z-index: 2;
   }
 
   .file-name {
-    margin-top: 1rem;
+    margin-top: 10px;
     color: $primary-blue;
-    font-weight: 700;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    &::before {
-      content: '📎';
-      margin-right: 8px;
-    }
+    font-weight: 600;
+    font-size: 0.9rem;
   }
-  
+
   .drop-zone-text {
-    display: block;
     color: $text-light;
-    font-weight: 500;
+    font-size: 0.9rem;
   }
 }
 
+// BUTTON
+
 .save-btn {
   width: 100%;
-  padding: 1.5rem;
-  background: $primary-blue;
+  padding: 1.2rem;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
   color: white;
   border: none;
-  border-radius: 18px;
-  font-weight: 800;
-  font-size: 1.2rem;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 1.05rem;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  margin-top: 2rem;
-  box-shadow: 0 10px 15px -3px rgba(43, 108, 176, 0.3);
+  transition: all 0.25s ease;
+  margin-top: 1.5rem;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
 
   &:hover:not(:disabled) {
-    background: $primary-hover;
     transform: translateY(-2px);
-    box-shadow: 0 20px 25px -5px rgba(43, 108, 176, 0.4);
+    box-shadow: 0 15px 35px rgba(37, 99, 235, 0.45);
   }
 
   &:disabled {
-    background: #cbd5e0;
+    background: #94a3b8;
     cursor: not-allowed;
     box-shadow: none;
-    transform: none;
   }
 }

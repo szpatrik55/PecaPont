@@ -45,7 +45,10 @@
         </option>
       </select>
 
+      <!-- 🔥 DINAMIKUS -->
+
       <input
+        *ngIf="form.get('fishGroup')?.value === 'Békés halak'"
         type="number"
         placeholder="Súly (kg)"
         formControlName="weight"
@@ -53,6 +56,7 @@
       >
 
       <input
+        *ngIf="form.get('fishGroup')?.value === 'Ragadozó halak'"
         type="number"
         placeholder="Hossz (cm)"
         formControlName="length"

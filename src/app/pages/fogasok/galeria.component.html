@@ -2,7 +2,7 @@
 
 <div class="gallery" *ngIf="posts$ | async as posts">
 
-  <div class="card" *ngFor="let post of posts">
+  <div class="card" *ngFor="let post of posts" (click)="openPost(post)">
 
     <img
       [src]="post.imageUrl || 'assets/no-image.jpg'"
@@ -14,9 +14,47 @@
     <div class="info">
       <h3>{{ post.title }}</h3>
 
-      <p>{{ post.description }}</p>
+      <div class="meta">
+        <p class="water">🌊 {{ post.water }}</p>
 
-      <p>🌊 {{ post.water }}</p>
+        <p class="stat" *ngIf="post.fishGroup === 'Békés halak' || post.fishGroup === 'Teríték fotó' && post.weight">
+          ⚖️ {{ post.weight }} kg
+        </p>
+
+        <p class="stat" *ngIf="post.fishGroup === 'Ragadozó halak' && post.length">
+          📏 {{ post.length }} cm
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="lightbox" *ngIf="selectedPost" (click)="closePost()">
+
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <img [src]="selectedPost.imageUrl">
+
+    <div class="details">
+      <h2>{{ selectedPost.title }}</h2>
+
+      <p>{{ selectedPost.description }}</p>
+
+      <p>🌊 {{ selectedPost.water }}</p>
+      <p *ngIf="selectedPost.species">🐟 {{ selectedPost.species }}</p>
+
+      <p *ngIf="selectedPost.weight">⚖️ {{ selectedPost.weight }} kg</p>
+      <p *ngIf="selectedPost.length">📏 {{ selectedPost.length }} cm</p>
+
+      <p *ngIf="selectedPost.bait">🪱 {{ selectedPost.bait }}</p>
+      <p *ngIf="selectedPost.method">🎣 {{ selectedPost.method }}</p>
+      <p *ngIf="selectedPost.timeOfDay">🕒 {{ selectedPost.timeOfDay }}</p>
+
+      <p *ngIf="selectedPost.released" class="released">
+        ♻️ Visszaengedve
+      </p>
     </div>
 
   </div>
