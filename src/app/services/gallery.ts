@@ -1,13 +1,16 @@
 // gallery.service.ts
 import { Injectable, inject, NgZone } from '@angular/core';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, query, where, collectionData } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
+import { Auth, authState } from '@angular/fire/auth';
+import { switchMap, of, Observable  } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class GalleryService {
   private firestore = inject(Firestore);
   private storage = inject(Storage);
   private zone = inject(NgZone);
+  private auth = inject(Auth);
 
   async uploadImage(file: File, userId: string): Promise<string> {
     const filePath = `gallery/${userId}/${Date.now()}_${file.name}`;

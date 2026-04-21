@@ -20,35 +20,55 @@ export class ProfilComponent {
     private router: Router,
   ) {}
 
+  loading = false;
+
   async updateName(name: string) {
-
-  const user = this.firebaseAuth.currentUser;
-  if (!user) return;
-
-  await updateProfile(user, {
-    displayName: name
-  });
-
-  await updateDoc(doc(this.firestore, "users", user.uid), {
-    name: name
-  });
-
-  alert("Név frissítve!");
-  name = '';
-}
-
-  async changePassword(password: string) {
+    if (!name || name.length < 3) {
+      alert("A név legalább 3 karakter legyen!");
+      return;
+    }
 
     const user = this.firebaseAuth.currentUser;
     if (!user) return;
-    await updatePassword(user, password);
-    alert("Jelszó sikeresen módosítva!");
 
+    this.loading = true;
+
+    try {
+      await updateProfile(user, { displayName: name });
+
+      await updateDoc(doc(this.firestore, "users", user.uid), {
+        name: name
+      });
+
+      alert("Név frissítve!");
+    } catch (err) {
+      console.error(err);
+      alert("Hiba történt!");
+    }
+
+    this.loading = false;
+  }
+
+  async changePassword(password: string) {
+    if (!password || password.length < 6) {
+      alert("Minimum 6 karakter!");
+      return;
+    }
+
+    const user = this.firebaseAuth.currentUser;
+    if (!user) return;
+
+    try {
+      await updatePassword(user, password);
+      alert("Jelszó módosítva!");
+    } catch (err) {
+      console.error(err);
+      alert("Hiba történt!");
+    }
   }
 
   async logout() {
     await this.auth.logout();
     this.router.navigate(['/']);
   }
-
 }

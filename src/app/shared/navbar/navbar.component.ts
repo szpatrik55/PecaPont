@@ -68,6 +68,10 @@ export class NavbarComponent {
       );
     })
   );
+  
+  closeMenu() {
+  this.menuOpen = false;
+}
 
   async logout() {
     await this.auth.signOut();

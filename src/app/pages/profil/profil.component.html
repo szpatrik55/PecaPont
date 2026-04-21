@@ -1,41 +1,54 @@
-<div class="profile-container" *ngIf="auth.user$ | async as user">
+<div class="profile-page" *ngIf="auth.user$ | async as user">
 
-<h1>Profil</h1>
+  <div class="profile-wrapper">
 
-<div class="profile-card">
+    <!-- HEADER CARD -->
+    <div class="profile-header-card">
+      <div class="avatar">
+        {{ (user.displayName || user.email)?.charAt(0) }}
+      </div>
 
-<h2>{{ user.displayName || 'Felhasználó' }}</h2>
+      <div class="user-info">
+        <h1>{{ user.displayName || 'Felhasználó' }}</h1>
+        <p>{{ user.email }}</p>
+      </div>
+    </div>
 
-<p class="email">{{ user.email }}</p>
+    <!-- GRID -->
+    <div class="profile-grid">
 
-<hr>
+      <!-- PROFIL -->
+      <div class="profile-card">
+        <h2>Profil adatok</h2>
 
-<h3>Név módosítása</h3>
+        <label>Megjelenített név</label>
+        <input #nameInput [value]="user.displayName" placeholder="Új név">
 
-<input #nameInput placeholder="Új név">
+        <button class="primary" (click)="updateName(nameInput.value)">
+          Név frissítése
+        </button>
 
-<button (click)="updateName(nameInput.value)">
-Név frissítése
-</button>
+        <p class="hint">Ez a név jelenik meg a fogásoknál.</p>
+      </div>
 
-<hr>
+      <!-- BIZTONSÁG -->
+      <div class="profile-card">
+        <h2>Biztonság</h2>
 
-<h3>Jelszó módosítása</h3>
+        <label>Új jelszó</label>
+        <input #passwordInput type="password" placeholder="••••••••">
 
-<input
-  #passwordInput
-  type="password"
-  placeholder="Új jelszó"
-/>
+        <button class="primary" (click)="changePassword(passwordInput.value)">
+          Jelszó módosítása
+        </button>
 
-<button (click)="changePassword(passwordInput.value)">
-Jelszó módosítása
-</button>
+        <button class="danger" (click)="logout()">
+          Kijelentkezés
+        </button>
+      </div>
 
-<button (click)="logout()">
-Kijelentkezés
-</button>
+    </div>
 
-</div>
+  </div>
 
 </div>
