@@ -12,10 +12,23 @@
 
 }
 
+html,
 body {
-    background-color: var(--bg-main);
-    color: white;
-    text-align: center;
-    font-size: 19px;
-    border-spacing: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+
+  background-color: var(--bg-main);
+  color: white;
+  text-align: center;
+  font-size: 19px;
 }

@@ -1,15 +1,28 @@
-// Színkonstansok a "Tavak" stílusához igazítva
+// ================= GLOBAL FIXEK =================
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+// ================= SZÍNEK =================
 $primary-gradient: linear-gradient(135deg, #0ea5e9, #2563eb);
 $dark-bg: rgba(15, 23, 42, 0.92);
 $card-text: #f8fafc;
 $card-subtext: #cbd5e1;
 $input-bg: rgba(45, 45, 45, 0.96);
 
+// ================= PAGE =================
 .news-page {
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
   padding: 32px 20px 60px;
+  box-sizing: border-box;
 
   .page-header {
     margin-bottom: 32px;
@@ -20,7 +33,7 @@ $input-bg: rgba(45, 45, 45, 0.96);
       font-weight: 800;
       line-height: 1.1;
       margin-bottom: 12px;
-      color: var(--text-color, #1a202c); // Alkalmazkodik a globális témához
+      color: var(--text-color, #1a202c);
     }
 
     .subtitle {
@@ -30,14 +43,15 @@ $input-bg: rgba(45, 45, 45, 0.96);
   }
 }
 
-// Kereső sáv a toolbar mintájára
+// ================= SEARCH =================
 .search-container {
   display: flex;
   gap: 16px;
-  margin-bottom: 28px;
+  width: 100%;
   max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto 28px;
+  padding: 0 16px;
+  box-sizing: border-box;
 
   .search-input {
     flex: 1;
@@ -49,6 +63,7 @@ $input-bg: rgba(45, 45, 45, 0.96);
     font-size: 0.95rem;
     outline: none;
     transition: all 0.25s ease;
+    width: 100%;
 
     &::placeholder {
       color: #94a3b8;
@@ -61,13 +76,15 @@ $input-bg: rgba(45, 45, 45, 0.96);
   }
 }
 
+// ================= GRID =================
 .news-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); // FIX
   gap: 24px;
   align-items: stretch;
 }
 
+// ================= CARD =================
 .news-card {
   min-height: 380px;
   border-radius: 24px;
@@ -85,13 +102,16 @@ $input-bg: rgba(45, 45, 45, 0.96);
     .news-image {
       transform: scale(1.05);
     }
-    
+
     &::before {
-      background: linear-gradient(to top, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.05));
+      background: linear-gradient(
+        to top,
+        rgba(15, 23, 42, 0.96),
+        rgba(15, 23, 42, 0.05)
+      );
     }
   }
 
-  // Overlay réteg a szöveg olvashatóságáért (mint a tavaknál)
   &::before {
     content: "";
     position: absolute;
@@ -102,6 +122,7 @@ $input-bg: rgba(45, 45, 45, 0.96);
   }
 }
 
+// ================= IMAGE =================
 .news-image-wrapper {
   position: absolute;
   inset: 0;
@@ -146,6 +167,7 @@ $input-bg: rgba(45, 45, 45, 0.96);
   }
 }
 
+// ================= CONTENT =================
 .news-content {
   position: absolute;
   inset: 0;
@@ -154,7 +176,7 @@ $input-bg: rgba(45, 45, 45, 0.96);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  pointer-events: none; // Engedi az átkattintást a kártyára
+  pointer-events: none;
 
   .news-title {
     font-size: clamp(1.4rem, 2vw, 1.8rem);
@@ -162,6 +184,7 @@ $input-bg: rgba(45, 45, 45, 0.96);
     font-weight: 700;
     margin-bottom: 8px;
     line-height: 1.2;
+    word-break: break-word; // FIX
   }
 
   .short-desc {
@@ -176,11 +199,11 @@ $input-bg: rgba(45, 45, 45, 0.96);
   }
 
   .divider {
-    display: none; // A tavak dizájnban nem használunk elválasztót
+    display: none;
   }
 
   .card-footer {
-    pointer-events: auto; // A gomb újra kattintható
+    pointer-events: auto;
   }
 
   .read-more {
@@ -201,7 +224,13 @@ $input-bg: rgba(45, 45, 45, 0.96);
   }
 }
 
-// Mobilos finomítások
+// ================= MEDIA =================
+img,
+video {
+  max-width: 100%;
+}
+
+// ================= MOBILE =================
 @media (max-width: 768px) {
   .news-page {
     padding: 20px 16px 40px;
@@ -214,8 +243,10 @@ $input-bg: rgba(45, 45, 45, 0.96);
   .news-card {
     min-height: 300px;
   }
+}
 
-  .search-container {
-    padding: 0 16px;
+@media (max-width: 480px) {
+  .news-grid {
+    grid-template-columns: 1fr; // FULL FIX
   }
 }

@@ -5,17 +5,28 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
 /* NAVBAR */
 .top-nav {
   position: sticky;
   top: 0;
+  left: 0;
+  right: 0;
+
+  width: 100%;
+  max-width: 100%;
+
   z-index: 1000;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  width: 100%;
   padding: 14px 20px;
 
   backdrop-filter: blur(14px);
@@ -41,7 +52,7 @@
   flex: 1;
   justify-content: flex-end;
 
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* LINKS */
