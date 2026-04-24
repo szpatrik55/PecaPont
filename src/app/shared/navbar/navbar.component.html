@@ -9,6 +9,8 @@
 
   <!-- NAV LINKS -->
   <div class="nav-links" [class.open]="menuOpen">
+
+    <!-- PUBLIC -->
     <a routerLink="/" (click)="closeMenu()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Főoldal</a>
     <a routerLink="/tavak" (click)="closeMenu()" routerLinkActive="active">Tavak</a>
     <a routerLink="/hirek" (click)="closeMenu()" routerLinkActive="active">Hírek</a>
@@ -17,23 +19,36 @@
     <a routerLink="/rolunk" (click)="closeMenu()" routerLinkActive="active">Rólunk</a>
 
     @if (user$ | async) {
+
+      <!-- USER -->
       <a routerLink="/profil" (click)="closeMenu()" routerLinkActive="active">Profil</a>
       <a routerLink="/kepfeltoltes" (click)="closeMenu()" routerLinkActive="active">Kép feltöltése</a>
 
-      @if (isEditor$ | async) {
-        <a routerLink="/hirek-szerkeszto" (click)="closeMenu()" routerLinkActive="active">Hír írás</a>
+      <!-- EDITOR / ADMIN -->
+      @if ((isEditor$ | async) || (isAdmin$ | async)) {
+        <a routerLink="/hirek-szerkeszto"
+           (click)="closeMenu()"
+           routerLinkActive="active">
+          Hír írás
+        </a>
       }
 
+      <!-- ADMIN -->
       @if (isAdmin$ | async) {
-        <a routerLink="/hirek-szerkeszto" (click)="closeMenu()" routerLinkActive="active">Hír írás</a>
-        <a routerLink="/admin" (click)="closeMenu()" routerLinkActive="active">Admin</a>
+        <a routerLink="/admin">Admin</a>
       }
 
       <button class="logout-btn" (click)="logout()">
         Kijelentkezés
       </button>
+
     } @else {
-      <a routerLink="/bejelentkezes" (click)="closeMenu()" routerLinkActive="active">Bejelentkezés</a>
+      <a routerLink="/bejelentkezes"
+         (click)="closeMenu()"
+         routerLinkActive="active">
+        Bejelentkezés
+      </a>
     }
+
   </div>
 </nav>

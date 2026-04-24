@@ -10,36 +10,64 @@ import { GalleryUploadComponent } from './pages/fogasok/gallery-upload.component
 import { RolunkComponent } from './pages/rolunk/rolunk.component';
 import { RegisztracioComponent } from './pages/regisztracio/regisztracio.component';
 import { BejelentkezesComponent } from './pages/bejelentkezes/bejelentkezes.component';
-import { AdminComponent } from './pages/admin/admin.component';
 import { ProfilComponent } from './pages/profil/profil.component';
 import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
 import { NewsEditorComponent } from './pages/hirek-szerkeszto/hirek-szerkeszto.component';
 import { HirReszletekComponent } from './pages/hir-reszletek/hir-reszletek.component';
+import { ToHozzaadComponent } from './pages/to-hozzaad/to-hozzaad.component';
+
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent }, // Főoldal útvonala
+  { path: '', component: HomeComponent },
 
-  { path: 'tavak', component: ToListaComponent }, // TóLista oldal útvonala
-  { path: 'tavak/:id', component: ToReszletekComponent}, // TóRészletek oldal útvonala
+  { path: 'tavak', component: ToListaComponent },
+  { path: 'tavak/:id', component: ToReszletekComponent },
 
-  { path: 'hirek', component: HirekComponent }, // Hírek oldal útvonala
+  { path: 'hirek', component: HirekComponent },
   { path: 'hirek/:id', component: HirReszletekComponent },
-  { path: '', redirectTo: '/hirek', pathMatch: 'full' },
-  { path: 'hirek-szerkeszto', component: NewsEditorComponent}, // Szerkesztő útvonala
 
-  { path: 'versenyek', component: VersenyekComponent }, // Versenyek oldal útvonala
+  { path: 'hirek-szerkeszto', component: NewsEditorComponent, canActivate: [authGuard] },
 
-  { path: 'galeria', component: GalleryComponent }, // Galéria oldal útvonala
-  { path: 'kepfeltoltes', component: GalleryUploadComponent}, // Kép feltöltés oldal útvonala
+  { path: 'versenyek', component: VersenyekComponent },
 
-  { path: 'rolunk', component: RolunkComponent }, // Rólunk oldal útvonala
+  { path: 'galeria', component: GalleryComponent },
+  { path: 'kepfeltoltes', component: GalleryUploadComponent, canActivate: [authGuard] },
 
-  { path: 'regisztracio', component: RegisztracioComponent }, // Regisztrációs oldal útvonala
-  { path: 'bejelentkezes', component: BejelentkezesComponent }, // Bejelentkezés oldal útvonala
-  { path: 'profil', component: ProfilComponent, canActivate: [authGuard] }, // Profil oldal útvonala, csak bejelentkezve
+  { path: 'rolunk', component: RolunkComponent },
 
-  { path: 'admin', component: AdminComponent, canActivate: [adminGuard] }, // Admin felület útvonala, csak adminként bejelentkezve
+  { path: 'regisztracio', component: RegisztracioComponent },
+  { path: 'bejelentkezes', component: BejelentkezesComponent },
 
-  { path: '**', redirectTo: '' }, // Üres/Hiba visszavezet a főoldalra
+  { path: 'profil', component: ProfilComponent, canActivate: [authGuard] },
+
+  {
+  path: 'admin',
+  canActivate: [adminGuard],
+  loadComponent: () =>
+    import('./pages/admin/admin-layout/admin-layout.component')
+      .then(m => m.AdminLayoutComponent),
+  children: [
+    {
+      path: '',
+      loadComponent: () =>
+        import('./pages/admin/admin-dashboard/admin-dashboard.component')
+          .then(m => m.AdminDashboardComponent)
+    },
+    {
+      path: 'users',
+      loadComponent: () =>
+        import('./pages/admin/admin-users/admin-users.component')
+          .then(m => m.AdminUsersComponent)
+    },
+    {
+      path: 'to-hozzaad',
+      loadComponent: () =>
+        import('./pages/to-hozzaad/to-hozzaad.component')
+          .then(m => m.ToHozzaadComponent)
+    }
+  ]
+},
+
+  { path: '**', redirectTo: '/', pathMatch: 'full' }
 ];

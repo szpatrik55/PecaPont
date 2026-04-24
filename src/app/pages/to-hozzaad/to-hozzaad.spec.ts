@@ -1,12 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AdminComponent } from './admin.component';
+import { ToHozzaadComponent } from './to-hozzaad.component';
 import { Firestore } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
 import { Storage } from '@angular/fire/storage';
 import { vi } from 'vitest';
 import { of } from 'rxjs';
 
-// 🔥 EZ A KULCS!
 vi.mock('@angular/fire/firestore', async () => {
 const actual = await vi.importActual<any>('@angular/fire/firestore');
 
@@ -18,13 +17,12 @@ collectionData: vi.fn(() => of([]))
 });
 
 describe('AdminComponent', () => {
-let component: AdminComponent;
-let fixture: ComponentFixture<AdminComponent>;
+let component: ToHozzaadComponent;
+let fixture: ComponentFixture<ToHozzaadComponent>;
 
-// ✅ MOCKOK
 const mockFirestore = {
   type: 'firestore',
-  getFirestore: () => ({}) // Néha ezt keresi belsőleg
+  getFirestore: () => ({})
 } as any;
 const mockAuth = {
   currentUser: null
@@ -33,7 +31,7 @@ const mockStorage = {};
 
 beforeEach(async () => {
 await TestBed.configureTestingModule({
-imports: [AdminComponent],
+imports: [ToHozzaadComponent],
 providers: [
 { provide: Firestore, useValue: mockFirestore },
 { provide: Auth, useValue: mockAuth },
@@ -41,7 +39,7 @@ providers: [
 ]
 }).compileComponents();
 
-fixture = TestBed.createComponent(AdminComponent);
+fixture = TestBed.createComponent(ToHozzaadComponent);
 component = fixture.componentInstance;
 fixture.detectChanges();
 });

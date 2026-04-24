@@ -1,0 +1,32 @@
+<div class="users-table-container">
+  <table class="users-table">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Jogosultság</th>
+        <th>Műveletek</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users$ | async; trackBy: trackByUser">
+        <td>{{ user.email }}</td>
+        <td>
+          <select
+            [ngModel]="getPendingRole(user)"
+            (ngModelChange)="onRoleChange(user, $event)">
+            <option value="user">User</option>
+            <option value="news">News</option>
+            <option value="admin">Admin</option>
+          </select>
+        </td>
+        <td>
+          <button
+            (click)="updateRole(user)"
+            [disabled]="loading[user.uid] || getPendingRole(user) === user.role">
+            {{ loading[user.uid] ? '⌛' : '💾 Mentés' }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

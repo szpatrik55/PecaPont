@@ -1,0 +1,133 @@
+<div class="to-hozzaad-page">
+  <div class="page-header">
+    <h1>Új horgásztó</h1>
+    <p>Adj hozzá új vízterületet a rendszerhez</p>
+  </div>
+
+  <form (ngSubmit)="toHozzaad()" class="to-hozzaad-layout">
+
+    <!-- ALAPADATOK -->
+    <section class="form-section">
+      <h3>Alapadatok</h3>
+
+      <div class="input-row">
+        <div class="input-group">
+          <label>Név</label>
+          <input type="text" [(ngModel)]="ujTo.nev" name="nev" required />
+        </div>
+
+        <div class="input-group">
+          <label>Település</label>
+          <input type="text" [(ngModel)]="ujTo.telepules" name="telepules" required />
+        </div>
+      </div>
+
+      <div class="input-row">
+        <div class="input-group">
+          <label>Cím</label>
+          <input type="text" [(ngModel)]="ujTo.cim" name="cim" />
+        </div>
+
+        <div class="input-group">
+          <label>Típus</label>
+          <input type="text" [(ngModel)]="ujTo.tipus" name="tipus" />
+        </div>
+      </div>
+    </section>
+
+    <!-- KÉP -->
+    <section class="form-section">
+      <h3>Kép feltöltés</h3>
+
+      <div class="input-group">
+        <label>Kép kiválasztása</label>
+        <input type="file" accept="image/*" (change)="kepFeltoltes($event)" />
+      </div>
+
+      @if (ujTo.kepUrl) {
+        <div class="input-group">
+          <label>Előnézet</label>
+          <img [src]="ujTo.kepUrl" class="image-preview" />
+        </div>
+      }
+    </section>
+
+    <!-- JELLEMZŐK -->
+    <section class="form-section">
+      <h3>Jellemzők</h3>
+
+      <div class="input-row">
+        <div class="input-group">
+          <label>Terület (ha)</label>
+          <input type="number" [(ngModel)]="ujTo.terulet_ha" name="terulet_ha" />
+        </div>
+
+        <div class="input-group">
+          <label>Mélység (m)</label>
+          <input type="number" [(ngModel)]="ujTo.vizmelyseg" name="vizmelyseg" />
+        </div>
+      </div>
+
+      <div class="input-row">
+        <div class="input-group">
+          <label>Helyek száma</label>
+          <input type="number" [(ngModel)]="ujTo.helyek_szama" name="helyek_szama" />
+        </div>
+
+        <div class="input-group">
+          <label>Sport napijegy ár (Ft)</label>
+          <input type="number" [(ngModel)]="ujTo.sport_napijegy_ar" name="sport_napijegy_ar" />
+        </div>
+      </div>
+    </section>
+
+    <!-- HALFajok -->
+    <section class="form-section">
+      <h3>Halfajok és szabályok</h3>
+
+      <div class="input-group">
+        <label>Halfajok</label>
+        <input type="text" [(ngModel)]="ujTo.halfajok" name="halfajok" />
+      </div>
+
+      <div class="input-group">
+        <label>Ajánlott módszerek</label>
+        <input type="text" [(ngModel)]="ujTo.ajanlott_modszerek" name="ajanlott_modszerek" />
+      </div>
+
+      <div class="input-group">
+        <label>Szabályok</label>
+        <input type="text" [(ngModel)]="ujTo.szabalyok" name="szabalyok" />
+      </div>
+
+      <div class="input-row">
+        <div class="input-group checkbox-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="ujTo.ejszakai_horgaszat" name="ejszakai_horgaszat" />
+            Éjszakai horgászat
+          </label>
+        </div>
+
+        <div class="input-group checkbox-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="ujTo.csonak_hasznalat" name="csonak_hasznalat" />
+            Csónakhasználat
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEÍRÁS -->
+    <section class="form-section">
+      <h3>Leírás</h3>
+
+      <div class="input-group">
+        <textarea [(ngModel)]="ujTo.leiras" name="leiras"></textarea>
+      </div>
+    </section>
+
+    <button type="submit" class="submit-btn" [disabled]="mentesFolyamatban()">
+      {{ mentesFolyamatban() ? 'Mentés...' : 'Tó mentése' }}
+    </button>
+  </form>
+</div>

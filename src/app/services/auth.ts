@@ -14,7 +14,10 @@ import {
   Firestore,
   doc,
   setDoc,
-  docData
+  getDoc,
+  docData,
+  updateDoc,
+  serverTimestamp
 } from '@angular/fire/firestore';
 
 import { Observable, of } from 'rxjs';
@@ -24,10 +27,11 @@ export interface AppUser {
   uid: string;
   email: string | null;
   role: 'user' | 'admin' | 'news';
-  displayName?: string | null; // A teljes névnek
-  username?: string | null;    // A felhasználónévnek
+  displayName?: string | null;
+  username?: string | null;
   photo?: string | null;
   createdAt?: any;
+  lastLoginAt?: any;
 }
 
 @Injectable({
@@ -43,7 +47,7 @@ export class AuthService {
 
   constructor(
     private auth: Auth,
-    private firestore: Firestore
+    private firestore: Firestore,
   ) {
     // Aktuális Firebase auth állapot figyelése
     this.user$ = authState(this.auth);
@@ -88,30 +92,40 @@ export class AuthService {
   // REGISTER (Módosítva a névvel és felhasználónévvel)
   // =========================
   async register(email: string, password: string, displayName: string, username: string) {
-    // 1. Létrehozzuk a fiókot az Auth modulban
     const cred = await createUserWithEmailAndPassword(
       this.auth,
       email,
       password
     );
 
-    // 2. Elmentjük a kiegészítő adatokat a Firestore-ba
     await setDoc(doc(this.firestore, 'users', cred.user.uid), {
       uid: cred.user.uid,
       email: cred.user.email,
-      displayName: displayName,
-      username: username,
+      displayName,
+      username,
       role: 'user',
-      createdAt: new Date()
+
+      // 🔥 JAVÍTÁSOK
+      createdAt: serverTimestamp(),
+      lastLoginAt: serverTimestamp()
     });
   }
 
   // =========================
   // LOGIN
   // =========================
-  login(email: string, password: string) {
-    // Közvetlenül visszaadjuk a Promise-t, hogy a komponens el tudja kapni a hibát
-    return signInWithEmailAndPassword(this.auth, email, password);
+  async login(email: string, password: string) {
+    const cred = await signInWithEmailAndPassword(this.auth, email, password);
+
+    try {
+      await updateDoc(doc(this.firestore, 'users', cred.user.uid), {
+        lastLoginAt: serverTimestamp()
+      });
+    } catch (e) {
+      console.warn('lastLoginAt update failed', e);
+    }
+
+    return cred;
   }
 
   // =========================
@@ -121,14 +135,27 @@ export class AuthService {
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(this.auth, provider);
 
-    // Google login esetén frissítjük vagy létrehozzuk a profilt (merge: true)
-    await setDoc(doc(this.firestore, 'users', result.user.uid), {
-      uid: result.user.uid,
-      email: result.user.email,
-      displayName: result.user.displayName,
-      photo: result.user.photoURL,
-      role: 'user'
-    }, { merge: true });
+    const userRef = doc(this.firestore, 'users', result.user.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+      // 🆕 ÚJ USER
+      await setDoc(userRef, {
+        uid: result.user.uid,
+        email: result.user.email,
+        displayName: result.user.displayName,
+        photo: result.user.photoURL,
+        role: 'user',
+
+        createdAt: serverTimestamp(),   // 👈 csak itt!
+        lastLoginAt: serverTimestamp()
+      });
+    } else {
+      // 🔁 MEGLÉVŐ USER
+      await updateDoc(userRef, {
+        lastLoginAt: serverTimestamp()
+      });
+    }
   }
 
   // =========================
