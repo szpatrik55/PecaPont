@@ -147,7 +147,7 @@ export class AuthService {
         photo: result.user.photoURL,
         role: 'user',
 
-        createdAt: serverTimestamp(),   // 👈 csak itt!
+        createdAt: serverTimestamp(),
         lastLoginAt: serverTimestamp()
       });
     } else {
