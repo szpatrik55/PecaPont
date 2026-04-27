@@ -1,76 +1,266 @@
-$primary-gradient: linear-gradient(135deg, #0ea5e9, #2563eb);
-$bg-dark: #0f172a;
-$card-bg: rgba(30, 41, 59, 0.8);
-$text-light: #f8fafc;
-$text-gray: #94a3b8;
+/* =========================
+   GLOBAL
+========================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
+body {
+  overflow-x: hidden;
+}
+
+/* =========================
+   VARIABLES
+========================= */
+$radius-sm: 14px;
+$radius-md: 24px;
+
+$color-bg: #0f172a;
+$color-card: rgba(30, 41, 59, 0.75);
+$color-text: #f8fafc;
+$color-muted: #94a3b8;
+
+$gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
+
+/* =========================
+   PAGE
+========================= */
 .article-page {
+  width: 100%;
   min-height: 100vh;
-  background: radial-gradient(circle at top right, #1e293b, #0f172a);
-  padding: 40px 20px;
-  color: $text-light;
-  overflow-x: hidden; // Megelőzi a vízszintes görgetést animáció alatt
+  padding: 40px 20px 60px;
 
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-  }
+  background: $color-bg;
+  position: relative;
+  color: $color-text;
+
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
 }
 
-.full-article {
-  animation: fadeIn 0.4s ease-out forwards;
-  will-change: opacity, transform;
+.article-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
 
-  .article-image {
-    width: 100%;
-    margin-bottom: 50px;
-    border-radius: 24px;
-    overflow: hidden;
-    background: rgba(0,0,0,0.2); // Placeholder amíg a kép tölt
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    
-    img {
-      width: 100%;
-      height: auto;
-      display: block;
-      object-fit: cover;
-    }
-  }
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 23, 42, 0.6),
+    rgba(15, 23, 42, 0.95)
+  );
 
-  .article-body {
-    background: $card-bg;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px); // Safari támogatás
-    padding: 40px;
-    border-radius: 32px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    will-change: backdrop-filter;
-
-    .content-text {
-      font-size: 1.15rem;
-      line-height: 1.8;
-      color: #e2e8f0;
-      white-space: pre-wrap;
-    }
-  }
+  z-index: 0;
 }
 
-// Gyorsabb animáció
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
+/* =========================
+   CONTAINER
+========================= */
+.container {
+  position: relative;
+  z-index: 1;
+
+  width: 100%;
+  max-width: 900px;
 }
 
-// Spinner javítás
+/* =========================
+   BACK BUTTON
+========================= */
+.back-nav {
+  margin-bottom: 24px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 18px;
+  border-radius: $radius-sm;
+
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+
+  color: white;
+  background: $gradient-primary;
+
+  box-shadow: 0 10px 25px rgba(14, 165, 233, 0.25);
+  transition: all 0.25s ease;
+}
+
+.back-link .arrow {
+  font-size: 1.2rem;
+  transition: transform 0.2s ease;
+}
+
+.back-link:hover {
+  transform: translateY(-2px);
+}
+
+.back-link:hover .arrow {
+  transform: translateX(-4px);
+}
+
+/* =========================
+   LOADER
+========================= */
+.loader-container {
+  text-align: center;
+  padding: 60px 0;
+}
+
 .spinner {
   width: 40px;
   height: 40px;
+  margin: 0 auto 16px;
+
   border: 3px solid rgba(14, 165, 233, 0.1);
   border-top: 3px solid #0ea5e9;
   border-radius: 50%;
+
   animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================
+   ARTICLE
+========================= */
+.full-article {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* HEADER */
+.article-header {
+  margin-bottom: 24px;
+}
+
+.meta {
+  font-size: 0.85rem;
+  color: $color-muted;
+  margin-bottom: 12px;
+}
+
+.separator {
+  margin: 0 8px;
+}
+
+.article-header h1 {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: #cbd5e1;
+}
+
+/* IMAGE */
+.article-image {
+  width: 100%;
+  margin: 30px 0;
+
+  border-radius: $radius-md;
+  overflow: hidden;
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.article-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* BODY */
+.article-body {
+  background: $color-card;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  padding: 32px;
+  border-radius: $radius-md;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+/* TEXT */
+.content-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #e2e8f0;
+  white-space: pre-wrap;
+}
+
+/* =========================
+   NOT FOUND
+========================= */
+.not-found {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.btn-primary {
+  margin-top: 20px;
+
+  border: none;
+  padding: 14px 22px;
+  border-radius: $radius-sm;
+
+  background: $gradient-primary;
+  color: white;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+/* =========================
+   ANIMATION
+========================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 768px) {
+  .article-page {
+    padding: 20px 16px 40px;
+  }
+
+  .article-body {
+    padding: 22px;
+  }
+
+  .article-header h1 {
+    font-size: 1.6rem;
+  }
 }

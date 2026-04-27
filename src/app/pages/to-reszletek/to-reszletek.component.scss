@@ -1,27 +1,117 @@
-.adatlap-wrapper {
-  max-width: 1100px;
-  margin: 0 auto;
+/* =========================
+   GLOBAL
+========================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* =========================
+   VARIABLES
+========================= */
+$radius-sm: 14px;
+$radius-md: 24px;
+
+$color-bg: #0f172a;
+$color-card: rgba(30, 41, 59, 0.75);
+$color-card-light: rgba(255, 255, 255, 0.05);
+
+$color-text: #f8fafc;
+$color-muted: #94a3b8;
+
+$gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
+
+/* =========================
+   PAGE
+========================= */
+.adatlap-page {
+  width: 100%;
+  min-height: 100vh;
   padding: 40px 20px 60px;
+
+  background: $color-bg;
+  position: relative;
+  color: $color-text;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  overflow: hidden;
 }
 
+/* háttér overlay */
+.adatlap-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+   background: linear-gradient(
+    to bottom,
+    rgba(15, 23, 42, 0.96),
+    rgba(15, 23, 42, 0.05)
+  );
+
+  z-index: 0;
+}
+
+/* =========================
+   WRAPPER (KÖZÉPRE IGAZÍTÁS)
+========================= */
+.adatlap-wrapper {
+  position: relative;
+  z-index: 1;
+
+  width: 100%;
+  max-width: 1100px;
+
+  margin: 0 auto; // ✅ EZ OLDJA MEG
+}
+
+/* =========================
+   MAIN CARD
+========================= */
 .adatlap {
-  background: rgba(15, 23, 42, 0.96);
-  border-radius: 28px;
+  max-width: 1000px;
+  margin: 0 auto;
+
+  background: $color-card;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border-radius: $radius-md;
   padding: 40px;
-  color: white;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
-/* VISSZA GOMB */
+/* =========================
+   BACK BUTTON
+========================= */
 .back-btn {
-  display: block;
-  margin: 0 auto 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 30px;
+  padding: 12px 18px;
+
+  border-radius: $radius-sm;
   border: none;
-  padding: 12px 20px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #0ea5e9, #2563eb);
+
+  background: $gradient-primary;
   color: white;
   font-weight: 600;
+
   cursor: pointer;
   transition: 0.25s ease;
 }
@@ -30,7 +120,9 @@
   transform: translateY(-2px);
 }
 
-/* FEJLÉC */
+/* =========================
+   HEADER
+========================= */
 header {
   text-align: center;
   margin-bottom: 32px;
@@ -47,7 +139,9 @@ header h1 {
   font-size: 1.1rem;
 }
 
-/* KÉP */
+/* =========================
+   IMAGE
+========================= */
 .image-section {
   display: flex;
   justify-content: center;
@@ -59,62 +153,83 @@ header h1 {
   max-width: 900px;
   max-height: 460px;
   object-fit: cover;
-  border-radius: 22px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+
+  border-radius: $radius-md;
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
 }
 
-/* GYORS ADATOK */
+/* =========================
+   DETAILS GRID
+========================= */
 .details-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(180px, 1fr));
   gap: 20px;
   margin-bottom: 32px;
-  justify-content: center;
 }
 
 .detail-item {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 24px;
-  border-radius: 18px;
+  background: $color-card-light;
+
+  padding: 22px;
+  border-radius: $radius-md;
+
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  backdrop-filter: blur(6px);
+
+  transition: 0.25s ease;
+}
+
+.detail-item:hover {
+  transform: translateY(-4px);
 }
 
 .detail-item span {
-  color: #94a3b8;
+  color: $color-muted;
   margin-bottom: 8px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  display: block;
 }
 
 .detail-item strong {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 700;
 }
 
-/* SZEKCIÓK */
+/* =========================
+   CONTENT SECTIONS
+========================= */
 .content-section {
   max-width: 900px;
   margin: 0 auto 28px;
-  background: rgba(255, 255, 255, 0.04);
-  padding: 30px;
-  border-radius: 22px;
+
+  background: $color-card-light;
+
+  padding: 28px;
+  border-radius: $radius-md;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
   text-align: center;
 }
 
 .content-section h3 {
   margin-bottom: 18px;
-  font-size: 1.35rem;
+  font-size: 1.3rem;
 }
 
-/* SZÖVEG */
 .content-section p {
   line-height: 1.8;
   color: #cbd5e1;
 }
 
-/* TAG LIST */
+/* =========================
+   TAGS
+========================= */
 .tag-list {
   display: flex;
   flex-wrap: wrap;
@@ -125,6 +240,7 @@ header h1 {
 .tag {
   padding: 10px 16px;
   border-radius: 999px;
+
   background: rgba(255, 255, 255, 0.08);
   font-weight: 500;
 }
@@ -137,7 +253,9 @@ header h1 {
   background: rgba(34, 197, 94, 0.2);
 }
 
-/* EXTRA INFÓ */
+/* =========================
+   INFO LIST
+========================= */
 .info-list {
   display: grid;
   gap: 14px;
@@ -145,7 +263,9 @@ header h1 {
   color: #cbd5e1;
 }
 
-/* MOBIL */
+/* =========================
+   RESPONSIVE
+========================= */
 @media (max-width: 900px) {
   .details-grid {
     grid-template-columns: repeat(2, 1fr);

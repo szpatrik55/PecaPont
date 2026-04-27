@@ -57,7 +57,7 @@ export class NavbarComponent {
           if (snapshot.exists()) {
             const data = snapshot.data();
             console.log('Felhasználó adatai (editor check):', data);
-            return data?.['role'] === 'editor';
+            return data?.['role'] === 'news';
           }
           return false;
         }),

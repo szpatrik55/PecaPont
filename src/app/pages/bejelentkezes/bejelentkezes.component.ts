@@ -28,63 +28,71 @@ export class BejelentkezesComponent {
     this.cdr.detectChanges(); // Manuális frissítés
   }
 
-  async login() {
-  if (!this.email || !this.password) {
-    this.errorMessage = 'Kérjük, töltse ki az összes mezőt!';
-    return;
-  }
-
-  this.isLoading = true;
-  this.errorMessage = '';
-  this.cdr.detectChanges();
-
-  try {
-    await this.auth.login(this.email, this.password);
-    this.router.navigate(['/']);
-  } catch (error: any) {
-    console.error('Firebase hiba kódja:', error.code);
-
-    // Itt történik a magyarosítás a hibakód alapján
-    switch (error.code) {
-      case 'auth/invalid-email':
-        this.errorMessage = 'A megadott email cím formátuma érvénytelen!';
-        break;
-      case 'auth/user-disabled':
-        this.errorMessage = 'Ez a felhasználói fiók fel van függesztve!';
-        break;
-      case 'auth/user-not-found':
-      case 'auth/wrong-password':
-      case 'auth/invalid-credential':
-        // A modern Firebase biztonsági okokból ugyanazt adja vissza mindháromra
-        this.errorMessage = 'Hibás email cím vagy jelszó!';
-        break;
-      case 'auth/too-many-requests':
-        this.errorMessage = 'Túl sok sikertelen próbálkozás. Kérjük, várjon pár percet!';
-        break;
-      case 'auth/network-request-failed':
-        this.errorMessage = 'Hálózati hiba történt. Ellenőrizze az internetkapcsolatot!';
-        break;
-      default:
-        this.errorMessage = 'Váratlan hiba történt a bejelentkezés során!';
-        break;
+    async login() {
+    if (!this.email || !this.password) {
+      this.errorMessage = 'Kérjük, töltse ki az összes mezőt!';
+      return;
     }
-  } finally {
-    this.isLoading = false;
-    this.cdr.detectChanges();
-  }
-}
 
-  async google() {
     this.isLoading = true;
+    this.errorMessage = '';
     this.cdr.detectChanges();
+
     try {
-      await this.auth.googleLogin();
+      const userCredential = await this.auth.login(this.email, this.password);
+
+      // 🔥 EZ A LÉNYEG (token frissítés!)
+      await userCredential.user.getIdToken(true);
+
       this.router.navigate(['/']);
-    } catch (error) {
-      this.errorMessage = 'Sikertelen Google bejelentkezés!';
+
+    }catch (error: any) {
+      console.error('Firebase hiba kódja:', error.code);
+
+      switch (error.code) {
+        case 'auth/invalid-email':
+          this.errorMessage = 'A megadott email cím formátuma érvénytelen!';
+          break;
+        case 'auth/user-disabled':
+          this.errorMessage = 'Ez a felhasználói fiók fel van függesztve!';
+          break;
+        case 'auth/user-not-found':
+        case 'auth/wrong-password':
+        case 'auth/invalid-credential':
+          this.errorMessage = 'Hibás email cím vagy jelszó!';
+          break;
+        case 'auth/too-many-requests':
+          this.errorMessage = 'Túl sok sikertelen próbálkozás. Kérjük, várjon pár percet!';
+          break;
+        case 'auth/network-request-failed':
+          this.errorMessage = 'Hálózati hiba történt. Ellenőrizze az internetkapcsolatot!';
+          break;
+        default:
+          this.errorMessage = 'Váratlan hiba történt a bejelentkezés során!';
+          break;
+      }
     } finally {
       this.isLoading = false;
       this.cdr.detectChanges();
     }
+  }
+
+  async google() {
+    this.isLoading = true;
+    this.cdr.detectChanges();
+
+    try {
+      const result = await this.auth.googleLogin();
+
+      // 🔥 token refresh
+      await result.user.getIdToken(true);
+
+      this.router.navigate(['/']);
+      } catch (error) {
+        this.errorMessage = 'Sikertelen Google bejelentkezés!';
+      } finally {
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
   }
 }

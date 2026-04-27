@@ -1,4 +1,6 @@
-/* GLOBAL FIX */
+/* =========================
+   GLOBAL
+========================= */
 *,
 *::before,
 *::after {
@@ -9,7 +11,21 @@ body {
   overflow-x: hidden;
 }
 
-/* PAGE */
+/* =========================
+   VARIABLES
+========================= */
+$radius-sm: 14px;
+$radius-md: 24px;
+
+$color-bg: #0f172a;
+$color-text: #f8fafc;
+$color-muted: #94a3b8;
+
+$gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
+
+/* =========================
+   PAGE
+========================= */
 .tavak-page {
   width: 100%;
   max-width: 1400px;
@@ -17,7 +33,9 @@ body {
   padding: 32px 20px 60px;
 }
 
-/* HERO */
+/* =========================
+   HERO
+========================= */
 .hero-mini {
   margin-bottom: 32px;
   text-align: center;
@@ -30,18 +48,21 @@ body {
   margin: 0;
 }
 
-/* GRID */
+/* =========================
+   GRID
+========================= */
 .tavak-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 24px;
-  align-items: stretch;
 }
 
-/* CARD */
+/* =========================
+   CARD
+========================= */
 .to-card {
   min-height: 340px;
-  border-radius: 24px;
+  border-radius: $radius-md;
   overflow: hidden;
   cursor: pointer;
   position: relative;
@@ -51,6 +72,7 @@ body {
   background-repeat: no-repeat;
 
   transition: transform 0.35s ease, box-shadow 0.35s ease;
+
   box-shadow: 0 14px 35px rgba(0, 0, 0, 0.18);
 }
 
@@ -81,7 +103,9 @@ body {
   );
 }
 
-/* CARD CONTENT */
+/* =========================
+   CARD CONTENT
+========================= */
 .card-overlay {
   position: absolute;
   inset: 0;
@@ -124,17 +148,17 @@ body {
   font-size: 1rem;
 }
 
+/* BUTTON */
 .view-btn {
   border: none;
   padding: 12px 18px;
-  border-radius: 14px;
+  border-radius: $radius-sm;
 
-  background: linear-gradient(135deg, #0ea5e9, #2563eb);
-
+  background: $gradient-primary;
   color: white;
   font-weight: 600;
-  cursor: pointer;
 
+  cursor: pointer;
   transition: 0.25s ease;
 }
 
@@ -142,7 +166,9 @@ body {
   transform: translateY(-2px);
 }
 
-/* TOOLBAR */
+/* =========================
+   TOOLBAR
+========================= */
 .toolbar {
   display: flex;
   gap: 16px;
@@ -154,10 +180,10 @@ body {
 .toolbar select {
   padding: 14px 16px;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
 
+  border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(45, 45, 45, 0.96);
-  color: #f8fafc;
+  color: $color-text;
 
   font-size: 0.95rem;
   outline: none;
@@ -176,7 +202,7 @@ body {
 }
 
 .toolbar input::placeholder {
-  color: #94a3b8;
+  color: $color-muted;
 }
 
 .toolbar input:focus,
@@ -185,7 +211,9 @@ body {
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
-/* TABLET */
+/* =========================
+   MOBILE
+========================= */
 @media (max-width: 768px) {
   .toolbar {
     flex-direction: column;

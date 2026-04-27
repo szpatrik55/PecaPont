@@ -115,48 +115,53 @@ export class AuthService {
   // LOGIN
   // =========================
   async login(email: string, password: string) {
-    const cred = await signInWithEmailAndPassword(this.auth, email, password);
+  const cred = await signInWithEmailAndPassword(this.auth, email, password);
 
-    try {
-      await updateDoc(doc(this.firestore, 'users', cred.user.uid), {
-        lastLoginAt: serverTimestamp()
-      });
-    } catch (e) {
-      console.warn('lastLoginAt update failed', e);
-    }
+  // 🔥 EZ KELL
+  await cred.user.getIdToken(true);
 
-    return cred;
+  try {
+    await updateDoc(doc(this.firestore, 'users', cred.user.uid), {
+      lastLoginAt: serverTimestamp()
+    });
+  } catch (e) {
+    console.warn('lastLoginAt update failed', e);
   }
+
+  return cred;
+}
 
   // =========================
   // GOOGLE LOGIN
   // =========================
   async googleLogin() {
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(this.auth, provider);
+  const provider = new GoogleAuthProvider();
+  const result = await signInWithPopup(this.auth, provider);
 
-    const userRef = doc(this.firestore, 'users', result.user.uid);
-    const userSnap = await getDoc(userRef);
+  const userRef = doc(this.firestore, 'users', result.user.uid);
+  const userSnap = await getDoc(userRef);
 
-    if (!userSnap.exists()) {
-      // 🆕 ÚJ USER
-      await setDoc(userRef, {
-        uid: result.user.uid,
-        email: result.user.email,
-        displayName: result.user.displayName,
-        photo: result.user.photoURL,
-        role: 'user',
-
-        createdAt: serverTimestamp(),
-        lastLoginAt: serverTimestamp()
-      });
-    } else {
-      // 🔁 MEGLÉVŐ USER
-      await updateDoc(userRef, {
-        lastLoginAt: serverTimestamp()
-      });
-    }
+  if (!userSnap.exists()) {
+    await setDoc(userRef, {
+      uid: result.user.uid,
+      email: result.user.email,
+      displayName: result.user.displayName,
+      photo: result.user.photoURL,
+      role: 'user',
+      createdAt: serverTimestamp(),
+      lastLoginAt: serverTimestamp()
+    });
+  } else {
+    await updateDoc(userRef, {
+      lastLoginAt: serverTimestamp()
+    });
   }
+
+  // 🔥 EZ HIÁNYZIK
+  await result.user.getIdToken(true);
+
+  return result;
+}
 
   // =========================
   // LOGOUT
