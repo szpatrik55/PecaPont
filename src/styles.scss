@@ -1,17 +1,46 @@
-:root{
+/* =========================
+   🎨 DESIGN TOKENS
+========================= */
+:root {
+  /* COLORS */
+  --bg-main: #0f172a;
+  --bg-surface: #111827;
+  --bg-card: rgba(255, 255, 255, 0.05);
 
-  --bg-main:#2f2f2f;
-  --bg-secondary:#3a3a3a;
-  --card-bg:#f2f2f2;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
 
-  --text-dark:#1f1f1f;
-  --text-light:#ffffff;
+  --primary: #2563eb;
+  --primary-light: #0ea5e9;
+  --danger: #ef4444;
 
-  --accent:#4CAF50;
-  --accent-hover:#388E3C;
+  /* RADIUS */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
 
+  /* SHADOW */
+  --shadow-sm: 0 5px 15px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.4);
+
+  /* GLASS */
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: blur(12px);
+
+  /* SPACING */
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
 }
 
+
+/* =========================
+   🔧 RESET + BASE
+========================= */
 html,
 body {
   margin: 0;
@@ -28,7 +57,157 @@ body {
   overflow-x: hidden;
 
   background-color: var(--bg-main);
+  color: var(--text-main);
+
+  font-size: 18px;
+  line-height: 1.5;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+
+/* =========================
+   🧊 CARD (GLOBAL)
+========================= */
+.card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+
+/* =========================
+   🔘 BUTTON SYSTEM
+========================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 14px 32px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
   color: white;
-  text-align: center;
-  font-size: 19px;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px);
+}
+
+
+/* =========================
+   ✏️ INPUT / FORM
+========================= */
+.input,
+textarea,
+select {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-border);
+
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+
+  outline: none;
+  font-size: 16px;
+}
+
+.input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--primary);
+}
+
+
+/* =========================
+   📝 TYPOGRAPHY
+========================= */
+h1, h2, h3, h4 {
+  margin: 0 0 var(--space-md);
+  font-weight: 700;
+}
+
+p {
+  margin: 0 0 var(--space-md);
+  color: var(--text-muted);
+}
+
+
+/* =========================
+   📦 LAYOUT HELPERS
+========================= */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-xl);
+}
+
+.section {
+  margin-bottom: var(--space-xl);
+}
+
+
+/* =========================
+   📏 SPACING UTILITIES
+========================= */
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+
+.p-sm { padding: var(--space-sm); }
+.p-md { padding: var(--space-md); }
+.p-lg { padding: var(--space-lg); }
+
+
+/* =========================
+   ✨ ANIMATIONS (OPTIONAL)
+========================= */
+.fade-in {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

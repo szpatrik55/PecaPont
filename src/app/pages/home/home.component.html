@@ -13,7 +13,7 @@
       <div><strong>1+</strong><span>tag</span></div>
     </div>
 
-    <a routerLink="/tavak" class="button">Fedezd fel tavainkat!</a>
+    <a routerLink="/tavak" class="btn btn-primary">Fedezd fel tavainkat!</a>
   </div>
 </section>
 
@@ -27,7 +27,7 @@
           <div class="overlay">
             <h3>{{ post.title }}</h3>
             <p>{{ post.water }}</p>
-            <p class="stat" *ngIf="post.fishGroup === 'Békés halak' || post.fishGroup === 'Teríték fotó' && post.weight">
+            <p class="stat" *ngIf="(post.fishGroup === 'Békés halak' || post.fishGroup === 'Teríték fotó') && post.weight">
               ⚖️ {{ post.weight }} kg
             </p>
             <p class="stat" *ngIf="post.fishGroup === 'Ragadozó halak' && post.length">
@@ -38,7 +38,6 @@
       }
     </div>
   }
-  <a routerLink="/galeria" class="button">Összes fogás</a>
 </section>
 
 <section class="popular-lakes" fade-up>
@@ -65,22 +64,20 @@
           <div class="news-tag">Friss</div>
           <h3>{{ hir.cim }}</h3>
           <p>{{ hir.rovidLeiras }}</p>
-          <span class="read-more">Elolvasom a cikket →</span>
+          <span class="btn btn-primary">Elolvasom a cikket →</span>
         </div>
       }
     </div>
   } @else {
     <div class="loader-placeholder">Hírek betöltése...</div>
   }
-  <div style="text-align: center; margin-top: 2rem;">
-    <a routerLink="/hirek" class="button outline">Összes hír</a>
-  </div>
+
 </section>
 
 <section class="community" fade-up>
   <h2>Légy te is a közösség tagja!</h2>
   <p>Csatlakozz több száz szenvedélyes horgászhoz, oszd meg élményeidet!</p>
-  <a routerLink="/regisztracio" class="button">Regisztrálok</a>
+  <a routerLink="/regisztracio" class="btn btn-primary">Regisztrálok</a>
 </section>
 
 <footer>
