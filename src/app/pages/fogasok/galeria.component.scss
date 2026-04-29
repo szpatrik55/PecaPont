@@ -2,142 +2,191 @@
   display: block;
   min-height: 100vh;
   padding: 40px;
-  background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+
+  background: linear-gradient(
+    135deg,
+    var(--bg-main),
+    var(--bg-surface),
+    #334155
+  );
+
   font-family: 'Inter', sans-serif;
-  color: white;
-  box-sizing: border-box;
+  color: var(--text-main);
 }
 
-/* CÍM */
-
+/* =========================
+   TITLE
+========================= */
 h2 {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: var(--space-xl);
+
   font-size: 34px;
   font-weight: 700;
-  letter-spacing: -0.5px;
-  color: #f1f5f9;
+  color: var(--text-main);
 }
 
-/* GRID */
-
+/* =========================
+   GRID
+========================= */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-lg);
 }
 
-/* KÁRTYA */
-
+/* =========================
+   CARD
+========================= */
 .card {
-  background: #ffffff;
-  border-radius: 14px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-  transition: all 0.25s ease;
 
-  &:hover {
-    transform: translateY(-6px) scale(1.01);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.35);
-  }
+  box-shadow: var(--shadow-md);
+  transition: 0.3s;
 }
 
-/* KÉP */
+.card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: var(--shadow-lg);
+}
 
+/* =========================
+   IMAGE
+========================= */
 .card img {
   width: 100%;
   aspect-ratio: 4/3;
   object-fit: cover;
 }
 
-/* INFÓ */
-
+/* =========================
+   INFO
+========================= */
 .info {
-  padding: 14px;
+  padding: var(--space-md);
   text-align: center;
-  align-items: center;
-
-  h3 {
-    margin: 0 0 6px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #0f172a;
-  }
-
-  p {
-    margin: 4px 0;
-    font-size: 0.9rem;
-    color: #475569;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
 }
 
-/* MODAL HÁTTÉR */
+.info h3 {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
 
+.info p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+/* =========================
+   META
+========================= */
+.meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.water {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.stat {
+  margin-top: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary-light);
+}
+
+/* =========================
+   MODAL BACKDROP
+========================= */
 .lightbox {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(15, 23, 42, 0.85); /* sötétebb, elegánsabb */
-  backdrop-filter: blur(6px); /* 🔥 modern */
+  inset: 0;
+
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
 
-/* MODAL */
-
+/* =========================
+   MODAL
+========================= */
 .modal {
-  background: #ffffff;
-  border-radius: 16px;
-  max-width: 800px;
+  background: var(--bg-surface);
+
+  border-radius: var(--radius-lg);
   width: 90%;
+  max-width: 800px;
+
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg);
+
   animation: fadeIn 0.25s ease;
 }
 
-/* MODAL KÉP */
-
+/* =========================
+   MODAL IMAGE
+========================= */
 .modal img {
   width: 100%;
   max-height: 420px;
   object-fit: cover;
 }
 
-/* RÉSZLETEK */
-
+/* =========================
+   DETAILS
+========================= */
 .details {
-  padding: 18px;
-
-  h2 {
-    margin: 0 0 10px;
-    font-size: 1.4rem;
-    color: #0f172a;
-  }
-
-  p {
-    margin: 6px 0;
-    font-size: 0.95rem;
-    color: #475569;
-  }
+  padding: var(--space-lg);
 }
 
-/* KIEMELÉS */
+.details h2 {
+  margin: 0 0 10px;
+  font-size: 1.4rem;
+  color: var(--text-main);
+}
 
+.details p {
+  margin: 6px 0;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* =========================
+   STATUS
+========================= */
 .released {
-  color: #16a34a;
+  color: #22c55e;
   font-weight: 600;
 }
 
-/* ANIMÁCIÓ */
-
+/* =========================
+   ANIMATION
+========================= */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -147,24 +196,4 @@ h2 {
     opacity: 1;
     transform: scale(1);
   }
-}
-
-.meta {
-  display: flex;
-  flex-direction: column;
-  align-items: center;   // 🔥 középre
-  text-align: center;
-  margin-top: 6px;
-}
-
-.water {
-  font-size: 0.85rem;
-  color: #64748b;
-}
-
-.stat {
-  margin-top: 4px;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #0f172a;  // 🔥 kiemelt
 }

@@ -1,47 +1,17 @@
 /* =========================
-   GLOBAL
-========================= */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body {
-  overflow-x: hidden;
-}
-
-/* =========================
-   VARIABLES
-========================= */
-$radius-sm: 14px;
-$radius-md: 24px;
-
-$color-bg: #0f172a;
-$color-card: rgba(30, 41, 59, 0.75);
-$color-card-light: rgba(255, 255, 255, 0.05);
-
-$color-text: #f8fafc;
-$color-muted: #94a3b8;
-
-$gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
-
-/* =========================
-   PAGE
+   📄 PAGE
 ========================= */
 .adatlap-page {
   width: 100%;
   min-height: 100vh;
   padding: 40px 20px 60px;
 
-  background: $color-bg;
+  background: var(--bg-main);
   position: relative;
-  color: $color-text;
 
   display: flex;
   justify-content: center;
   align-items: flex-start;
-
   overflow: hidden;
 }
 
@@ -51,7 +21,7 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
   position: absolute;
   inset: 0;
 
-   background: linear-gradient(
+  background: linear-gradient(
     to bottom,
     rgba(15, 23, 42, 0.96),
     rgba(15, 23, 42, 0.05)
@@ -61,7 +31,7 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
 }
 
 /* =========================
-   WRAPPER (KÖZÉPRE IGAZÍTÁS)
+   WRAPPER
 ========================= */
 .adatlap-wrapper {
   position: relative;
@@ -69,8 +39,7 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
 
   width: 100%;
   max-width: 1100px;
-
-  margin: 0 auto; // ✅ EZ OLDJA MEG
+  margin: 0 auto;
 }
 
 /* =========================
@@ -80,14 +49,13 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
   max-width: 1000px;
   margin: 0 auto;
 
-  background: $color-card;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
 
-  border-radius: $radius-md;
+  border-radius: var(--radius-lg);
   padding: 40px;
 
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
 
   box-shadow:
     0 16px 40px rgba(0, 0, 0, 0.35),
@@ -105,10 +73,10 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
   margin-bottom: 30px;
   padding: 12px 18px;
 
-  border-radius: $radius-sm;
+  border-radius: var(--radius-sm);
   border: none;
 
-  background: $gradient-primary;
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
   color: white;
   font-weight: 600;
 
@@ -118,6 +86,7 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
 
 .back-btn:hover {
   transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 /* =========================
@@ -135,7 +104,7 @@ header h1 {
 }
 
 .subtitle {
-  color: #cbd5e1;
+  color: var(--text-muted);
   font-size: 1.1rem;
 }
 
@@ -154,9 +123,9 @@ header h1 {
   max-height: 460px;
   object-fit: cover;
 
-  border-radius: $radius-md;
+  border-radius: var(--radius-lg);
 
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-lg);
 }
 
 /* =========================
@@ -170,15 +139,14 @@ header h1 {
 }
 
 .detail-item {
-  background: $color-card-light;
+  background: var(--bg-card);
 
   padding: 22px;
-  border-radius: $radius-md;
+  border-radius: var(--radius-md);
 
   text-align: center;
 
-  border: 1px solid rgba(255, 255, 255, 0.05);
-
+  border: 1px solid var(--glass-border);
   backdrop-filter: blur(6px);
 
   transition: 0.25s ease;
@@ -189,7 +157,7 @@ header h1 {
 }
 
 .detail-item span {
-  color: $color-muted;
+  color: var(--text-muted);
   margin-bottom: 8px;
   font-size: 0.9rem;
   display: block;
@@ -207,12 +175,12 @@ header h1 {
   max-width: 900px;
   margin: 0 auto 28px;
 
-  background: $color-card-light;
+  background: var(--bg-card);
 
   padding: 28px;
-  border-radius: $radius-md;
+  border-radius: var(--radius-md);
 
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
 
   text-align: center;
 }
@@ -224,7 +192,7 @@ header h1 {
 
 .content-section p {
   line-height: 1.8;
-  color: #cbd5e1;
+  color: var(--text-muted);
 }
 
 /* =========================
@@ -260,7 +228,7 @@ header h1 {
   display: grid;
   gap: 14px;
   justify-items: center;
-  color: #cbd5e1;
+  color: var(--text-muted);
 }
 
 /* =========================

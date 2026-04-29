@@ -40,8 +40,16 @@
       <h3>Kép feltöltés</h3>
 
       <div class="input-group">
-        <label>Kép kiválasztása</label>
-        <input type="file" accept="image/*" (change)="kepFeltoltes($event)" />
+        <label class="file-drop-zone">
+          <span *ngIf="!fileName">Kattints vagy húzd ide a képet</span>
+          <span class="file-name" *ngIf="fileName">{{ fileName }}</span>
+
+          <input 
+            type="file"
+            accept="image/*"
+            (change)="kepFeltoltes($event)"
+          />
+        </label>
       </div>
 
       @if (ujTo.kepUrl) {
@@ -126,8 +134,8 @@
       </div>
     </section>
 
-    <button type="submit" class="submit-btn" [disabled]="mentesFolyamatban()">
-      {{ mentesFolyamatban() ? 'Mentés...' : 'Tó mentése' }}
+    <button type="submit" class="btn btn-primary submit-btn" [disabled]="mentesFolyamatban()">
+      {{ mentesFolyamatban() ? 'Mentés...' : 'Tó hozzáadása' }}
     </button>
   </form>
 </div>

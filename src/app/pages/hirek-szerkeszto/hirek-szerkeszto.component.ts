@@ -23,18 +23,61 @@ export class NewsEditorComponent {
   selectedFile: File | null = null;
   previewUrl: string | null = null;
   mentesFolyamatban = signal(false);
+  fileName: string | null = null;
+  uploadError: string | null = null;
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0] as File;
-    if (file && file.type.startsWith('image/')) {
-      this.selectedFile = file;
-      
-      // Előnézet generálása
-      const reader = new FileReader();
-      reader.onload = () => this.previewUrl = reader.result as string;
-      reader.readAsDataURL(file);
-    }
+
+  onFileSelected(event: Event) {
+  const input = event.target as HTMLInputElement;
+
+  if (!input.files || input.files.length === 0) {
+    return;
   }
+
+  const file = input.files[0];
+
+  // reset előző állapot
+  this.uploadError = null;
+
+  // 🔒 csak képek
+  if (!file.type.startsWith('image/')) {
+    this.uploadError = 'Csak képfájl tölthető fel!';
+    this.resetFile(input);
+    return;
+  }
+
+  // 🔒 max méret (5MB)
+  const maxSize = 5 * 1024 * 1024;
+  if (file.size > maxSize) {
+    this.uploadError = 'A fájl túl nagy! Maximum 5MB lehet.';
+    this.resetFile(input);
+    return;
+  }
+
+  // ✅ mentés
+  this.selectedFile = file;
+  this.fileName = file.name;
+
+  // 🔥 preview generálás
+  const reader = new FileReader();
+  reader.onload = () => {
+    this.previewUrl = reader.result as string;
+  };
+  reader.readAsDataURL(file);
+}
+
+/* =========================
+   RESET
+========================= */
+resetFile(input?: HTMLInputElement) {
+  this.selectedFile = null;
+  this.previewUrl = null;
+  this.fileName = null;
+
+  if (input) {
+    input.value = '';
+  }
+}
 
   async hirMentese() {
     if (!this.article.cim || !this.article.tartalom) {

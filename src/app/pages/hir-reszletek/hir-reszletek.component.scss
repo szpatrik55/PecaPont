@@ -1,28 +1,9 @@
-/* =========================
-   GLOBAL
-========================= */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+:host {
+  display: block;
+  background: var(--bg-main);
+  color: var(--text-main);
+  font-family: "Inter", "Segoe UI", sans-serif;
 }
-
-body {
-  overflow-x: hidden;
-}
-
-/* =========================
-   VARIABLES
-========================= */
-$radius-sm: 14px;
-$radius-md: 24px;
-
-$color-bg: #0f172a;
-$color-card: rgba(30, 41, 59, 0.75);
-$color-text: #f8fafc;
-$color-muted: #94a3b8;
-
-$gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
 
 /* =========================
    PAGE
@@ -32,9 +13,8 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
   min-height: 100vh;
   padding: 40px 20px 60px;
 
-  background: $color-bg;
+  background: var(--bg-main);
   position: relative;
-  color: $color-text;
 
   display: flex;
   justify-content: center;
@@ -67,38 +47,22 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
 }
 
 /* =========================
-   BACK BUTTON
+   BACK BUTTON (GLOBAL BTN)
 ========================= */
 .back-nav {
   margin-bottom: 24px;
 }
 
+/* 👉 HTML-ben: class="btn btn-primary back-link" */
 .back-link {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-
-  padding: 12px 18px;
-  border-radius: $radius-sm;
-
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.95rem;
-
-  color: white;
-  background: $gradient-primary;
-
-  box-shadow: 0 10px 25px rgba(14, 165, 233, 0.25);
-  transition: all 0.25s ease;
 }
 
 .back-link .arrow {
   font-size: 1.2rem;
   transition: transform 0.2s ease;
-}
-
-.back-link:hover {
-  transform: translateY(-2px);
 }
 
 .back-link:hover .arrow {
@@ -119,7 +83,7 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
   margin: 0 auto 16px;
 
   border: 3px solid rgba(14, 165, 233, 0.1);
-  border-top: 3px solid #0ea5e9;
+  border-top: 3px solid var(--primary-light);
   border-radius: 50%;
 
   animation: spin 0.8s linear infinite;
@@ -145,7 +109,7 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
 
 .meta {
   font-size: 0.85rem;
-  color: $color-muted;
+  color: var(--text-muted);
   margin-bottom: 12px;
 }
 
@@ -162,18 +126,20 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
 
 .lead {
   font-size: 1.1rem;
-  color: #cbd5e1;
+  color: var(--text-muted);
 }
 
-/* IMAGE */
+/* =========================
+   IMAGE
+========================= */
 .article-image {
   width: 100%;
   margin: 30px 0;
 
-  border-radius: $radius-md;
+  border-radius: var(--radius-lg);
   overflow: hidden;
 
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-lg);
 }
 
 .article-image img {
@@ -183,27 +149,26 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
   object-fit: cover;
 }
 
-/* BODY */
+/* =========================
+   BODY
+========================= */
 .article-body {
-  background: $color-card;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
 
   padding: 32px;
-  border-radius: $radius-md;
+  border-radius: var(--radius-lg);
 
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
 
-  box-shadow:
-    0 15px 40px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255,255,255,0.05);
+  box-shadow: var(--shadow-md);
 }
 
 /* TEXT */
 .content-text {
   font-size: 1.1rem;
   line-height: 1.8;
-  color: #e2e8f0;
+  color: var(--text-main);
   white-space: pre-wrap;
 }
 
@@ -215,24 +180,7 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
   padding: 60px 20px;
 }
 
-.btn-primary {
-  margin-top: 20px;
-
-  border: none;
-  padding: 14px 22px;
-  border-radius: $radius-sm;
-
-  background: $gradient-primary;
-  color: white;
-  font-weight: 600;
-
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-}
+/* 👉 HTML: class="btn btn-primary" */
 
 /* =========================
    ANIMATION

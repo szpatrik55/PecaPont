@@ -1,17 +1,7 @@
-/* =========================
-   ROOT / THEME
-========================= */
 :host {
-  --bg-main: #0f172a;
-  --bg-section: #111827;
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --primary-light: #0ea5e9;
-  --radius-lg: 20px;
-  --shadow-main: 0 10px 30px rgba(0, 0, 0, 0.35);
-
   display: block;
   min-height: 100vh;
+
   background: var(--bg-main);
   color: var(--text-main);
   font-family: "Inter", "Segoe UI", sans-serif;
@@ -51,6 +41,7 @@ p {
   width: 60%;
   height: 3px;
   border-radius: 10px;
+
   background: linear-gradient(
     90deg,
     var(--primary-light),
@@ -64,24 +55,25 @@ p {
 .szovegdoboz {
   width: min(1200px, 92%);
   margin: 0 auto 80px;
-  padding: 40px;
+  padding: var(--space-xl);
 
   display: grid;
   grid-template-columns: 1.2fr 1fr;
-  gap: 40px;
+  gap: var(--space-lg);
   align-items: center;
 
   border-radius: var(--radius-lg);
 
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(14px);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
 
-  box-shadow: var(--shadow-main);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg);
 }
 
 .intro-text h2 {
   font-size: 2.4rem;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-md);
 }
 
 .intro-text p {
@@ -93,8 +85,9 @@ p {
   height: 500px;
   object-fit: cover;
   object-position: center top;
-  border-radius: 18px;
-  box-shadow: var(--shadow-main);
+
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
 }
 
 /* =========================
@@ -106,27 +99,25 @@ p {
 
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 28px;
+  gap: var(--space-md);
 }
 
 .mellett {
-  padding: 32px;
+  padding: var(--space-lg);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-main);
-  transition: all 0.3s ease;
+
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-md);
+
+  transition: 0.3s;
 }
 
 .mellett:hover {
   transform: translateY(-6px);
-}
-
-.vilagos {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(14px);
-}
-
-.sotet {
-  background: var(--bg-section);
+  box-shadow: var(--shadow-lg);
 }
 
 /* =========================
@@ -136,8 +127,11 @@ footer {
   margin-top: 80px;
   padding: 60px 20px;
   text-align: center;
-  background: #020617;
+
+  background: var(--bg-surface);
   color: var(--text-muted);
+
+  border-top: 1px solid var(--glass-border);
 }
 
 footer p {
@@ -167,7 +161,7 @@ footer p {
 @media (max-width: 768px) {
   .szovegdoboz {
     grid-template-columns: 1fr;
-    padding: 24px;
+    padding: var(--space-lg);
   }
 
   .intro-text h2 {
@@ -179,6 +173,6 @@ footer p {
   }
 
   .mellett {
-    padding: 24px;
+    padding: var(--space-md);
   }
 }

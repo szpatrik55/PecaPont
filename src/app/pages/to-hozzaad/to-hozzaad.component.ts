@@ -20,6 +20,9 @@ export class ToHozzaadComponent {
   private firestore = inject(Firestore);
   private storage = inject(Storage);
 
+  fileName: string | null = null;
+  previewUrl: string | null = null;
+
   private getAlapTo() {
     return {
       nev: '',
@@ -56,9 +59,31 @@ export class ToHozzaadComponent {
   async kepFeltoltes(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
 
-    if (!input.files?.length) return;
+    if (!input.files || input.files.length === 0) return;
 
     const file = input.files[0];
+
+    // validáció
+    if (!file.type.startsWith('image/')) {
+      alert('Csak képfájl tölthető fel!');
+      return;
+    }
+
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      alert('A fájl túl nagy! Max 5MB');
+      return;
+    }
+
+    this.fileName = file.name;
+
+    // preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewUrl = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+
     const fajlNev = `${Date.now()}-${file.name}`;
     const storagePath = `lakes/${fajlNev}`;
 
@@ -72,15 +97,15 @@ export class ToHozzaadComponent {
 
       this.ujTo.kepUtvonal = storagePath;
       this.ujTo.kepUrl = downloadUrl;
+
     } catch (error) {
-      console.error('Kép feltöltési hiba:', error);
-      alert('Nem sikerült a kép feltöltése');
+      console.error(error);
+      alert('Kép feltöltési hiba');
     } finally {
       this.mentesFolyamatban.set(false);
     }
   }
 
-  // ✅ EZ LETT ÁTNEVEZVE
   async toHozzaad(): Promise<void> {
     if (!this.ujTo.nev || !this.ujTo.telepules) {
       alert('A név és a település kötelező!');
@@ -97,26 +122,25 @@ export class ToHozzaadComponent {
     try {
       const colRef = collection(this.firestore, 'lakes');
 
-      const mentesreVaroAdat = {
+      const adat = {
         ...this.ujTo,
-
         halfajok: this.ujTo.halfajok
           ? this.ujTo.halfajok.split(',').map(f => f.trim())
           : [],
-
         szabalyok: this.ujTo.szabalyok
           ? this.ujTo.szabalyok.split(',').map(s => s.trim())
           : [],
-
         ajanlott_modszerek: this.ujTo.ajanlott_modszerek
           ? this.ujTo.ajanlott_modszerek.split(',').map(m => m.trim())
           : []
       };
 
-      await addDoc(colRef, mentesreVaroAdat);
+      await addDoc(colRef, adat);
 
       alert('Sikeres mentés!');
       this.ujTo = this.getAlapTo();
+      this.fileName = null;
+      this.previewUrl = null;
 
     } catch (error) {
       console.error(error);

@@ -102,7 +102,7 @@
       <input type="date" formControlName="catchDate">
     </div>
 
-    <button type="submit" [disabled]="uploading || form.invalid">
+    <button class="btn btn-primary" type="submit" [disabled]="uploading || form.invalid">
       {{ uploading ? 'Feltöltés folyamatban...' : 'Fogás beküldése' }}
     </button>
   </form>

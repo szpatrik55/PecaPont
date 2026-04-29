@@ -24,11 +24,9 @@
         <label>Megjelenített név</label>
         <input #nameInput [value]="user.displayName" placeholder="Új név">
 
-        <button class="primary" (click)="updateName(nameInput.value)">
+        <button class="btn btn-primary" (click)="updateName(nameInput.value)">
           Név frissítése
         </button>
-
-        <p class="hint">Ez a név jelenik meg a fogásoknál.</p>
       </div>
 
       <!-- BIZTONSÁG -->
@@ -38,12 +36,8 @@
         <label>Új jelszó</label>
         <input #passwordInput type="password" placeholder="••••••••">
 
-        <button class="primary" (click)="changePassword(passwordInput.value)">
+        <button class="btn btn-primary" (click)="changePassword(passwordInput.value)">
           Jelszó módosítása
-        </button>
-
-        <button class="danger" (click)="logout()">
-          Kijelentkezés
         </button>
       </div>
 

@@ -1,27 +1,9 @@
-/* =========================
-   GLOBAL
-========================= */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+:host {
+  display: block;
+  background: var(--bg-main);
+  color: var(--text-main);
+  font-family: "Inter", "Segoe UI", sans-serif;
 }
-
-body {
-  overflow-x: hidden;
-}
-
-/* =========================
-   VARIABLES
-========================= */
-$radius-sm: 14px;
-$radius-md: 24px;
-
-$color-bg: #0f172a;
-$color-text: #f8fafc;
-$color-muted: #94a3b8;
-
-$gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
 
 /* =========================
    PAGE
@@ -30,22 +12,98 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 32px 20px 60px;
+  padding: var(--space-lg) var(--space-md) var(--space-xl);
 }
 
 /* =========================
    HERO
 ========================= */
 .hero-mini {
-  margin-bottom: 32px;
+  margin-bottom: var(--space-lg);
   text-align: center;
 }
 
 .hero-mini h1 {
   font-size: clamp(2rem, 4vw, 3.2rem);
   font-weight: 800;
-  line-height: 1.1;
   margin: 0;
+}
+
+/* =========================
+   TOOLBAR
+========================= */
+.toolbar {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  align-items: center;
+}
+
+/* =========================
+   INPUT + SELECT BASE
+========================= */
+.toolbar input,
+.toolbar select {
+  width: 100%;
+  padding: 14px 16px;
+
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-border);
+
+  background: rgba(255,255,255,0.05);
+  color: var(--text-main);
+
+  font-size: 0.95rem;
+  outline: none;
+
+  transition: 0.25s;
+}
+
+/* =========================
+   SELECT EXTRA FIX
+========================= */
+.toolbar select {
+  min-width: 220px;
+  cursor: pointer;
+
+  /* 🔥 ez segít több browsernél */
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+}
+
+/* 🔥 dropdown lista */
+.toolbar select option {
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+}
+
+/* 🔥 kijelölt elem */
+.toolbar select option:checked {
+  background-color: var(--primary);
+  color: white;
+}
+
+/* 🔥 hover (nem mindenhol működik) */
+.toolbar select option:hover {
+  background-color: var(--primary-light);
+  color: white;
+}
+
+/* =========================
+   PLACEHOLDER
+========================= */
+.toolbar input::placeholder {
+  color: var(--text-muted);
+}
+
+/* =========================
+   FOCUS
+========================= */
+.toolbar input:focus,
+.toolbar select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
 /* =========================
@@ -53,8 +111,8 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
 ========================= */
 .tavak-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-md);
 }
 
 /* =========================
@@ -62,18 +120,17 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
 ========================= */
 .to-card {
   min-height: 340px;
-  border-radius: $radius-md;
+  border-radius: var(--radius-lg);
+
   overflow: hidden;
   cursor: pointer;
   position: relative;
 
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
 
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
-
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.18);
+  box-shadow: var(--shadow-md);
+  transition: 0.3s;
 }
 
 .to-card::before {
@@ -83,28 +140,28 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
 
   background: linear-gradient(
     to top,
-    rgba(15, 23, 42, 0.92),
-    rgba(15, 23, 42, 0.15)
+    rgba(15, 23, 42, 0.85),
+    rgba(15, 23, 42, 0.1)
   );
 
-  transition: 0.3s ease;
+  transition: 0.3s;
 }
 
 .to-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--shadow-lg);
 }
 
 .to-card:hover::before {
   background: linear-gradient(
     to top,
-    rgba(15, 23, 42, 0.96),
+    rgba(15, 23, 42, 0.95),
     rgba(15, 23, 42, 0.05)
   );
 }
 
 /* =========================
-   CARD CONTENT
+   CONTENT
 ========================= */
 .card-overlay {
   position: absolute;
@@ -115,100 +172,44 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
   flex-direction: column;
   justify-content: space-between;
 
-  padding: 24px;
+  padding: var(--space-md);
 }
 
 .card-content {
   margin-top: auto;
 }
 
+/* BADGE */
 .lake-badge {
   width: fit-content;
-  padding: 8px 14px;
-  border-radius: 999px;
+  padding: 6px 12px;
 
-  font-size: 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
   font-weight: 600;
 
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(10px);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
 
-  color: white;
+  color: var(--text-main);
 }
 
+/* TEXT */
 .card-content h3 {
   font-size: clamp(1.3rem, 2vw, 1.8rem);
   margin-bottom: 8px;
-  color: white;
 }
 
 .card-content p {
-  color: #cbd5e1;
-  margin-bottom: 18px;
+  color: var(--text-muted);
+  margin-bottom: var(--space-sm);
   font-size: 1rem;
 }
 
-/* BUTTON */
-.view-btn {
-  border: none;
-  padding: 12px 18px;
-  border-radius: $radius-sm;
-
-  background: $gradient-primary;
-  color: white;
-  font-weight: 600;
-
-  cursor: pointer;
-  transition: 0.25s ease;
-}
-
-.view-btn:hover {
-  transform: translateY(-2px);
-}
-
-/* =========================
-   TOOLBAR
-========================= */
-.toolbar {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 28px;
-  align-items: center;
-}
-
-.toolbar input,
-.toolbar select {
-  padding: 14px 16px;
-  border-radius: 16px;
-
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(45, 45, 45, 0.96);
-  color: $color-text;
-
-  font-size: 0.95rem;
-  outline: none;
-
-  transition: all 0.25s ease;
-}
-
-.toolbar input {
-  flex: 1;
-  min-width: 0;
-}
-
-.toolbar select {
-  min-width: 220px;
-  cursor: pointer;
-}
-
-.toolbar input::placeholder {
-  color: $color-muted;
-}
-
-.toolbar input:focus,
-.toolbar select:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+/* 👉 GLOBAL BUTTON */
+.card-content .btn {
+  width: fit-content;
 }
 
 /* =========================
@@ -216,8 +217,7 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
 ========================= */
 @media (max-width: 768px) {
   .toolbar {
-    flex-direction: column;
-    align-items: stretch;
+    grid-template-columns: 1fr; /* 🔥 EZ A LÉNYEG */
   }
 
   .toolbar input,
@@ -225,16 +225,11 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
     width: 100%;
   }
 
-  .toolbar select {
-    min-width: 0;
-  }
-
   .tavak-page {
-    padding: 20px 16px 40px;
+    padding: var(--space-md);
   }
 
   .tavak-grid {
-    gap: 18px;
     grid-template-columns: 1fr;
   }
 
@@ -243,16 +238,11 @@ $gradient-primary: linear-gradient(135deg, #0ea5e9, #2563eb);
   }
 
   .card-overlay {
-    padding: 18px;
+    padding: var(--space-sm);
   }
 }
 
-/* SMALL MOBILE */
 @media (max-width: 480px) {
-  .tavak-grid {
-    grid-template-columns: 1fr;
-  }
-
   .to-card {
     min-height: 240px;
   }
