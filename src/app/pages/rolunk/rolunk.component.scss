@@ -121,24 +121,6 @@ p {
 }
 
 /* =========================
-   FOOTER
-========================= */
-footer {
-  margin-top: 80px;
-  padding: 60px 20px;
-  text-align: center;
-
-  background: var(--bg-surface);
-  color: var(--text-muted);
-
-  border-top: 1px solid var(--glass-border);
-}
-
-footer p {
-  line-height: 1.9;
-}
-
-/* =========================
    TABLET
 ========================= */
 @media (max-width: 1024px) {
