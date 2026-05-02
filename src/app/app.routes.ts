@@ -5,15 +5,15 @@ import { ToListaComponent } from './pages/tavak/tavak.component';
 import { ToReszletekComponent } from './pages/to-reszletek/to-reszletek.component';
 import { HirekComponent } from './pages/hirek/hirek.component';
 import { VersenyekComponent } from './pages/versenyek/versenyek.component';
-import { GalleryComponent } from './pages/fogasok/galeria.component';
-import { GalleryUploadComponent } from './pages/fogasok/gallery-upload.component';
+import { GaleriaComponent } from './pages/fogasok/galeria.component';
+import { GaleriaFeltoltoComponent } from './pages/fogasok/gallery-upload.component';
 import { RolunkComponent } from './pages/rolunk/rolunk.component';
 import { RegisztracioComponent } from './pages/regisztracio/regisztracio.component';
 import { BejelentkezesComponent } from './pages/bejelentkezes/bejelentkezes.component';
 import { ProfilComponent } from './pages/profil/profil.component';
 import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
-import { NewsEditorComponent } from './pages/hirek-szerkeszto/hirek-szerkeszto.component';
+import { HirekSzerkesztoComponent } from './pages/hirek-szerkeszto/hirek-szerkeszto.component';
 import { HirReszletekComponent } from './pages/hir-reszletek/hir-reszletek.component';
 import { ToHozzaadComponent } from './pages/to-hozzaad/to-hozzaad.component';
 
@@ -27,12 +27,12 @@ export const routes: Routes = [
   { path: 'hirek', component: HirekComponent },
   { path: 'hirek/:id', component: HirReszletekComponent },
 
-  { path: 'hirek-szerkeszto', component: NewsEditorComponent, canActivate: [authGuard] },
+  { path: 'hirek-szerkeszto', component: HirekSzerkesztoComponent, canActivate: [authGuard] },
 
   { path: 'versenyek', component: VersenyekComponent },
 
-  { path: 'galeria', component: GalleryComponent },
-  { path: 'kepfeltoltes', component: GalleryUploadComponent, canActivate: [authGuard] },
+  { path: 'galeria', component: GaleriaComponent },
+  { path: 'kepfeltoltes', component: GaleriaFeltoltoComponent, canActivate: [authGuard] },
 
   { path: 'rolunk', component: RolunkComponent },
 

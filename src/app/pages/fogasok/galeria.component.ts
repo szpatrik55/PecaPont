@@ -11,13 +11,13 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { GalleryPost } from '../../models/gallery-post';
 
 @Component({
-  selector: 'app-gallery',
+  selector: 'app-galeria',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './galeria.component.html',
   styleUrl: './galeria.component.scss'
 })
-export class GalleryComponent implements OnInit, OnDestroy {
+export class GaleriaComponent implements OnInit, OnDestroy {
 
   private firestore = inject(Firestore);
   private zone = inject(NgZone);

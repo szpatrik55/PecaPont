@@ -10,7 +10,7 @@ import { NewsService } from '../../services/news';
   templateUrl: './hirek-szerkeszto.component.html',
   styleUrls: ['./hirek-szerkeszto.component.scss']
 })
-export class NewsEditorComponent {
+export class HirekSzerkesztoComponent {
   private newsService = inject(NewsService);
 
   article = {

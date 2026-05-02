@@ -12,7 +12,7 @@ import { GalleryService } from '../../services/gallery';
   templateUrl: './gallery-upload.component.html',
   styleUrl: './gallery-upload.component.scss'
 })
-export class GalleryUploadComponent implements OnInit {
+export class GaleriaFeltoltoComponent implements OnInit {
 
   private fb = inject(FormBuilder);
   private auth = inject(Auth);
