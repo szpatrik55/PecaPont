@@ -1,206 +1,239 @@
 :host {
+  --transition-fast: 0.2s ease;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --modal-bg: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+  --primary-gradient: linear-gradient(135deg, var(--primary-light, #3b82f6), var(--primary, #2563eb));
+  
   display: block;
   font-family: 'Inter', sans-serif;
+  color: var(--text-main);
 }
 
 /* =========================
-   PAGE
+   LAYOUT & CONTAINERS
 ========================= */
 .profile-page {
   min-height: 100vh;
   padding: var(--space-xl) var(--space-md);
-
   display: flex;
   justify-content: center;
-
-  background: radial-gradient(
-    circle at top,
-    rgba(37, 99, 235, 0.15),
-    transparent 60%
-  );
+  background: linear-gradient(135deg, var(--bg-main), var(--bg-surface));
 }
 
 .profile-wrapper {
   width: 100%;
-  max-width: 1200px;
-}
-
-/* =========================
-   HEADER
-========================= */
-.profile-header-card {
+  max-width: 1000px;
   display: flex;
-  align-items: center;
-  gap: var(--space-md);
-
-  width: 100%;
-  padding: var(--space-lg);
-  margin-bottom: var(--space-lg);
-
-  border-radius: var(--radius-lg);
-
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-
-  border: 1px solid var(--glass-border);
-}
-
-/* =========================
-   AVATAR
-========================= */
-.avatar {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 1.8rem;
-  font-weight: bold;
-
-  background: linear-gradient(
-    135deg,
-    var(--primary-light),
-    var(--primary)
-  );
-
-  color: white;
-}
-
-/* =========================
-   USER
-========================= */
-.user-info h1 {
-  margin: 0;
-  font-size: 1.6rem;
-  color: var(--text-main);
-}
-
-.user-info p {
-  margin: 4px 0 0;
-  color: var(--text-muted);
-}
-
-/* =========================
-   GRID
-========================= */
-.profile-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  flex-direction: column;
   gap: var(--space-lg);
 }
 
-/* =========================
-   CARD
-========================= */
-.profile-card {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+}
 
-  border-radius: var(--radius-lg);
-  padding: var(--space-lg);
-
+/* Common Card Style */
+.profile-header-card, 
+.profile-card,
+.post {
+  background: var(--bg-card);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-md);
 }
 
-.profile-card h2 {
-  margin-bottom: var(--space-sm);
-  font-size: 1.2rem;
-  color: var(--text-main);
+.profile-header-card,
+.profile-card {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.profile-header-card {
+  flex-direction: row;
+  align-items: center;
 }
 
 /* =========================
-   INPUT
+   USER ELEMENTS
 ========================= */
-.profile-card input {
-  width: 100%;
-  padding: 12px;
-  margin-top: 6px;
-  margin-bottom: 12px;
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  background: var(--primary-gradient);
+  color: white;
+  flex-shrink: 0;
+}
 
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-info h1 { font-size: 1.125rem; margin: 0; }
+.user-info p { font-size: 0.825rem; color: var(--text-muted); margin: 0; }
+
+/* =========================
+   FORMS & INPUTS
+========================= */
+form, .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.form-group { gap: 6px; }
+
+label {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 12px 14px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--glass-border);
-
-  background: rgba(255,255,255,0.05);
-  color: var(--text-main);
-
-  outline: none;
-  transition: 0.25s;
-}
-
-.profile-card input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
-}
-
-/* =========================
-   BUTTON (GLOBAL)
-========================= */
-.profile-card .btn {
-  width: 100%;
-}
-
-.profile-card .btn-danger {
-  margin-top: var(--space-sm);
-}
-
-/* 👉 HTML:
-   class="btn btn-primary"
-   class="btn btn-danger"
-*/
-
-/* =========================
-   HINT
-========================= */
-.hint {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin-top: var(--space-sm);
-}
-
-/* =========================
-   STATS
-========================= */
-.profile-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-md);
-  margin-top: var(--space-lg);
-}
-
-.stat {
-  padding: var(--space-md);
-  border-radius: var(--radius-md);
-
   background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-
-  text-align: center;
+  color: inherit;
+  font-size: 14px;
+  transition: all var(--transition-fast);
+  outline: none;
 }
 
-.stat h3 {
-  margin: 0;
-  font-size: 1.4rem;
-  color: var(--text-main);
+input, select { height: 44px; }
+textarea { min-height: 100px; resize: vertical; }
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* =========================
-   MOBILE
+   POSTS GRID
+========================= */
+.my-posts {
+  align-items: stretch;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: var(--space-md);
+}
+
+.post {
+  height: 100%;
+  overflow: hidden;
+  transition: transform var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.post img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.post-info {
+  padding: var(--space-sm);
+  text-align: center;
+
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.button-row {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: auto;
+}
+
+.button-row .btn {
+  flex: 1;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.btn-primary {
+  height: 44px;
+  padding: 0 var(--space-md);
+  background: var(--primary-gradient);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+}
+
+/* =========================
+   MODAL & LIGHTBOX
+========================= */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.25s ease;
+}
+
+.modal {
+  position: relative;
+  width: 90%;
+  max-width: 600px;
+  padding: var(--space-xl);
+  background: var(--modal-bg);
+  backdrop-filter: blur(30px);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* =========================
+   RESPONSIVE
 ========================= */
 @media (max-width: 768px) {
-  .profile-grid {
-    grid-template-columns: 1fr;
-  }
+  .profile-grid { grid-template-columns: 1fr; }
+  .profile-header-card { flex-direction: column; text-align: center; }
+  .button-row { flex-direction: column; }
+  .btn { width: 100%; }
+}
 
-  .profile-header-card {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .profile-stats {
-    grid-template-columns: 1fr;
-  }
+/* ANIMATIONS */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
 }

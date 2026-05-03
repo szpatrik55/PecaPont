@@ -21,7 +21,7 @@ export interface GalleryPost {
   imageUrl: string;
 
   uid: string;
-  userName?: string;
+  username?: string;
 
   createdAt: any;
 }

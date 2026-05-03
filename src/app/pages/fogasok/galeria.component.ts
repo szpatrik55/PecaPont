@@ -1,4 +1,11 @@
-import { Component, inject, OnInit, NgZone, OnDestroy } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  NgZone,
+  OnDestroy,
+  HostListener
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   Firestore,
@@ -27,7 +34,11 @@ export class GaleriaComponent implements OnInit, OnDestroy {
 
   private unsubscribe: any;
 
+  posts: GalleryPost[] = [];
   selectedPost: GalleryPost | null = null;
+  currentIndex = 0;
+
+  touchStartX = 0;
 
   ngOnInit(): void {
     this.zone.runOutsideAngular(() => {
@@ -51,14 +62,14 @@ export class GaleriaComponent implements OnInit, OnDestroy {
               bait: data.bait || '',
               method: data.method || '',
               timeOfDay: data.timeOfDay || '',
-              released: data.released || false,
               imageUrl: data.imageUrl || '',
               createdAt: data.createdAt,
-
+              username: data.username || 'Ismeretlen horgász',
               uid: data.uid || ''
             } as GalleryPost;
           });
 
+          this.posts = posts;
           this.postsSubject.next(posts);
         });
       });
@@ -70,12 +81,48 @@ export class GaleriaComponent implements OnInit, OnDestroy {
   }
 
   openPost(post: GalleryPost) {
-    this.selectedPost = post;
+    this.currentIndex = this.posts.findIndex(p => p.id === post.id);
+    this.selectedPost = this.posts[this.currentIndex];
     document.body.style.overflow = 'hidden';
   }
 
   closePost() {
     this.selectedPost = null;
     document.body.style.overflow = 'auto';
+  }
+
+  next() {
+    this.currentIndex = (this.currentIndex + 1) % this.posts.length;
+    this.selectedPost = this.posts[this.currentIndex];
+  }
+
+  prev() {
+    this.currentIndex =
+      (this.currentIndex - 1 + this.posts.length) % this.posts.length;
+    this.selectedPost = this.posts[this.currentIndex];
+  }
+
+  // 🔥 Keyboard navigation
+  @HostListener('document:keydown', ['$event'])
+  handleKey(event: KeyboardEvent) {
+    if (!this.selectedPost) return;
+
+    if (event.key === 'ArrowRight') this.next();
+    if (event.key === 'ArrowLeft') this.prev();
+    if (event.key === 'Escape') this.closePost();
+  }
+
+  // 📱 Swipe
+  onTouchStart(e: TouchEvent) {
+    this.touchStartX = e.touches[0].clientX;
+  }
+
+  onTouchEnd(e: TouchEvent) {
+    const diff = e.changedTouches[0].clientX - this.touchStartX;
+
+    if (Math.abs(diff) < 50) return;
+
+    if (diff < 0) this.next();
+    else this.prev();
   }
 }

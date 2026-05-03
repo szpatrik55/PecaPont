@@ -17,11 +17,13 @@
       <div class="meta">
         <p class="water">🌊 {{ post.water }}</p>
 
-        <p class="stat" *ngIf="post.fishGroup === 'Békés halak' || post.fishGroup === 'Teríték fotó' && post.weight">
+        <p class="stat"
+           *ngIf="(post.fishGroup === 'Békés halak' || post.fishGroup === 'Teríték fotó') && post.weight">
           ⚖️ {{ post.weight }} kg
         </p>
 
-        <p class="stat" *ngIf="post.fishGroup === 'Ragadozó halak' && post.length">
+        <p class="stat"
+           *ngIf="post.fishGroup === 'Ragadozó halak' && post.length">
           📏 {{ post.length }} cm
         </p>
       </div>
@@ -31,30 +33,39 @@
 
 </div>
 
-<div class="lightbox" *ngIf="selectedPost" (click)="closePost()">
+<!-- LIGHTBOX -->
+<div class="lightbox"
+     *ngIf="selectedPost"
+     (click)="closePost()"
+     (touchstart)="onTouchStart($event)"
+     (touchend)="onTouchEnd($event)">
 
   <div class="modal" (click)="$event.stopPropagation()">
 
-    <img [src]="selectedPost.imageUrl">
+    <button class="close" (click)="closePost()">✕</button>
+
+    <img [src]="selectedPost.imageUrl" (click)="closePost()">
+
+    <!-- NAV -->
+    <button class="nav prev" (click)="prev(); $event.stopPropagation()">❮</button>
+    <button class="nav next" (click)="next(); $event.stopPropagation()">❯</button>
 
     <div class="details">
       <h2>{{ selectedPost.title }}</h2>
 
       <p>{{ selectedPost.description }}</p>
 
-      <p>🌊 {{ selectedPost.water }}</p>
-      <p *ngIf="selectedPost.species">🐟 {{ selectedPost.species }}</p>
+      <p>Vízterület: {{ selectedPost.water }}</p>
+      <p *ngIf="selectedPost.species">Halfaj: {{ selectedPost.species }}</p>
 
-      <p *ngIf="selectedPost.weight">⚖️ {{ selectedPost.weight }} kg</p>
-      <p *ngIf="selectedPost.length">📏 {{ selectedPost.length }} cm</p>
+      <p *ngIf="selectedPost.weight">Súly: {{ selectedPost.weight }} kg</p>
+      <p *ngIf="selectedPost.length">Hossz: {{ selectedPost.length }} cm</p>
 
-      <p *ngIf="selectedPost.bait">🪱 {{ selectedPost.bait }}</p>
-      <p *ngIf="selectedPost.method">🎣 {{ selectedPost.method }}</p>
-      <p *ngIf="selectedPost.timeOfDay">🕒 {{ selectedPost.timeOfDay }}</p>
+      <p *ngIf="selectedPost.bait">Csali: {{ selectedPost.bait }}</p>
+      <p *ngIf="selectedPost.method">Módszer: {{ selectedPost.method }}</p>
+      <p *ngIf="selectedPost.timeOfDay">Napszak: {{ selectedPost.timeOfDay }}</p>
 
-      <p *ngIf="selectedPost.released" class="released">
-        ♻️ Visszaengedve
-      </p>
+      <p *ngIf="selectedPost.username">Horgász: {{ selectedPost.username }}</p>
     </div>
 
   </div>

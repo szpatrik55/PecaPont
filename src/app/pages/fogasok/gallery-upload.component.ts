@@ -2,8 +2,16 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Auth } from '@angular/fire/auth';
-import { Timestamp } from '@angular/fire/firestore';
+import { Timestamp, Firestore, doc, getDoc } from '@angular/fire/firestore';
 import { GalleryService } from '../../services/gallery';
+
+/* 🔥 CONFIG IMPORT */
+import {
+  FISH_CATEGORIES,
+  METHOD_OPTIONS,
+  BAIT_OPTIONS,
+  TIME_OPTIONS
+} from '../../config/fogas-adatok';
 
 @Component({
   selector: 'app-kepfeltoltes',
@@ -14,6 +22,7 @@ import { GalleryService } from '../../services/gallery';
 })
 export class GaleriaFeltoltoComponent implements OnInit {
 
+  private firestore = inject(Firestore);
   private fb = inject(FormBuilder);
   private auth = inject(Auth);
   private galleryService = inject(GalleryService);
@@ -23,19 +32,15 @@ export class GaleriaFeltoltoComponent implements OnInit {
   previewUrl: string | null = null;
   uploading = false;
 
-  fishCategories: { [key: string]: string[] } = {
-    'Békés halak': ['Ponty', 'Amur', 'Dévérkeszeg', 'Kárász', 'Compó'],
-    'Ragadozó halak': ['Csuka', 'Süllő', 'Harcsa', 'Balin', 'Sügér'],
-    'Teríték fotó': ['Békés halak', 'Ragadozó halak', 'Vegyes fogás'],
-    'Egyéb': ['Törpeharcsa', 'Angolna', 'Tokhal']
-  };
+  // 🔥 CONFIG HASZNÁLAT
+  fishCategories = FISH_CATEGORIES;
+  fishCategoryKeys = Object.keys(FISH_CATEGORIES);
 
-  methodOptions = ['Feeder', 'Method', 'Spicc', 'Pergetés', 'Fenék', 'Úszós'];
-  baitOptions = ['Kukorica', 'Bojli', 'Giliszta', 'Műcsali', 'Wobbler', 'Pellet'];
-  timeOptions = ['Reggel', 'Délután', 'Este', 'Éjszaka'];
+  methodOptions = METHOD_OPTIONS;
+  baitOptions = BAIT_OPTIONS;
+  timeOptions = TIME_OPTIONS;
 
   selectedFishList: string[] = [];
-  fishCategoryKeys = Object.keys(this.fishCategories);
 
   ngOnInit() {
     this.initForm();
@@ -50,7 +55,6 @@ export class GaleriaFeltoltoComponent implements OnInit {
       fishGroup: ['', Validators.required],
       species: ['', Validators.required],
 
-      // ❗ már NEM kötelező alapból
       weight: [null],
       length: [null],
 
@@ -58,9 +62,9 @@ export class GaleriaFeltoltoComponent implements OnInit {
       method: [''],
       catchDate: [new Date().toISOString().substring(0, 10), Validators.required],
       timeOfDay: [''],
-      released: [false]
     });
 
+    // 🔥 DINAMIKUS HALFaj + VALIDÁCIÓ
     this.form.get('fishGroup')?.valueChanges.subscribe(group => {
       this.selectedFishList = this.fishCategories[group] || [];
       this.form.get('species')?.setValue('');
@@ -129,16 +133,24 @@ export class GaleriaFeltoltoComponent implements OnInit {
 
       const imageUrl = await this.galleryService.uploadImage(this.selectedFile, user.uid);
 
+      // 🔥 USERNAME FIRESTORE-BÓL
+      const userDoc = await getDoc(doc(this.firestore, 'users', user.uid));
+
+      let username = 'Névtelen horgász';
+
+      if (userDoc.exists()) {
+        username = userDoc.data()['username'] || username;
+      }
+
       const postData = {
         ...this.form.value,
 
-        // 🔥 csak akkor mentjük, ha van
         weight: this.form.value.weight ? Number(this.form.value.weight) : null,
         length: this.form.value.length ? Number(this.form.value.length) : null,
 
         imageUrl,
         uid: user.uid,
-        userName: user.displayName || 'Névtelen horgász',
+        username: username,
         createdAt: Timestamp.now()
       };
 
