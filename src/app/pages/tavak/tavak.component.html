@@ -1,10 +1,13 @@
 <div class="tavak-page">
+
   <section class="hero-mini">
     <h1>Fedezd fel Magyarország legjobb horgásztavait</h1>
   </section>
 
   <div class="toolbar">
+
     <input
+      class="input"
       type="text"
       placeholder="Keresés név, település vagy típus szerint..."
       [ngModel]="keresoSzoveg()"
@@ -12,30 +15,33 @@
     />
 
     <select
+      class="input"
       [ngModel]="rendezes()"
       (ngModelChange)="rendezes.set($event)"
     >
       <option value="nev">Név szerint</option>
       <option value="telepules">Település szerint</option>
-      <option value="tipus">Típus szerint</option> <!-- 👈 ÚJ -->
+      <option value="tipus">Típus szerint</option>
     </select>
+
   </div>
 
   <section class="tavak-grid">
+
     @for (to of rendezettTavak(); track to.id) {
+
       <div
-        class="to-card"
+        class="to-card card"
         [routerLink]="['/tavak', to.id]"
-        (click)="novelMegtekintes(to.id)"
-        [ngStyle]="{
-          'background-image':
-            'linear-gradient(rgba(15,23,42,0.25), rgba(15,23,42,0.85)), url(' +
-            (to.kepUrl || 'assets/images/fallback-lake.jpg') +
-            ')'
-        }"
+        (click)="novelMegtekintes(to.id); $event.stopPropagation()"
+        [style.background-image]="'url(' + (to.kepUrl || 'assets/images/fallback-lake.jpg') + ')'"
       >
+
         <div class="card-overlay">
-          <span class="lake-badge">{{ to.tipus }}</span> <!-- 👈 megjelenítés -->
+
+          <span class="lake-badge">
+            {{ to.tipus }}
+          </span>
 
           <div class="card-content">
             <h3>{{ to.nev }}</h3>

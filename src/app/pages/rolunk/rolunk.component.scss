@@ -4,31 +4,18 @@
 
   background: var(--bg-main);
   color: var(--text-main);
-  font-family: "Inter", "Segoe UI", sans-serif;
-}
-
-/* =========================
-   GLOBAL
-========================= */
-* {
-  box-sizing: border-box;
-}
-
-p {
-  line-height: 1.8;
-  margin: 0;
 }
 
 /* =========================
    PAGE TITLE
 ========================= */
 .page-title {
-  padding: 80px 20px 40px;
+  padding: var(--space-xl) var(--space-md);
   text-align: center;
 }
 
 .page-title h1 {
-  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  font-size: clamp(2.5rem, 5vw, 4rem);
   position: relative;
   display: inline-block;
 }
@@ -37,7 +24,7 @@ p {
   content: "";
   position: absolute;
   left: 20%;
-  bottom: -10px;
+  bottom: -8px;
   width: 60%;
   height: 3px;
   border-radius: 10px;
@@ -50,39 +37,36 @@ p {
 }
 
 /* =========================
-   INTRO SECTION
+   INTRO
 ========================= */
+/* 👉 HTML: class="szovegdoboz card" */
 .szovegdoboz {
   width: min(1200px, 92%);
-  margin: 0 auto 80px;
+  margin: 0 auto var(--space-xl);
+
   padding: var(--space-xl);
 
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   gap: var(--space-lg);
   align-items: center;
-
-  border-radius: var(--radius-lg);
-
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-lg);
 }
 
 .intro-text h2 {
-  font-size: 2.4rem;
+  font-size: 2.2rem;
   margin-bottom: var(--space-md);
 }
 
 .intro-text p {
-  font-size: 1.05rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-muted);
 }
 
 .intro-image img {
   width: 100%;
-  height: 500px;
+  height: 480px;
+
   object-fit: cover;
   object-position: center top;
 
@@ -95,23 +79,16 @@ p {
 ========================= */
 .egymasmellett {
   width: min(1200px, 92%);
-  margin: 0 auto 60px;
+  margin: 0 auto var(--space-lg);
 
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-md);
 }
 
+/* 👉 HTML: class="mellett card" */
 .mellett {
   padding: var(--space-lg);
-  border-radius: var(--radius-lg);
-
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-md);
-
   transition: 0.3s;
 }
 
@@ -124,6 +101,7 @@ p {
    TABLET
 ========================= */
 @media (max-width: 1024px) {
+
   .szovegdoboz {
     grid-template-columns: 1fr;
   }
@@ -133,7 +111,7 @@ p {
   }
 
   .intro-image img {
-    height: 400px;
+    height: 380px;
   }
 }
 
@@ -141,20 +119,36 @@ p {
    MOBILE
 ========================= */
 @media (max-width: 768px) {
+
+  .page-title {
+    padding: var(--space-lg) var(--space-md);
+  }
+
   .szovegdoboz {
-    grid-template-columns: 1fr;
     padding: var(--space-lg);
+    gap: var(--space-md);
   }
 
   .intro-text h2 {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .intro-image img {
-    height: 320px;
+    height: 300px;
   }
 
   .mellett {
     padding: var(--space-md);
+  }
+}
+
+@media (max-width: 480px) {
+
+  .page-title h1 {
+    font-size: 2rem;
+  }
+
+  .intro-image img {
+    height: 260px;
   }
 }

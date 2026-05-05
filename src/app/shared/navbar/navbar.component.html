@@ -35,10 +35,10 @@
 
       <!-- ADMIN -->
       @if (isAdmin$ | async) {
-        <a routerLink="/admin">Admin</a>
+        <a routerLink="/admin" (click)="closeMenu()">Admin</a>
       }
 
-      <button class="logout-btn" (click)="logout()">
+      <button class="logout-btn" (click)="logout(); closeMenu()">
         Kijelentkezés
       </button>
 

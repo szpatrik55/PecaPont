@@ -1,11 +1,10 @@
 <div *ngIf="auth.user$ | async as user">
 
   <div class="profile-page">
-
     <div class="profile-wrapper">
 
       <!-- HEADER -->
-      <div class="profile-header-card">
+      <div class="profile-header-card card">
         <div class="avatar">
           {{ (userData?.username || user.email)?.charAt(0) }}
         </div>
@@ -24,7 +23,8 @@
           <h2>Profil adatok</h2>
 
           <label>Felhasználónév</label>
-          <input #nameInput
+          <input class="input"
+                 #nameInput
                  [value]="userData?.username"
                  placeholder="Új felhasználónév">
 
@@ -35,11 +35,12 @@
         </div>
 
         <!-- BIZTONSÁG -->
-        <div class="profile-card">
+        <div class="profile-card card">
           <h2>Biztonság</h2>
 
           <label>Új jelszó</label>
-          <input #passwordInput
+          <input class="input"
+                 #passwordInput
                  type="password"
                  placeholder="••••••••">
 
@@ -52,50 +53,52 @@
       </div>
 
       <!-- SAJÁT POSZTOK -->
-      <div class="profile-card">
+      <div class="profile-card card">
         <h2>Saját fogásaim</h2>
 
-        <!-- ha nincs poszt -->
         <p *ngIf="myPosts.length === 0">
           Nincs még feltöltött fogásod.
         </p>
 
-        <!-- LISTA -->
         <div class="my-posts">
-          <div class="post" *ngFor="let post of myPosts">
 
-            <!-- KÉP -->
+          <div class="post card" *ngFor="let post of myPosts">
+
             <img
               [src]="post.imageUrl || 'assets/no-image.jpg'"
               alt="kép"
             >
 
-            <!-- INFO -->
             <div class="post-info">
               <h4>{{ post.title }}</h4>
 
-              <button class="btn btn-primary"
-                (click)="openEdit(post)">
-                Szerkesztés
-              </button>
-              
-              <button class="btn btn-danger"
-                (click)="deletePost(post.id)">
-                Törlés
-              </button>
+              <div class="button-row">
+                <button class="btn btn-primary"
+                        (click)="openEdit(post)">
+                  Szerkesztés
+                </button>
+
+                <button class="btn btn-danger"
+                        (click)="deletePost(post.id)">
+                  Törlés
+                </button>
+              </div>
+
             </div>
 
           </div>
+
         </div>
 
       </div>
 
     </div>
-
   </div>
 
 </div>
 
+
+<!-- MODAL -->
 <div class="lightbox" *ngIf="editingPost" (click)="closeEdit()">
 
   <div class="modal" (click)="$event.stopPropagation()">
@@ -104,52 +107,54 @@
 
     <form [formGroup]="editForm" (ngSubmit)="saveEdit()">
 
-      <input type="text" placeholder="Cím" formControlName="title">
+      <input class="input" type="text" placeholder="Cím" formControlName="title">
 
-      <textarea placeholder="Leírás" formControlName="description"></textarea>
+      <textarea class="input" placeholder="Leírás" formControlName="description"></textarea>
 
-      <select formControlName="fishGroup">
+      <select class="input" formControlName="fishGroup">
         <option value="">Kategória</option>
         <option *ngFor="let g of fishCategoryKeys" [value]="g">
           {{ g }}
         </option>
       </select>
 
-      <select formControlName="species">
+      <select class="input" formControlName="species">
         <option value="">Halfaj</option>
         <option *ngFor="let f of selectedFishList" [value]="f">
           {{ f }}
         </option>
       </select>
 
-      <input *ngIf="editForm.get('fishGroup')?.value === 'Békés halak'"
+      <input class="input"
+             *ngIf="editForm.get('fishGroup')?.value === 'Békés halak'"
              type="number"
              formControlName="weight"
              placeholder="Súly">
 
-      <input *ngIf="editForm.get('fishGroup')?.value === 'Ragadozó halak'"
+      <input class="input"
+             *ngIf="editForm.get('fishGroup')?.value === 'Ragadozó halak'"
              type="number"
              formControlName="length"
              placeholder="Hossz">
 
-      <input type="text" formControlName="water" placeholder="Víz">
+      <input class="input" type="text" formControlName="water" placeholder="Víz">
 
-      <select formControlName="bait">
+      <select class="input" formControlName="bait">
         <option value="">Csali</option>
         <option *ngFor="let b of baitOptions" [value]="b">{{ b }}</option>
       </select>
 
-      <select formControlName="method">
+      <select class="input" formControlName="method">
         <option value="">Módszer</option>
         <option *ngFor="let m of methodOptions" [value]="m">{{ m }}</option>
       </select>
 
-      <select formControlName="timeOfDay">
+      <select class="input" formControlName="timeOfDay">
         <option value="">Napszak</option>
         <option *ngFor="let t of timeOptions" [value]="t">{{ t }}</option>
       </select>
 
-      <input type="date" formControlName="catchDate">
+      <input class="input" type="date" formControlName="catchDate">
 
       <button class="btn btn-primary" type="submit">
         Mentés

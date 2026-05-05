@@ -1,4 +1,4 @@
-<div class="auth-container">
+<div class="auth-container card" >
     <h2>Bejelentkezés</h2>
 
     <form (ngSubmit)="login()" novalidate>
@@ -12,6 +12,7 @@
 
         <div class="input-group">
             <input
+                class="input"
                 type="email"
                 name="email"
                 placeholder="Email"
@@ -25,6 +26,7 @@
 
         <div class="input-group">
             <input
+                class="input"
                 type="password"
                 name="password"
                 placeholder="Jelszó"
@@ -36,7 +38,7 @@
             />
         </div>
 
-        <button type="submit" [disabled]="isLoading" class="login-btn">
+        <button type="submit" [disabled]="isLoading" class="btn btn-primary">
             <span *ngIf="!isLoading">Bejelentkezés</span>
             <span *ngIf="isLoading" class="loading-state">
                 <span class="spinner"></span> Kérlek várj...
@@ -47,7 +49,7 @@
 
     <div class="divider">vagy</div>
 
-    <button type="button" class="google-btn" (click)="google()" [disabled]="isLoading">
+    <button type="button" class="btn btn-primary" (click)="google()" [disabled]="isLoading">
         <img src="assets/google-icon.svg" alt="" *ngIf="!isLoading">
         <span>Google fiók használata</span>
     </button>

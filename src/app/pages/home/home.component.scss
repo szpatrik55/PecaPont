@@ -1,24 +1,23 @@
 :host {
   display: block;
+  min-height: 100vh;
+
   background: var(--bg-main);
   color: var(--text-main);
-  font-family: "Inter", "Segoe UI", sans-serif;
 }
 
 /* =========================
-   GLOBAL ELEMENTS
+   GLOBAL SECTIONS
 ========================= */
 section {
-  padding: clamp(60px, 8vw, 100px) clamp(20px, 8vw, 120px);
+  padding: var(--space-xl) var(--space-lg);
 }
 
 section + section {
   border-top: 1px solid rgba(255, 255, 255, 0.03);
 }
 
-h1,
-h2,
-h3 {
+h1, h2, h3 {
   margin: 0;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -26,7 +25,7 @@ h3 {
 
 h2 {
   font-size: 2rem;
-  margin-bottom: 40px;
+  margin-bottom: var(--space-lg);
   position: relative;
   display: inline-block;
 }
@@ -35,7 +34,7 @@ h2::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -8px;
+  bottom: -6px;
   width: 60%;
   height: 3px;
   border-radius: 10px;
@@ -48,7 +47,7 @@ h2::after {
 
 p {
   line-height: 1.7;
-  opacity: 0.95;
+  color: var(--text-muted);
 }
 
 img {
@@ -56,24 +55,24 @@ img {
 }
 
 /* =========================
-   LAYOUT HELPERS / GRIDS
+   GRID HELPERS
 ========================= */
 .card-container,
 .lake-cards,
 .news-preview {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-  gap: clamp(16px, 2vw, 28px);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-lg);
 }
 
 .gallery-preview {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: clamp(18px, 2.5vw, 32px);
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-lg);
 }
 
 /* =========================
-   HERO SECTION
+   HERO
 ========================= */
 .hero {
   min-height: 90vh;
@@ -83,81 +82,55 @@ img {
   text-align: center;
 
   background:
-    linear-gradient(rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.75)),
+    linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.8)),
     url("/assets/images/hero/hero4.png");
 
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
-
-  animation: heroZoom 18s ease-in-out infinite alternate;
 }
 
 .hero-content {
   width: min(760px, 92%);
-  padding: clamp(28px, 4vw, 56px);
-  border-radius: var(--radius-lg);
-
-  backdrop-filter: var(--glass-blur);
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-
-  box-shadow: var(--shadow-lg);
+  padding: var(--space-xl);
 }
+
+/* 👉 HTML: class="hero-content card" */
 
 .hero h1 {
-  font-size: clamp(3rem, 6vw, 5rem);
-  margin-bottom: 20px;
-}
-
-.hero h2 {
-  margin-bottom: 18px;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  margin-bottom: var(--space-md);
 }
 
 .hero p {
-  max-width: 60ch;
-  margin-inline: auto;
-  margin-bottom: 36px;
-  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  margin-bottom: var(--space-lg);
 }
 
 .scroll-indicator {
-  margin-top: 30px;
+  margin-top: var(--space-md);
   font-size: 28px;
   opacity: 0.7;
-  animation: bounce 1.5s infinite;
 }
 
 /* =========================
    STATS
 ========================= */
 .stats {
-  margin: 35px 0 30px;
+  margin: var(--space-lg) 0;
   display: flex;
   justify-content: center;
-  gap: 30px;
+  gap: var(--space-md);
   flex-wrap: wrap;
 }
 
-.stats div {
-  padding: 14px 22px;
-  margin-bottom: 5%;
-  border-radius: var(--radius-md);
-
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-
-  transition: 0.25s;
+.stats-item {
+  padding: var(--space-sm) var(--space-md);
 }
 
-.stats div:hover {
-  transform: translateY(-3px);
-  background: rgba(255, 255, 255, 0.08);
-}
+/* 👉 HTML: class="stats-item card" */
 
 .stats strong {
   display: block;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
 }
 
 /* =========================
@@ -165,46 +138,35 @@ img {
 ========================= */
 .quick-menu {
   background: var(--bg-surface);
-  text-align: center;
 }
 
-.card {
+/* saját card, NEM globális */
+.quick-card {
   aspect-ratio: 16 / 10;
-  border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-md);
   transition: 0.3s;
 }
 
-.card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: var(--shadow-lg);
+.quick-card:hover {
+  transform: translateY(-6px) scale(1.02);
 }
 
-.card img {
+.quick-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-.card:hover img {
-  transform: scale(1.06);
 }
 
 /* =========================
    LATEST CATCHES
 ========================= */
-.latest-catches {
-  background: var(--bg-main);
-}
-
 .catch-card {
   cursor: pointer;
   position: relative;
   height: 320px;
   border-radius: var(--radius-lg);
   overflow: hidden;
+
   box-shadow: var(--shadow-md);
   transition: 0.3s;
 }
@@ -218,59 +180,32 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.35s ease;
-}
-
-.catch-card:hover img {
-  transform: scale(1.05);
 }
 
 .overlay {
   position: absolute;
   bottom: 0;
   width: 100%;
-  padding: 18px;
+  padding: var(--space-md);
+
   background: linear-gradient(
     to top,
     rgba(0, 0, 0, 0.75),
     rgba(0, 0, 0, 0.15)
   );
+
   color: white;
 }
 
-.overlay h3 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.overlay p {
-  margin: 4px 0 0;
-  font-size: 14px;
-}
-
 /* =========================
-   POPULAR LAKES
+   LAKES
 ========================= */
-.popular-lakes {
-  background: var(--bg-surface);
-}
-
 .lake-card {
   cursor: pointer;
-  border-radius: var(--radius-lg);
   overflow: hidden;
-
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-
-  box-shadow: var(--shadow-md);
-  transition: 0.25s;
 }
 
-.lake-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
-}
+/* 👉 HTML: class="lake-card card" */
 
 .lake-card img {
   width: 100%;
@@ -279,13 +214,11 @@ img {
 }
 
 .lake-card h3 {
-  padding: 18px 20px 8px;
+  padding: var(--space-md) var(--space-md) var(--space-xs);
 }
 
 .lake-card p {
-  padding: 0 20px 20px;
-  margin: 0;
-  color: var(--text-muted);
+  padding: 0 var(--space-md) var(--space-md);
 }
 
 /* =========================
@@ -293,72 +226,48 @@ img {
 ========================= */
 .latest-news {
   background: var(--bg-main);
-  text-align: center;
-}
-
-.news-preview {
-  text-align: left;
 }
 
 .news-card {
   cursor: pointer;
-  min-height: 220px;
+  padding: var(--space-lg);
 
   display: flex;
   flex-direction: column;
-
-  padding: clamp(20px, 3vw, 32px);
-
-  border-radius: var(--radius-lg);
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-
-  backdrop-filter: var(--glass-blur);
-
-  box-shadow: var(--shadow-md);
-  transition: 0.3s;
 }
 
-.news-card:hover {
-  transform: translateY(-8px);
-  background: rgba(255, 255, 255, 0.06);
-  box-shadow: var(--shadow-lg);
-}
+/* 👉 HTML: class="news-card card" */
 
 .news-tag {
-  padding: 4px 10px;
+  display: inline-flex;
+  align-self: flex-start;
+
+  padding: 4px 8px;
+
   background: rgba(14, 165, 233, 0.15);
   color: var(--primary-light);
+
   border-radius: 6px;
+
   font-size: 12px;
   font-weight: 700;
-  margin-bottom: 16px;
-  width: fit-content;
+
+  margin-bottom: var(--space-sm);
+
+  max-width: max-content;
 }
 
 .news-card h3 {
-  font-size: 1.35rem;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-sm);
 }
 
 .news-card p {
-  font-size: 0.95rem;
-  color: var(--text-muted);
-  margin-bottom: 20px;
-  flex-grow: 1;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  margin-bottom: var(--space-md);
 }
 
 .news-card .read-more {
-  font-size: 14px;
-  font-weight: 600;
   color: var(--primary-light);
-  display: flex;
-  gap: 6px;
+  font-weight: 600;
 }
 
 /* =========================
@@ -375,70 +284,25 @@ img {
 
 .community-text {
   max-width: 700px;
-  margin: 0 auto 32px;
-}
-
-/* =========================
-   ANIMATIONS
-========================= */
-.fade-up {
-  opacity: 0;
-  transform: translateY(30px);
-  animation: fadeUp 0.8s ease forwards;
-}
-
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes heroZoom {
-  from { background-size: 100%; }
-  to { background-size: 108%; }
-}
-
-@keyframes bounce {
-  50% { transform: translateY(8px); }
+  margin: 0 auto var(--space-lg);
 }
 
 /* =========================
    RESPONSIVE
 ========================= */
-@media (max-width: 1024px) {
-  .hero-content { width: 100%; }
-
-  .card-container,
-  .gallery-preview,
-  .lake-cards,
-  .news-preview {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-width: 768px) {
+
+  section {
+    padding: var(--space-lg) var(--space-md);
+  }
+
   .hero {
-    padding: 80px 20px;
+    padding: var(--space-xl) var(--space-md);
     background-attachment: scroll;
-    animation: none;
   }
 
-  section { padding: 60px 5%; }
-
-  .hero-content {
-    padding: 24px;
-    border-radius: var(--radius-md);
-  }
-
-  .hero h1 { font-size: 2.2rem; }
-  .hero h2 { font-size: 1.4rem; }
-
-  .stats { gap: 12px; }
-
-  .stats div {
-    flex: 1 1 100px;
-    padding: 12px;
+  .hero h1 {
+    font-size: 2rem;
   }
 
   .card-container,
@@ -446,15 +310,5 @@ img {
   .lake-cards,
   .news-preview {
     grid-template-columns: 1fr;
-  }
-}
-
-/* =========================
-   ACCESSIBILITY
-========================= */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
   }
 }

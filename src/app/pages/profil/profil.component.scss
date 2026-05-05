@@ -148,7 +148,7 @@ input:focus, textarea:focus, select:focus {
 .post-info {
   padding: var(--space-sm);
   text-align: center;
-
+  width: 100%;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -160,31 +160,44 @@ input:focus, textarea:focus, select:focus {
 ========================= */
 .button-row {
   display: flex;
+  flex-direction: column;
   gap: var(--space-sm);
   margin-top: auto;
 }
 
 .button-row .btn {
-  flex: 1;
+  width: 100%;
+  min-width: 0; /* 🔥 FIX */
 }
 
+/* 🔥 NAGYOBB, EGYSÉGES GOMBOK */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
+  height: 52px; /* 🔥 nagyobb */
+  padding: 0 var(--space-lg);
+
+  border-radius: var(--radius-md);
+
+  font-weight: 600;
+  font-size: 16px;
+
   cursor: pointer;
-  font-weight: 500;
-  transition: all var(--transition-fast);
+  transition: 0.25s;
+
+  white-space: nowrap;
 }
 
 .btn-primary {
-  height: 44px;
-  padding: 0 var(--space-md);
-  background: var(--primary-gradient);
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
   color: white;
-  border: none;
-  border-radius: var(--radius-sm);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.btn-danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
 }
 
 .btn-primary:hover {
@@ -224,11 +237,90 @@ input:focus, textarea:focus, select:focus {
 /* =========================
    RESPONSIVE
 ========================= */
+/* =========================
+   📱 MOBILE FIX (CRITICAL)
+========================= */
 @media (max-width: 768px) {
-  .profile-grid { grid-template-columns: 1fr; }
-  .profile-header-card { flex-direction: column; text-align: center; }
-  .button-row { flex-direction: column; }
-  .btn { width: 100%; }
+
+  /* PAGE */
+  .profile-page {
+    padding: var(--space-md);
+  }
+
+  /* GRID → 1 oszlop */
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* HEADER STACK */
+  .profile-header-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* POSTS GRID */
+  .my-posts {
+     grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+
+  /* POST CARD */
+  .post img {
+    height: 100px;
+  }
+
+  /* BUTTONS */
+  .button-row {
+    gap: var(--space-xs);
+  }
+
+  .btn {
+    height: 48px;
+    font-size: 14px;
+  }
+
+  /* MODAL */
+  .modal {
+    width: 95%;
+    padding: var(--space-md);
+  }
+
+  /* INPUTS */
+  input,
+  textarea,
+  select {
+    font-size: 14px;
+  }
+}
+
+/* =========================
+   📱 SMALL MOBILE (EXTRA)
+========================= */
+@media (max-width: 480px) {
+
+  .profile-page {
+    padding: var(--space-sm);
+  }
+
+  .profile-wrapper {
+    gap: var(--space-md);
+  }
+
+  .my-posts {
+    grid-template-columns: 1fr;
+  }
+
+  .btn {
+    height: 46px;
+    font-size: 13px;
+  }
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
+  }
 }
 
 /* ANIMATIONS */

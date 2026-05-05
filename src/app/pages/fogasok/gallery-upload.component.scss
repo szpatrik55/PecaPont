@@ -6,14 +6,7 @@
   min-height: 100vh;
   padding: var(--space-lg);
 
-  background: linear-gradient(
-    135deg,
-    var(--bg-main),
-    var(--bg-surface),
-    #334155
-  );
-
-  font-family: 'Inter', sans-serif;
+  background: var(--bg-main);
 }
 
 /* =========================
@@ -25,16 +18,11 @@
 
   padding: var(--space-xl);
 
-  border-radius: var(--radius-lg);
-
-  background: var(--glass-bg);
-  backdrop-filter: blur(22px);
-
-  border: 1px solid var(--glass-border);
-
-  box-shadow: var(--shadow-lg);
   color: var(--text-main);
 }
+
+/* 👉 HTML-ben: class="upload-container card" */
+
 
 /* =========================
    TITLE
@@ -42,9 +30,7 @@
 h2 {
   text-align: center;
   margin-bottom: var(--space-lg);
-
-  font-size: 32px;
-  font-weight: 700;
+  font-size: 30px;
 }
 
 /* =========================
@@ -69,48 +55,17 @@ form {
 }
 
 /* =========================
-   INPUTS (GLOBAL STYLE)
+   INPUT (GLOBAL .input)
 ========================= */
 input,
 textarea,
 select {
-  width: 100%;
-  padding: 14px 16px;
-
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--glass-border);
-
-  background: rgba(255,255,255,0.05);
-  color: var(--text-main);
-
-  font-size: 15px;
-  outline: none;
-
-  transition: 0.25s;
+  margin: 0;
 }
 
-textarea {
-  min-height: 100px;
-  resize: none;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: var(--text-muted);
-}
-
-select option {
-  background: var(--bg-surface);
-  color: var(--text-main);
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
-  background: rgba(255,255,255,0.08);
-}
+/* 👉 HTML:
+   class="input"
+*/
 
 /* =========================
    FILE UPLOAD
@@ -120,12 +75,12 @@ select:focus {
   align-items: center;
   justify-content: center;
 
-  padding: 14px;
+  padding: var(--space-sm);
 
   border-radius: var(--radius-sm);
   border: 1px dashed var(--glass-border);
 
-  background: rgba(255,255,255,0.04);
+  background: var(--glass-bg);
   color: var(--text-muted);
 
   cursor: pointer;
@@ -147,7 +102,7 @@ select:focus {
 .checkbox-container {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-sm);
 
   font-size: 14px;
   color: var(--text-muted);
@@ -160,7 +115,7 @@ select:focus {
 }
 
 /* =========================
-   BUTTON (GLOBAL)
+   BUTTON
 ========================= */
 button {
   width: 100%;
@@ -184,15 +139,29 @@ button {
 }
 
 /* =========================
-   MOBILE
+   📱 RESPONSIVE
 ========================= */
+@media (max-width: 768px) {
+  :host {
+    padding: var(--space-md);
+  }
+
+  .upload-container {
+    padding: var(--space-lg);
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+}
+
 @media (max-width: 480px) {
   :host {
     padding: var(--space-sm);
   }
 
   .upload-container {
-    padding: var(--space-lg);
+    padding: var(--space-md);
     border-radius: var(--radius-md);
   }
 
@@ -201,6 +170,6 @@ button {
   }
 
   h2 {
-    font-size: 26px;
+    font-size: 24px;
   }
 }

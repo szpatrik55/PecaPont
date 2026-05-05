@@ -1,4 +1,4 @@
-<div class="auth-container">
+<div class="auth-container card">
 
   <h2>Regisztráció</h2>
   <p class="subtitle">Hozd létre új fiókodat</p>
@@ -13,6 +13,7 @@
     </div>
 
     <input
+      class="input"
       type="text"
       placeholder="Teljes név"
       [(ngModel)]="displayName"
@@ -24,6 +25,7 @@
     />
 
     <input
+      class="input"
       type="text"
       placeholder="Felhasználónév"
       [(ngModel)]="username"
@@ -35,6 +37,7 @@
     />
 
     <input
+      class="input"
       type="email"
       placeholder="Email cím"
       [(ngModel)]="email"
@@ -46,6 +49,7 @@
     />
 
     <input
+      class="input"
       type="password"
       placeholder="Jelszó (min. 8 karakter, nagybetű, szám)"
       [(ngModel)]="password"
@@ -56,7 +60,7 @@
       required
     />
 
-    <button type="submit" [disabled]="isLoading">
+    <button class="btn btn-primary" type="submit" [disabled]="isLoading">
       <span *ngIf="!isLoading">Regisztráció</span>
       <span *ngIf="isLoading">Fiók létrehozása...</span>
     </button>

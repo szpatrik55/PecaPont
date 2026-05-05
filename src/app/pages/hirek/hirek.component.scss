@@ -1,61 +1,35 @@
 :host {
   display: block;
+  min-height: 100vh;
+
   background: var(--bg-main);
   color: var(--text-main);
-  font-family: "Inter", "Segoe UI", sans-serif;
 }
 
 /* =========================
    PAGE
 ========================= */
 .news-page {
-  width: 100%;
-  min-height: 100vh;
-  padding: 32px 20px 60px;
-
-  background: var(--bg-main);
-  position: relative;
-  overflow: hidden;
-}
-
-/* overlay */
-.news-page::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background: linear-gradient(
-    to bottom,
-    rgba(15, 23, 42, 0.6),
-    rgba(15, 23, 42, 0.95)
-  );
-
-  z-index: 0;
-}
-
-/* content layer */
-.news-page > * {
-  position: relative;
-  z-index: 1;
+  padding: var(--space-xl) var(--space-md);
 }
 
 /* =========================
    HEADER
 ========================= */
 .page-header {
-  margin-bottom: 32px;
+  margin-bottom: var(--space-xl);
   text-align: center;
+}
 
-  h1 {
-    font-size: clamp(2rem, 4vw, 3.2rem);
-    font-weight: 800;
-    margin-bottom: 12px;
-  }
+.page-header h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  margin-bottom: var(--space-sm);
+}
 
-  .subtitle {
-    color: var(--text-muted);
-    font-size: 1.1rem;
-  }
+.page-header .subtitle {
+  color: var(--text-muted);
+  font-size: 1.05rem;
 }
 
 /* =========================
@@ -63,35 +37,16 @@
 ========================= */
 .search-container {
   display: flex;
-  gap: 16px;
+  gap: var(--space-md);
+
   width: 100%;
   max-width: 800px;
-  margin: 0 auto 28px;
+  margin: 0 auto var(--space-lg);
 }
 
+/* 👉 HTML-ben: class="input search-input" */
 .search-input {
   flex: 1;
-  padding: 14px 16px;
-
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--glass-border);
-
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-main);
-
-  font-size: 0.95rem;
-  outline: none;
-
-  transition: 0.25s;
-
-  &::placeholder {
-    color: var(--text-muted);
-  }
-
-  &:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
-  }
 }
 
 /* =========================
@@ -100,23 +55,18 @@
 .news-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
+  gap: var(--space-lg);
 }
 
 /* =========================
    CARD
 ========================= */
+/* 👉 HTML: class="news-card card" */
 .news-card {
-  min-height: 380px;
-  border-radius: var(--radius-lg);
+  min-height: 360px;
   overflow: hidden;
   position: relative;
 
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-
-  box-shadow: var(--shadow-md);
   transition: 0.3s;
 }
 
@@ -136,8 +86,7 @@
 }
 
 .news-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-6px);
 }
 
 .news-card:hover::before {
@@ -167,14 +116,17 @@
   transition: 0.5s;
 }
 
+/* =========================
+   DATE BADGE (mini card feel)
+========================= */
 .date-badge {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: var(--space-md);
+  right: var(--space-md);
 
   z-index: 3;
 
-  padding: 10px 14px;
+  padding: var(--space-sm);
   border-radius: var(--radius-sm);
 
   background: var(--glass-bg);
@@ -189,7 +141,7 @@
 }
 
 .date-badge .day {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 800;
 }
 
@@ -198,7 +150,6 @@
   text-transform: uppercase;
   font-weight: 700;
   opacity: 0.8;
-  margin-top: 2px;
 }
 
 /* =========================
@@ -210,7 +161,7 @@
 
   z-index: 2;
 
-  padding: 24px;
+  padding: var(--space-lg);
 
   display: flex;
   flex-direction: column;
@@ -220,16 +171,16 @@
 }
 
 .news-title {
-  font-size: clamp(1.4rem, 2vw, 1.8rem);
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
   color: white;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: var(--space-xs);
 }
 
 .short-desc {
   color: var(--text-muted);
-  font-size: 1rem;
-  margin-bottom: 18px;
+  font-size: 0.95rem;
+  margin-bottom: var(--space-md);
 
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -238,11 +189,6 @@
 }
 
 .card-footer {
-  pointer-events: auto;
-}
-
-/* 👉 GLOBAL BUTTON használat */
-.read-more {
   pointer-events: auto;
 }
 
@@ -255,15 +201,15 @@ video {
 }
 
 /* =========================
-   MOBILE
+   📱 RESPONSIVE
 ========================= */
 @media (max-width: 768px) {
   .news-page {
-    padding: 20px 16px 40px;
+    padding: var(--space-lg) var(--space-md);
   }
 
   .news-grid {
-    gap: 18px;
+    gap: var(--space-md);
   }
 
   .news-card {
@@ -272,6 +218,10 @@ video {
 }
 
 @media (max-width: 480px) {
+  .news-page {
+    padding: var(--space-md);
+  }
+
   .news-grid {
     grid-template-columns: 1fr;
   }

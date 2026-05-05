@@ -1,21 +1,32 @@
 <div class="news-page">
   <header class="page-header">
     <h1>Hírek & Újdonságok</h1>
+
     <div class="search-container">
       <input 
+        class="input search-input"
         type="text" 
         [ngModel]="searchTerm()" 
         (ngModelChange)="searchTerm.set($event)" 
         placeholder="Keresés..."
-        class="search-input"
       />
     </div>
   </header>
 
   <div class="news-grid" *ngIf="allNews().length > 0; else loading">
-    <article class="news-card" *ngFor="let hir of filteredNews()">
+
+    <article 
+      class="news-card card"
+      *ngFor="let hir of filteredNews()"
+      [routerLink]="['/hirek', hir.id]"
+    >
       <div class="news-image-wrapper">
-        <img [src]="hir.kepUrl || 'assets/images/default-news.jpg'" [alt]="hir.cim" class="news-image">
+        <img 
+          [src]="hir.kepUrl || 'assets/images/default-news.jpg'" 
+          [alt]="hir.cim || 'Hír kép'" 
+          class="news-image"
+        >
+
         <div class="date-badge" *ngIf="hir.letrehozva">
           <span class="day">{{ hir.letrehozva.toDate() | date:'dd' }}</span>
           <span class="month">{{ hir.letrehozva.toDate() | date:'MMM' }}</span>
@@ -24,13 +35,18 @@
 
       <div class="news-content">
         <h2 class="news-title">{{ hir.cim }}</h2>
+
         <p class="short-desc">{{ hir.rovidLeiras }}</p>
+
         <div class="divider"></div>
+
         <div class="card-footer">
-          <a [routerLink]="['/hirek', hir.id]" class="btn btn-primary">Elolvasom</a>
+          <span class="btn btn-primary">Elolvasom</span>
         </div>
       </div>
+
     </article>
+
   </div>
 
   <ng-template #loading>

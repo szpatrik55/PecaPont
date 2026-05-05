@@ -1,81 +1,137 @@
 <section class="hero">
-  <div class="hero-content">
+  <div class="hero-content card">
     <h1>PecaPont</h1>
     <h2>A magyar horgászok közösségi oldala</h2>
+
     <p>
       Fedezd fel Magyarország legjobb horgásztavait, ismerd meg a legfogósabb helyeket, és csatlakozz egy szenvedélyes közösséghez!<br>
       Oszd meg legszebb fogásaidat, tapasztalataidat és kedvenc módszereidet más horgászokkal.
     </p>
 
     <div class="stats">
-      <div><strong>3+</strong><span>fogás</span></div>
-      <div><strong>5+</strong><span>tó</span></div>
-      <div><strong>3+</strong><span>tag</span></div>
+      <div class="stats-item card">
+        <strong>3+</strong><span>fogás</span>
+      </div>
+
+      <div class="stats-item card">
+        <strong>5+</strong><span>tó</span>
+      </div>
+
+      <div class="stats-item card">
+        <strong>3+</strong><span>tag</span>
+      </div>
     </div>
 
-    <a routerLink="/tavak" class="btn btn-primary">Fedezd fel tavainkat!</a>
+    <a routerLink="/tavak" class="btn btn-primary">
+      Fedezd fel tavainkat!
+    </a>
   </div>
 </section>
 
+
 <section class="latest-catches" fade-up>
   <h2>Legújabb fogások</h2>
+
   @if (latestPosts$ | async; as posts) {
     <div class="gallery-preview">
+
       @for (post of posts; track post.id) {
         <div class="catch-card" routerLink="/galeria">
-          <img [src]="post.imageUrl || 'assets/no-image.jpg'" [alt]="post.title" loading="lazy">
+
+          <img
+            [src]="post.imageUrl || 'assets/no-image.jpg'"
+            [alt]="post.title"
+            loading="lazy"
+          >
+
           <div class="overlay">
             <h3>{{ post.title }}</h3>
             <p>{{ post.water }}</p>
-            <p class="stat" *ngIf="(post.fishGroup === 'Békés halak' || post.fishGroup === 'Teríték fotó') && post.weight">
+
+            <p class="stat"
+               *ngIf="(post.fishGroup === 'Békés halak' || post.fishGroup === 'Teríték fotó') && post.weight">
               ⚖️ {{ post.weight }} kg
             </p>
-            <p class="stat" *ngIf="post.fishGroup === 'Ragadozó halak' && post.length">
+
+            <p class="stat"
+               *ngIf="post.fishGroup === 'Ragadozó halak' && post.length">
               📏 {{ post.length }} cm
             </p>
           </div>
+
         </div>
       }
+
     </div>
   }
 </section>
+
 
 <section class="popular-lakes" fade-up>
   <h2>Népszerű tavak</h2>
+
   @if (popularLakes$ | async; as lakes) {
     <div class="lake-cards">
+
       @for (to of lakes; track to.id) {
-        <div class="lake-card" [routerLink]="['/tavak', to.id]">
-          <img [src]="to.kepUrl || 'assets/images/fallback-lake.jpg'" [alt]="to.nev">
+        <div class="lake-card card" [routerLink]="['/tavak', to.id]">
+
+          <img
+            [src]="to.kepUrl || 'assets/images/fallback-lake.jpg'"
+            [alt]="to.nev"
+          >
+
           <h3>{{ to.nev }}</h3>
           <p>{{ to.telepules }}</p>
+
         </div>
       }
+
     </div>
   }
 </section>
+
 
 <section class="latest-news" fade-up>
   <h2>Friss hírek</h2>
+
   @if (latestNews$ | async; as newsList) {
     <div class="news-preview">
+
       @for (hir of newsList; track hir.id) {
-        <div class="news-card" [routerLink]="['/hirek', hir.id]">
+        <div class="news-card card" [routerLink]="['/hirek', hir.id]">
+
           <div class="news-tag">Friss</div>
+
           <h3>{{ hir.cim }}</h3>
           <p>{{ hir.rovidLeiras }}</p>
-          <span class="btn btn-primary">Elolvasom a cikket →</span>
+
+          <a class="btn btn-primary">
+            Elolvasom a cikket →
+          </a>
+
         </div>
       }
+
     </div>
   } @else {
-    <div class="loader-placeholder">Hírek betöltése...</div>
+    <div class="loader-placeholder">
+      Hírek betöltése...
+    </div>
   }
 
 </section>
 
+
 <section class="community" fade-up>
   <h2>Légy te is a közösség tagja!</h2>
-  <p>Csatlakozz több száz szenvedélyes horgászhoz, oszd meg élményeidet!</p>
-  <a routerLink="/regisztracio" class="btn btn-primary">Regisztrálok</a>
+
+  <p>
+    Csatlakozz több száz szenvedélyes horgászhoz,
+    oszd meg élményeidet!
+  </p>
+
+  <a routerLink="/regisztracio" class="btn btn-primary">
+    Regisztrálok
+  </a>
 </section>

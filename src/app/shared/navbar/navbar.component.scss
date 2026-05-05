@@ -1,37 +1,24 @@
-/* GLOBAL */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
-
-/* NAVBAR */
+/* =========================
+   NAVBAR
+========================= */
 .top-nav {
   position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
-
-  width: 100%;
-  max-width: 100%;
-
   z-index: 1000;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 14px 20px;
+  padding: var(--space-sm) var(--space-md);
 
   backdrop-filter: blur(14px);
   background: rgba(15, 23, 42, 0.85);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+a {
+  text-decoration: none;
 }
 
 /* LOGO */
@@ -43,37 +30,33 @@ body {
   white-space: nowrap;
 }
 
-/* LINKS CONTAINER */
+/* LINKS */
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-xs);
 
   flex: 1;
   justify-content: flex-end;
-
-  overflow: visible;
 }
 
-/* LINKS */
+/* NAV ITEMS */
 .nav-links a,
 .logout-btn {
-  color: #f8fafc;
-  text-decoration: none;
-  font-weight: 600;
-
   padding: 8px 12px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
+
+  font-weight: 600;
+  color: var(--text-main);
 
   white-space: nowrap;
-  flex-shrink: 0;
 
-  transition: 0.25s;
+  transition: 0.2s;
 }
 
 .nav-links a:hover,
 .logout-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255,255,255,0.08);
 }
 
 /* ACTIVE */
@@ -89,26 +72,31 @@ body {
   cursor: pointer;
 }
 
-/* HAMBURGER */
+/* =========================
+   HAMBURGER
+========================= */
 .menu-toggle {
   display: none;
   border: none;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255,255,255,0.08);
+
   color: white;
   padding: 8px 12px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
+
   cursor: pointer;
+  transition: 0.2s;
 }
 
-/* ================= DESKTOP FIX (ADMIN OVERFLOW) ================= */
-@media (min-width: 769px) {
-  .nav-links {
-    flex-wrap: wrap; /* <-- EZ A KULCS */
-  }
+.menu-toggle:hover {
+  background: rgba(255,255,255,0.15);
 }
 
-/* ================= MOBILE ================= */
+/* =========================
+   MOBILE
+========================= */
 @media (max-width: 768px) {
+
   .menu-toggle {
     display: block;
   }
@@ -123,13 +111,15 @@ body {
     flex-direction: column;
     align-items: stretch;
 
-    padding: 16px;
-    gap: 10px;
+    padding: var(--space-md);
+    gap: var(--space-sm);
 
     background: rgba(15, 23, 42, 0.98);
 
-    border-bottom-left-radius: 16px;
-    border-bottom-right-radius: 16px;
+    border-bottom-left-radius: var(--radius-md);
+    border-bottom-right-radius: var(--radius-md);
+
+    animation: fadeIn 0.25s ease;
   }
 
   .nav-links.open {
@@ -140,5 +130,19 @@ body {
   .logout-btn {
     width: 100%;
     text-align: center;
+  }
+}
+
+/* =========================
+   ANIMATION
+========================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

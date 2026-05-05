@@ -1,52 +1,54 @@
 <div class="admin-container">
-  <div class="editor-card">
+  <div class="editor-card card">
+
     <header class="editor-header">
       <h1>Cikk Létrehozása</h1>
     </header>
 
     <form (ngSubmit)="hirMentese()" #newsForm="ngForm">
+
       <div class="form-group">
         <label>Hír címe</label>
-        <input type="text" [(ngModel)]="article.cim" name="cim" required placeholder="Cikk címe..." />
+        <input class="input" type="text" [(ngModel)]="article.cim" name="cim" required placeholder="Cikk címe..." />
       </div>
 
       <div class="form-group">
-  <label>Kép feltöltése</label>
+        <label>Kép feltöltése</label>
 
-  <!-- 🔥 DROPZONE -->
-  <label class="file-drop-zone">
-    <span *ngIf="!fileName">Kattints vagy húzd ide a képet</span>
-    <span class="file-name" *ngIf="fileName">{{ fileName }}</span>
+        <label class="file-drop-zone">
+          <span *ngIf="!fileName">Kattints vagy húzd ide a képet</span>
+          <span class="file-name" *ngIf="fileName">{{ fileName }}</span>
 
-    <input 
-      type="file" 
-      (change)="onFileSelected($event)" 
-      accept="image/*"
-    />
-  </label>
+          <input 
+            type="file" 
+            (change)="onFileSelected($event)" 
+            accept="image/*"
+          />
+        </label>
 
-  <!-- 🔥 PREVIEW -->
-  <img 
-    *ngIf="previewUrl" 
-    [src]="previewUrl" 
-    alt="Előnézet"
-    class="preview"
-  />
-</div>
+        <img 
+          *ngIf="previewUrl" 
+          [src]="previewUrl" 
+          alt="Előnézet"
+          class="preview"
+        />
+      </div>
 
       <div class="form-group">
         <label>Rövid leírás (opcionális)</label>
-        <input type="text" [(ngModel)]="article.rovidLeiras" name="rovidLeiras" placeholder="A cikk rövid összefoglalója..." />
+        <input class="input" type="text" [(ngModel)]="article.rovidLeiras" name="rovidLeiras" placeholder="A cikk rövid összefoglalója..." />
       </div>
 
       <div class="form-group">
         <label>Tartalom</label>
-        <textarea [(ngModel)]="article.tartalom" name="tartalom" rows="10" required></textarea>
+        <textarea class="input" [(ngModel)]="article.tartalom" name="tartalom" rows="10" required></textarea>
       </div>
 
       <button class="btn btn-primary save-btn" type="submit" [disabled]="mentesFolyamatban() || !newsForm.valid">
         {{ mentesFolyamatban() ? 'Mentés...' : 'Cikk Publikálása' }}
       </button>
+
     </form>
+
   </div>
 </div>

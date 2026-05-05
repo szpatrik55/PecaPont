@@ -2,14 +2,12 @@
   display: block;
   background: var(--bg-main);
   color: var(--text-main);
-  font-family: "Inter", "Segoe UI", sans-serif;
 }
 
 /* =========================
    PAGE
 ========================= */
 .tavak-page {
-  width: 100%;
   max-width: 1400px;
   margin: 0 auto;
   padding: var(--space-lg) var(--space-md) var(--space-xl);
@@ -24,9 +22,8 @@
 }
 
 .hero-mini h1 {
-  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 800;
-  margin: 0;
 }
 
 /* =========================
@@ -37,73 +34,25 @@
   grid-template-columns: 2fr 1fr;
   gap: var(--space-md);
   margin-bottom: var(--space-lg);
-  align-items: center;
 }
 
-/* =========================
-   INPUT + SELECT BASE
-========================= */
-.toolbar input,
-.toolbar select {
+/* 👉 csak width kell */
+.toolbar .input {
   width: 100%;
-  padding: 14px 16px;
-
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--glass-border);
-
-  background: rgba(255,255,255,0.05);
-  color: var(--text-main);
-
-  font-size: 0.95rem;
-  outline: none;
-
-  transition: 0.25s;
 }
 
 /* =========================
-   SELECT EXTRA FIX
+   SELECT FIX
 ========================= */
-.toolbar select {
-  min-width: 220px;
+.toolbar select.input {
+  background: var(--bg-surface);
+  color: var(--text-main);
   cursor: pointer;
+}
 
-  /* 🔥 ez segít több browsernél */
-  background-color: var(--bg-surface);
+.toolbar select.input option {
+  background: var(--bg-surface);
   color: var(--text-main);
-}
-
-/* 🔥 dropdown lista */
-.toolbar select option {
-  background-color: var(--bg-surface);
-  color: var(--text-main);
-}
-
-/* 🔥 kijelölt elem */
-.toolbar select option:checked {
-  background-color: var(--primary);
-  color: white;
-}
-
-/* 🔥 hover (nem mindenhol működik) */
-.toolbar select option:hover {
-  background-color: var(--primary-light);
-  color: white;
-}
-
-/* =========================
-   PLACEHOLDER
-========================= */
-.toolbar input::placeholder {
-  color: var(--text-muted);
-}
-
-/* =========================
-   FOCUS
-========================= */
-.toolbar input:focus,
-.toolbar select:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
 /* =========================
@@ -111,7 +60,7 @@
 ========================= */
 .tavak-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: var(--space-md);
 }
 
@@ -119,17 +68,14 @@
    CARD
 ========================= */
 .to-card {
-  min-height: 340px;
-  border-radius: var(--radius-lg);
-
+  min-height: 320px;
+  position: relative;
   overflow: hidden;
   cursor: pointer;
-  position: relative;
 
   background-size: cover;
   background-position: center;
 
-  box-shadow: var(--shadow-md);
   transition: 0.3s;
 }
 
@@ -148,8 +94,7 @@
 }
 
 .to-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-6px);
 }
 
 .to-card:hover::before {
@@ -166,25 +111,28 @@
 .card-overlay {
   position: absolute;
   inset: 0;
-  z-index: 2;
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
   padding: var(--space-md);
+  z-index: 2;
 }
 
 .card-content {
   margin-top: auto;
+  padding-top: var(--space-sm);
 }
 
 /* BADGE */
 .lake-badge {
-  width: fit-content;
-  padding: 6px 12px;
+  display: inline-flex;
+  align-self: flex-start;
 
+  padding: 6px 12px;
   border-radius: 999px;
+
   font-size: 0.8rem;
   font-weight: 600;
 
@@ -197,44 +145,35 @@
 
 /* TEXT */
 .card-content h3 {
-  font-size: clamp(1.3rem, 2vw, 1.8rem);
-  margin-bottom: 8px;
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  margin-bottom: 6px;
 }
 
 .card-content p {
   color: var(--text-muted);
   margin-bottom: var(--space-sm);
-  font-size: 1rem;
-}
-
-/* 👉 GLOBAL BUTTON */
-.card-content .btn {
-  width: fit-content;
 }
 
 /* =========================
-   MOBILE
+   📱 MOBILE
 ========================= */
 @media (max-width: 768px) {
-  .toolbar {
-    grid-template-columns: 1fr; /* 🔥 EZ A LÉNYEG */
-  }
 
-  .toolbar input,
-  .toolbar select {
-    width: 100%;
+  .toolbar {
+    grid-template-columns: 1fr;
   }
 
   .tavak-page {
     padding: var(--space-md);
   }
 
+  /* 🔥 jobb mobil grid */
   .tavak-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
 
   .to-card {
-    min-height: 280px;
+    min-height: 260px;
   }
 
   .card-overlay {
@@ -243,6 +182,11 @@
 }
 
 @media (max-width: 480px) {
+
+  .tavak-grid {
+    grid-template-columns: 1fr;
+  }
+
   .to-card {
     min-height: 240px;
   }

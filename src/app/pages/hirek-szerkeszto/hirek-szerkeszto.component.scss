@@ -1,5 +1,8 @@
 :host {
   display: block;
+  min-height: 100vh;
+
+  background: var(--bg-main);
 }
 
 /* =========================
@@ -8,13 +11,6 @@
 .admin-container {
   min-height: 100vh;
   padding: var(--space-xl) var(--space-md);
-
-  background: linear-gradient(
-    135deg,
-    var(--bg-main),
-    var(--bg-surface),
-    #334155
-  );
 
   display: flex;
   justify-content: center;
@@ -29,28 +25,23 @@
   max-width: 850px;
 
   padding: var(--space-xl);
-
-  border-radius: var(--radius-lg);
-
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-
-  border: 1px solid var(--glass-border);
-
-  box-shadow: var(--shadow-lg);
 }
 
-/* HEADER */
+/* 👉 HTML-ben: class="editor-card card" */
+
+
+/* =========================
+   HEADER
+========================= */
 .editor-header {
   text-align: center;
   margin-bottom: var(--space-xl);
 }
 
 .editor-header h1 {
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 800;
-  margin-bottom: 0.6rem;
-  color: var(--text-main);
+  margin-bottom: var(--space-sm);
 }
 
 .editor-header p {
@@ -67,45 +58,28 @@
 .form-group label {
   display: block;
   font-weight: 600;
-  margin-bottom: 6px;
+  margin-bottom: var(--space-xs);
 
   color: var(--text-muted);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
-/* INPUTS */
+/* =========================
+   INPUT (GLOBAL .input)
+========================= */
 .form-group input,
 .form-group textarea,
 .form-group select {
-  width: 100%;
-  padding: 14px 16px;
-
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--glass-border);
-
-  background: rgba(255,255,255,0.05);
-  color: var(--text-main);
-
-  font-size: 0.95rem;
-  transition: 0.25s;
+  margin: 0;
 }
 
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-  color: var(--text-muted);
-}
+/* 👉 HTML:
+   class="input"
+*/
 
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-  outline: none;
-  border-color: var(--primary);
-  background: rgba(255,255,255,0.08);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
-}
-
+/* textarea */
 .form-group textarea {
   min-height: 120px;
   resize: vertical;
@@ -119,12 +93,12 @@
   align-items: center;
   justify-content: center;
 
-  padding: 14px;
+  padding: var(--space-sm);
 
   border-radius: var(--radius-sm);
   border: 1px dashed var(--glass-border);
 
-  background: rgba(255,255,255,0.04);
+  background: var(--glass-bg);
   color: var(--text-muted);
 
   cursor: pointer;
@@ -132,7 +106,6 @@
 
   font-size: 14px;
   font-weight: 500;
-
   text-align: center;
 }
 
@@ -141,23 +114,20 @@
   border-color: var(--primary);
 }
 
-/* input overlay */
 .file-drop-zone input[type="file"] {
   display: none;
 }
 
 /* =========================
-   BUTTON (GLOBAL!)
+   BUTTON
 ========================= */
 .save-btn {
   width: 100%;
   margin-top: var(--space-lg);
 }
 
-/* 👉 HTML-ben: class="btn btn-primary save-btn" */
-
 /* =========================
-   MOBILE
+   📱 RESPONSIVE
 ========================= */
 @media (max-width: 768px) {
   .admin-container {
@@ -166,5 +136,15 @@
 
   .editor-card {
     padding: var(--space-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-container {
+    padding: var(--space-sm);
+  }
+
+  .editor-card {
+    padding: var(--space-md);
   }
 }
