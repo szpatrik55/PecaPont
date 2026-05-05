@@ -49,12 +49,6 @@ vi.mock('@angular/fire/auth', async (importOriginal) => {
   };
 });
 
-vi.mock('firebase/firestore', () => ({
-  collection: vi.fn(() => ({})),
-  doc: vi.fn(() => ({})),
-  getDoc: vi.fn(() => Promise.resolve({ data: () => ({}) })),
-}));
-
 /**
  * 🔥 ALERT MOCK
  */

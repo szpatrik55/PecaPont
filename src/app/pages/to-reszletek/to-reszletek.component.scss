@@ -232,6 +232,152 @@ header h1 {
 }
 
 /* =========================
+   REVIEW SECTION
+========================= */
+
+.review-section {
+  overflow: hidden;
+}
+
+/* FORM */
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.review-form select,
+.review-form textarea {
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-border);
+  background: var(--bg-card);
+  color: var(--text-main);
+}
+
+.review-form textarea {
+  resize: none;
+  min-height: 90px;
+}
+
+.review-form button {
+  align-self: flex-end;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  border: none;
+
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
+  color: white;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.review-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* =========================
+   HORIZONTAL SCROLL
+========================= */
+
+.review-list {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+
+  scroll-snap-type: x mandatory;
+}
+
+.review-list::-webkit-scrollbar {
+  height: 6px;
+}
+
+.review-list::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+}
+
+/* =========================
+   REVIEW CARD
+========================= */
+
+.review-card {
+  min-width: 260px;
+  max-width: 300px;
+
+  flex-shrink: 0;
+  scroll-snap-align: start;
+
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 20px;
+
+  border: 1px solid var(--glass-border);
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  transition: 0.25s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+/* HEADER */
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review-header strong {
+  font-size: 0.95rem;
+}
+
+.stars {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* TEXT */
+.review-card p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ACTIONS */
+.review-actions {
+  margin-top: auto;
+}
+
+.review-actions button {
+  font-size: 0.8rem;
+  padding: 6px 10px;
+
+  border-radius: var(--radius-sm);
+  border: none;
+
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+
+  cursor: pointer;
+}
+
+/* =========================
    RESPONSIVE
 ========================= */
 @media (max-width: 900px) {

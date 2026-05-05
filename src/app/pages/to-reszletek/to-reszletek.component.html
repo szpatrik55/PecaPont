@@ -102,6 +102,46 @@
           </div>
         </div>
       </section>
+
+      <section class="content-section review-section">
+        <h3>Értékelések</h3>
+
+        <!-- FORM -->
+        <div class="review-form">
+          <select [(ngModel)]="ujErtekeles().rating">
+            <option *ngFor="let r of [1,2,3,4,5]" [value]="r">
+              {{ r }} ⭐
+            </option>
+          </select>
+
+          <textarea
+            [(ngModel)]="ujErtekeles().comment"
+            placeholder="Írj véleményt..."
+          ></textarea>
+
+          <button (click)="submitReview()">Küldés</button>
+        </div>
+
+        <!-- HORIZONTAL LIST -->
+        <div class="review-list">
+          <div *ngFor="let r of reviews() | slice:0:5" class="review-card">
+      
+            <div class="review-header">
+              <strong>{{ r.userName }}</strong>
+              <span class="stars">
+              {{ r.rating }} ⭐
+            </span>
+          </div>
+
+          <p>{{ r.comment }}</p>
+
+          <div *ngIf="canModify(r)" class="review-actions">
+            <button (click)="deleteReview(r.id)">Törlés</button>
+          </div>
+
+          </div>
+        </div>
+      </section>
     </div>
   }
 </div>

@@ -1,48 +1,60 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, doc, deleteDoc, updateDoc } from '@angular/fire/firestore';
-import { Timestamp } from 'firebase/firestore';
+import {
+  Firestore,
+  collection,
+  addDoc,
+  query,
+  where,
+  collectionData,
+  doc,
+  deleteDoc,
+  updateDoc,
+  serverTimestamp
+} from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ReviewService {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
 
-  // 🔹 összes review lekérése egy tóhoz
-  getReviews(lakeId: string) {
-    const ref = collection(this.firestore, `lakes/${lakeId}/reviews`);
-    return collectionData(ref, { idField: 'id' });
+  // 🔽 Lekérés tó alapján
+  getReviewsByLake(lakeId: string): Observable<any[]> {
+    const ref = collection(this.firestore, 'reviews');
+    const q = query(ref, where('lakeId', '==', lakeId));
+
+    return collectionData(q, { idField: 'id' });
   }
 
-  // 🔹 új review
-  async addReview(lakeId: string, rating: number, comment: string, userName: string) {
+  // ➕ Új értékelés
+  async addReview(lakeId: string, rating: number, comment: string) {
     const user = this.auth.currentUser;
-    if (!user) throw new Error('Nincs bejelentkezve');
+    if (!user) throw new Error('Nem vagy bejelentkezve');
 
-    const ref = collection(this.firestore, `lakes/${lakeId}/reviews`);
-
-    return addDoc(ref, {
+    return addDoc(collection(this.firestore, 'reviews'), {
+      lakeId,
+      userId: user.uid,
+      userName: user.displayName || user.email,
       rating,
       comment,
-      userId: user.uid,
-      userName,
-      createdAt: Timestamp.now()
+      createdAt: serverTimestamp()
     });
   }
 
-  // 🔹 törlés
-  deleteReview(lakeId: string, reviewId: string) {
-    const ref = doc(this.firestore, `lakes/${lakeId}/reviews/${reviewId}`);
-    return deleteDoc(ref);
-  }
-
-  // 🔹 módosítás
-  updateReview(lakeId: string, reviewId: string, rating: number, comment: string) {
-    const ref = doc(this.firestore, `lakes/${lakeId}/reviews/${reviewId}`);
+  // ✏️ Módosítás
+  async updateReview(id: string, rating: number, comment: string) {
+    const ref = doc(this.firestore, `reviews/${id}`);
     return updateDoc(ref, {
       rating,
       comment,
-      updatedAt: Timestamp.now()
+      updatedAt: serverTimestamp()
     });
+  }
+
+  // ❌ Törlés
+  async deleteReview(id: string) {
+    const ref = doc(this.firestore, `reviews/${id}`);
+    return deleteDoc(ref);
   }
 }
