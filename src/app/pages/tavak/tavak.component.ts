@@ -23,6 +23,7 @@ interface To {
   id: string;
   nev: string;
   telepules: string;
+  tipus: string; // 👈 ÚJ MEZŐ
   kepUtvonal: string;
   kepUrl?: string;
 }
@@ -40,7 +41,7 @@ export class ToListaComponent implements OnInit {
   tavak = signal<To[]>([]);
 
   keresoSzoveg = signal('');
-  rendezes = signal<'nev' | 'telepules'>('nev');
+  rendezes = signal<'nev' | 'telepules' | 'tipus'>('nev'); // 👈 bővítve
 
   rendezettTavak = computed(() => {
     const keresett = this.keresoSzoveg().toLowerCase();
@@ -49,11 +50,12 @@ export class ToListaComponent implements OnInit {
       .filter(
         (to) =>
           to.nev.toLowerCase().includes(keresett) ||
-          to.telepules.toLowerCase().includes(keresett)
+          to.telepules.toLowerCase().includes(keresett) ||
+          to.tipus.toLowerCase().includes(keresett) // 👈 kereséshez is
       )
       .sort((a, b) =>
-        a[this.rendezes()].localeCompare(
-          b[this.rendezes()]
+        (a[this.rendezes()] || '').localeCompare(
+          (b[this.rendezes()] || '')
         )
       );
   });
@@ -75,10 +77,10 @@ export class ToListaComponent implements OnInit {
   }
 
   async novelMegtekintes(toId: string) {
-  const lakeRef = doc(this.firestore, 'lakes', toId);
+    const lakeRef = doc(this.firestore, 'lakes', toId);
 
-  await updateDoc(lakeRef, {
-    megtekintesek: increment(1)
-  });
-}
+    await updateDoc(lakeRef, {
+      megtekintesek: increment(1)
+    });
+  }
 }

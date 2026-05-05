@@ -2,6 +2,8 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 import { CommonModule } from '@angular/common';
+import { ReviewService } from '../../services/review';
+import { Auth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-to-adatlap',
@@ -13,6 +15,15 @@ import { CommonModule } from '@angular/common';
 export class ToReszletekComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private firestore = inject(Firestore);
+  private reviewService = inject(ReviewService);
+  private auth = inject(Auth);
+
+  reviews = signal<any[]>([]);
+
+  ujErtekeles = signal({
+    rating: 5,
+    comment: ''
+  });
   
   toAdat = signal<any>(null);
 
