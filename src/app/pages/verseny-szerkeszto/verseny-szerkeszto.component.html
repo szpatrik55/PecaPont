@@ -1,0 +1,131 @@
+<div class="admin-container">
+
+  <div class="editor-card card">
+
+    <!-- HEADER -->
+    <div class="editor-header">
+
+      <h1>Verseny kiírása</h1>
+
+      <p>
+        Új horgászverseny létrehozása
+      </p>
+
+    </div>
+
+    <!-- FORM -->
+    <div class="form-group">
+
+      <label>Verseny neve</label>
+
+      <input
+        type="text"
+        class="input"
+        [(ngModel)]="event.nev"
+      >
+
+    </div>
+
+    <div class="form-group">
+
+      <label>Rövid leírás</label>
+
+      <input
+        type="text"
+        class="input"
+        [(ngModel)]="event.rovidLeiras"
+      >
+
+    </div>
+
+    <!-- GRID -->
+    <div class="form-grid">
+
+      <div class="form-group">
+
+        <label>Helyszín</label>
+
+        <input
+          type="text"
+          class="input"
+          [(ngModel)]="event.helyszin"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Dátum</label>
+
+        <input
+          type="date"
+          class="input"
+          [(ngModel)]="event.datum"
+        >
+
+      </div>
+
+    </div>
+
+    <div class="form-group">
+
+      <label>Leírás</label>
+
+      <textarea
+        class="input"
+        rows="10"
+        [(ngModel)]="event.leiras"
+      ></textarea>
+
+    </div>
+
+    <!-- FILE -->
+    <div class="form-group">
+
+      <label>Kép feltöltése</label>
+
+      <label class="file-drop-zone">
+
+        <input
+          type="file"
+          accept="image/*"
+          (change)="onFileSelected($event)"
+        >
+
+        Kattints vagy húzz ide egy képet
+
+      </label>
+
+    </div>
+
+    <!-- PREVIEW -->
+    <div
+      class="image-preview"
+      *ngIf="previewUrl"
+    >
+
+      <img
+        [src]="previewUrl"
+        alt="Preview"
+      >
+
+    </div>
+
+    <!-- BUTTON -->
+    <button
+      class="btn-primary save-btn"
+      (click)="versenyMentese()"
+      [disabled]="mentesFolyamatban()"
+    >
+
+      {{
+        mentesFolyamatban()
+          ? 'Mentés folyamatban...'
+          : 'Verseny mentése'
+      }}
+
+    </button>
+
+  </div>
+
+</div>

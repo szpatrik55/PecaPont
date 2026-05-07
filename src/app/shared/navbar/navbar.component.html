@@ -33,6 +33,15 @@
         </a>
       }
 
+      @if ((isOrganiser$ | async) || (isAdmin$ | async)) {
+        <a routerLink="/verseny-szerkeszto"
+            (click)="closeMenu()"
+            routerLinkActive="active"
+        >
+          Verseny kiírás
+        </a>
+      }
+
       <!-- ADMIN -->
       @if (isAdmin$ | async) {
         <a routerLink="/admin" (click)="closeMenu()">Admin</a>

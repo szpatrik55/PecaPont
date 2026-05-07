@@ -1,0 +1,99 @@
+<div class="event-page">
+
+  <div class="container">
+
+    <!-- BACK -->
+    <div class="back-nav">
+
+      <a
+        routerLink="/versenyek"
+        class="back-link btn-glass"
+      >
+        <span class="arrow">←</span>
+        Vissza a versenyekhez
+      </a>
+
+    </div>
+
+    <!-- LOADING -->
+    <div
+      class="loader-container"
+      *ngIf="loading"
+    >
+
+      <div class="spinner"></div>
+
+      <p>Verseny betöltése...</p>
+
+    </div>
+
+    <!-- EVENT -->
+    <div
+      class="full-event"
+      *ngIf="!loading && verseny"
+    >
+
+      <!-- HERO IMAGE -->
+      <div
+        class="hero-image"
+        *ngIf="verseny.kepUrl"
+      >
+
+        <img
+          [src]="verseny.kepUrl"
+          [alt]="verseny.nev"
+        >
+
+      </div>
+
+      <!-- HEADER -->
+      <div class="event-header">
+
+        <div class="meta">
+
+          <span>
+            📍 {{ verseny.helyszin }}
+          </span>
+
+          <span>
+            📅 {{ verseny.datum | date:'yyyy.MM.dd' }}
+          </span>
+
+        </div>
+
+        <h1>
+          {{ verseny.nev }}
+        </h1>
+
+        <p class="lead">
+          {{ verseny.rovidLeiras }}
+        </p>
+
+      </div>
+
+      <!-- CONTENT -->
+      <div class="event-body card">
+
+        <div class="content-text">
+
+          {{ verseny.leiras }}
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- NOT FOUND -->
+    <div
+      class="not-found"
+      *ngIf="!loading && !verseny"
+    >
+
+      <h2>Nem található verseny</h2>
+
+    </div>
+
+  </div>
+
+</div>
