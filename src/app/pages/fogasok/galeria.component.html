@@ -1,71 +1,445 @@
-<h2>Horgászaink fogásai</h2>
+<div class="gallery-page">
 
-<div class="gallery" *ngIf="posts$ | async as posts">
-
-  <div class="card" *ngFor="let post of posts" (click)="openPost(post)">
+  <!-- HERO -->
+  <section class="hero-section">
 
     <img
-      [src]="post.imageUrl || 'assets/no-image.jpg'"
-      [alt]="post.title"
-      loading="lazy"
-      (error)="post.imageUrl = 'assets/no-image.jpg'"
+      class="hero-image"
+      src="assets/images/gallery-hero.jpg"
+      alt="Horgász galéria"
     >
 
-    <div class="info">
-      <h3>{{ post.title }}</h3>
+    <div class="hero-overlay"></div>
 
-      <div class="meta">
-        <p class="water">🌊 {{ post.water }}</p>
+    <div class="hero-content">
 
-        <p class="stat"
-           *ngIf="(post.fishGroup === 'Békés halak' || post.fishGroup === 'Teríték fotó') && post.weight">
-          ⚖️ {{ post.weight }} kg
-        </p>
-
-        <p class="stat"
-           *ngIf="post.fishGroup === 'Ragadozó halak' && post.length">
-          📏 {{ post.length }} cm
-        </p>
+      <div class="hero-badge">
+        Közösségi galéria
       </div>
+
+      <h1>
+        Horgászaink legszebb fogásai
+      </h1>
+
+      <p>
+        Böngéssz valódi fogások között,
+        inspirálódj és oszd meg te is
+        a legjobb pillanataidat.
+      </p>
+
+      <div class="hero-stats">
+
+        <div class="hero-stat">
+
+          <span class="value">
+            {{ posts.length }}
+          </span>
+
+          <span class="label">
+            Feltöltés
+          </span>
+
+        </div>
+
+        <div class="hero-stat">
+
+          <span class="value">
+            {{ speciesCount }}
+          </span>
+
+          <span class="label">
+            Halfaj
+          </span>
+
+        </div>
+
+      </div>
+
     </div>
 
-  </div>
+  </section>
+
+  <!-- TOOLBAR -->
+  <section class="toolbar">
+
+    <div class="search-box">
+
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Keresés cím, vízterület vagy halfaj alapján..."
+        [ngModel]="searchTerm()"
+        (ngModelChange)="searchTerm.set($event)"
+      >
+
+    </div>
+
+    <div class="filters">
+
+      <button
+        class="filter-chip"
+        [class.active]="selectedGroup() === ''"
+        (click)="selectedGroup.set('')"
+      >
+        Összes
+      </button>
+
+      <button
+        class="filter-chip"
+        *ngFor="let group of fishGroups"
+        [class.active]="selectedGroup() === group"
+        (click)="selectedGroup.set(group)"
+      >
+        {{ group }}
+      </button>
+
+    </div>
+
+  </section>
+
+  <!-- FEATURED -->
+  <section
+    class="featured-section"
+    *ngIf="filteredPosts().length"
+  >
+
+    <div
+      class="featured-post"
+      (click)="openPost(filteredPosts()[0])"
+    >
+
+      <img
+        [src]="filteredPosts()[0].imageUrl || 'assets/no-image.jpg'"
+        [alt]="filteredPosts()[0].title"
+      >
+
+      <div class="featured-overlay"></div>
+
+      <div class="featured-content">
+
+        <div class="featured-tag">
+          Kiemelt fogás
+        </div>
+
+        <h2>
+          {{ filteredPosts()[0].title }}
+        </h2>
+
+        <div class="featured-meta">
+
+          <span>
+            🌊 {{ filteredPosts()[0].water }}
+          </span>
+
+          <span *ngIf="filteredPosts()[0].species">
+            🐟 {{ filteredPosts()[0].species }}
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- GRID -->
+  <section
+    class="gallery-grid"
+    *ngIf="filteredPosts().length"
+  >
+
+    <article
+      class="gallery-card"
+      *ngFor="let post of filteredPosts()"
+      (click)="openPost(post)"
+    >
+
+      <!-- IMAGE -->
+      <div class="image-wrapper">
+
+        <img
+          [src]="post.imageUrl || 'assets/no-image.jpg'"
+          [alt]="post.title"
+          loading="lazy"
+          (error)="post.imageUrl = 'assets/no-image.jpg'"
+        >
+
+        <div class="image-overlay"></div>
+
+        <!-- GROUP -->
+        <div class="fish-group">
+
+          {{ post.fishGroup }}
+
+        </div>
+
+      </div>
+
+      <!-- CONTENT -->
+      <div class="card-content">
+
+        <h3>
+          {{ post.title }}
+        </h3>
+
+        <div class="water">
+          🌊 {{ post.water }}
+        </div>
+
+        <div class="stats-row">
+
+          <div
+            class="stat"
+            *ngIf="
+              (
+                post.fishGroup === 'Békés halak'
+                ||
+                post.fishGroup === 'Teríték fotó'
+              )
+              &&
+              post.weight
+            "
+          >
+            ⚖️ {{ post.weight }} kg
+          </div>
+
+          <div
+            class="stat"
+            *ngIf="
+              post.fishGroup === 'Ragadozó halak'
+              &&
+              post.length
+            "
+          >
+            📏 {{ post.length }} cm
+          </div>
+
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="card-footer">
+
+          <div class="author">
+
+            👤 {{ post.username }}
+
+          </div>
+
+          <div class="view-more">
+            Megnyitás →
+          </div>
+
+        </div>
+
+      </div>
+
+    </article>
+
+  </section>
+
+  <!-- EMPTY -->
+  <section
+    class="empty-state"
+    *ngIf="!filteredPosts().length"
+  >
+
+    <div class="empty-icon">
+      🎣
+    </div>
+
+    <h2>Nincs találat</h2>
+
+    <p>
+      Próbálj más keresést vagy szűrőt.
+    </p>
+
+  </section>
 
 </div>
 
 <!-- LIGHTBOX -->
-<div class="lightbox"
-     *ngIf="selectedPost"
-     (click)="closePost()"
-     (touchstart)="onTouchStart($event)"
-     (touchend)="onTouchEnd($event)">
+<div
+  class="lightbox"
+  *ngIf="selectedPost"
+  (click)="closePost()"
+  (touchstart)="onTouchStart($event)"
+  (touchend)="onTouchEnd($event)"
+>
 
-  <div class="modal" (click)="$event.stopPropagation()">
+  <div
+    class="modal"
+    (click)="$event.stopPropagation()"
+  >
 
-    <button class="close" (click)="closePost()">✕</button>
+    <!-- CLOSE -->
+    <button
+      class="close"
+      (click)="closePost()"
+    >
+      ✕
+    </button>
 
-    <img [src]="selectedPost.imageUrl" (click)="closePost()">
+    <!-- IMAGE -->
+    <div class="modal-image-wrapper">
 
-    <!-- NAV -->
-    <button class="nav prev" (click)="prev(); $event.stopPropagation()">❮</button>
-    <button class="nav next" (click)="next(); $event.stopPropagation()">❯</button>
+      <img
+        [src]="selectedPost.imageUrl"
+      >
 
+      <!-- NAV -->
+      <button
+        class="nav prev"
+        (click)="prev(); $event.stopPropagation()"
+      >
+        ❮
+      </button>
+
+      <button
+        class="nav next"
+        (click)="next(); $event.stopPropagation()"
+      >
+        ❯
+      </button>
+
+    </div>
+
+    <!-- DETAILS -->
     <div class="details">
-      <h2>{{ selectedPost.title }}</h2>
 
-      <p>{{ selectedPost.description }}</p>
+      <div class="details-top">
 
-      <p>Vízterület: {{ selectedPost.water }}</p>
-      <p *ngIf="selectedPost.species">Halfaj: {{ selectedPost.species }}</p>
+        <div>
 
-      <p *ngIf="selectedPost.weight">Súly: {{ selectedPost.weight }} kg</p>
-      <p *ngIf="selectedPost.length">Hossz: {{ selectedPost.length }} cm</p>
+          <div class="modal-badge">
+            {{ selectedPost.fishGroup }}
+          </div>
 
-      <p *ngIf="selectedPost.bait">Csali: {{ selectedPost.bait }}</p>
-      <p *ngIf="selectedPost.method">Módszer: {{ selectedPost.method }}</p>
-      <p *ngIf="selectedPost.timeOfDay">Napszak: {{ selectedPost.timeOfDay }}</p>
+          <h2>
+            {{ selectedPost.title }}
+          </h2>
 
-      <p *ngIf="selectedPost.username">Horgász: {{ selectedPost.username }}</p>
+        </div>
+
+      </div>
+
+      <p class="description">
+        {{ selectedPost.description }}
+      </p>
+
+      <div class="details-grid">
+
+        <div class="detail-item">
+
+          <span class="label">
+            🌊 Vízterület
+          </span>
+
+          <span>
+            {{ selectedPost.water }}
+          </span>
+
+        </div>
+
+        <div
+          class="detail-item"
+          *ngIf="selectedPost.species"
+        >
+
+          <span class="label">
+            🐟 Halfaj
+          </span>
+
+          <span>
+            {{ selectedPost.species }}
+          </span>
+
+        </div>
+
+        <div
+          class="detail-item"
+          *ngIf="selectedPost.weight"
+        >
+
+          <span class="label">
+            ⚖️ Súly
+          </span>
+
+          <span>
+            {{ selectedPost.weight }} kg
+          </span>
+
+        </div>
+
+        <div
+          class="detail-item"
+          *ngIf="selectedPost.length"
+        >
+
+          <span class="label">
+            📏 Hossz
+          </span>
+
+          <span>
+            {{ selectedPost.length }} cm
+          </span>
+
+        </div>
+
+        <div
+          class="detail-item"
+          *ngIf="selectedPost.bait"
+        >
+
+          <span class="label">
+            🎯 Csali
+          </span>
+
+          <span>
+            {{ selectedPost.bait }}
+          </span>
+
+        </div>
+
+        <div
+          class="detail-item"
+          *ngIf="selectedPost.method"
+        >
+
+          <span class="label">
+            🎣 Módszer
+          </span>
+
+          <span>
+            {{ selectedPost.method }}
+          </span>
+
+        </div>
+
+        <div
+          class="detail-item"
+          *ngIf="selectedPost.timeOfDay"
+        >
+
+          <span class="label">
+            🌅 Napszak
+          </span>
+
+          <span>
+            {{ selectedPost.timeOfDay }}
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="angler">
+
+        👤 {{ selectedPost.username }}
+
+      </div>
+
     </div>
 
   </div>

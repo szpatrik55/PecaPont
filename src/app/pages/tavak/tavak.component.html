@@ -1,54 +1,244 @@
 <div class="tavak-page">
 
-  <section class="hero-mini">
-    <h1>Fedezd fel Magyarország legjobb horgásztavait</h1>
+  <!-- HERO -->
+  <section class="hero-section">
+
+    <img
+      class="hero-image"
+      src="assets/images/lake-hero.jpg"
+      alt="Horgásztavak"
+    >
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+
+      <div class="hero-badge">
+        Magyarországi horgásztavak
+      </div>
+
+      <h1>
+        Fedezd fel a legjobb
+        horgászhelyeket
+      </h1>
+
+      <p>
+        Keress tavak között település,
+        típus vagy név alapján.
+      </p>
+
+      <div class="hero-stats">
+
+        <div class="hero-stat">
+
+          <span class="value">
+            {{ tavak().length }}
+          </span>
+
+          <span class="label">
+            Tó
+          </span>
+
+        </div>
+
+        <div class="hero-stat">
+
+          <span class="value">
+            {{ uniqueCitiesCount }}
+          </span>
+
+          <span class="label">
+            Település
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
   </section>
 
-  <div class="toolbar">
+  <!-- MAIN -->
+  <div class="layout">
 
-    <input
-      class="input"
-      type="text"
-      placeholder="Keresés név, település vagy típus szerint..."
-      [ngModel]="keresoSzoveg()"
-      (ngModelChange)="keresoSzoveg.set($event)"
-    />
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
 
-    <select
-      class="input"
-      [ngModel]="rendezes()"
-      (ngModelChange)="rendezes.set($event)"
-    >
-      <option value="nev">Név szerint</option>
-      <option value="telepules">Település szerint</option>
-      <option value="tipus">Típus szerint</option>
-    </select>
+      <!-- SEARCH -->
+      <div class="sidebar-card">
+
+        <h3>Keresés</h3>
+
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Név, település vagy típus..."
+          [ngModel]="keresoSzoveg()"
+          (ngModelChange)="keresoSzoveg.set($event)"
+        />
+
+      </div>
+
+      <!-- SORT -->
+      <div class="sidebar-card">
+
+        <h3>Rendezés</h3>
+
+        <select
+          class="search-input"
+          [ngModel]="rendezes()"
+          (ngModelChange)="rendezes.set($event)"
+        >
+
+          <option value="nev">
+            Név szerint
+          </option>
+
+          <option value="telepules">
+            Település szerint
+          </option>
+
+          <option value="tipus">
+            Típus szerint
+          </option>
+
+        </select>
+
+      </div>
+
+      <!-- FILTERS -->
+      <div class="sidebar-card">
+
+        <h3>Típusok</h3>
+
+        <div class="filter-list">
+
+          <button
+            class="filter-chip"
+            [class.active]="aktivTipus() === ''"
+            (click)="aktivTipus.set('')"
+          >
+            Összes
+          </button>
+
+          <button
+            class="filter-chip"
+            *ngFor="let tipus of tipusok"
+            [class.active]="aktivTipus() === tipus"
+            (click)="aktivTipus.set(tipus)"
+          >
+            {{ tipus }}
+          </button>
+
+        </div>
+
+      </div>
+
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+      <!-- TOPBAR -->
+      <div class="topbar">
+
+        <div class="results-count">
+          {{ rendezettTavak().length }} találat
+        </div>
+
+      </div>
+
+      <!-- EMPTY -->
+      <div
+        class="empty-state"
+        *ngIf="!rendezettTavak().length"
+      >
+
+        <div class="empty-icon">
+          🎣
+        </div>
+
+        <h2>Nincs találat</h2>
+
+        <p>
+          Próbálj más keresést.
+        </p>
+
+      </div>
+
+      <!-- GRID -->
+      <section
+        class="tavak-grid"
+        *ngIf="rendezettTavak().length"
+      >
+
+        @for (
+          to of rendezettTavak();
+          track to.id
+        ) {
+
+          <article
+            class="to-card"
+            [routerLink]="['/tavak', to.id]"
+            (click)="novelMegtekintes(to.id)"
+          >
+
+            <!-- IMAGE -->
+            <div class="image-wrapper">
+
+              <img
+                class="lake-image"
+                [src]="
+                  to.kepUrl ||
+                  'assets/images/fallback-lake.jpg'
+                "
+                [alt]="to.nev"
+              >
+
+              <div class="image-overlay"></div>
+
+              <!-- TYPE -->
+              <div class="lake-type">
+
+                {{ to.tipus }}
+
+              </div>
+
+            </div>
+
+            <!-- CONTENT -->
+            <div class="card-content">
+
+              <h2>
+                {{ to.nev }}
+              </h2>
+
+              <div class="location">
+
+                📍 {{ to.telepules }}
+
+              </div>
+
+              <div class="card-divider"></div>
+
+              <div class="card-footer">
+
+                <div class="view-more">
+                  Megnyitás →
+                </div>
+
+              </div>
+
+            </div>
+
+          </article>
+        }
+
+      </section>
+
+    </main>
 
   </div>
 
-  <section class="tavak-grid">
-
-    @for (to of rendezettTavak(); track to.id) {
-
-      <div
-        class="to-card card"
-        [routerLink]="['/tavak', to.id]"
-        (click)="novelMegtekintes(to.id); $event.stopPropagation()"
-        [style.background-image]="'url(' + (to.kepUrl || 'assets/images/fallback-lake.jpg') + ')'"
-      >
-
-        <div class="card-overlay">
-
-          <span class="lake-badge">
-            {{ to.tipus }}
-          </span>
-
-          <div class="card-content">
-            <h3>{{ to.nev }}</h3>
-            <p>{{ to.telepules }}</p>
-          </div>
-        </div>
-      </div>
-    }
-  </section>
 </div>

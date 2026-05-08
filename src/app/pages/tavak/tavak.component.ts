@@ -5,82 +5,207 @@ import {
   signal,
   computed
 } from '@angular/core';
+
 import {
   Firestore,
   collection,
-  getDocs
-} from '@angular/fire/firestore';
-import {
+  getDocs,
   doc,
   updateDoc,
   increment
 } from '@angular/fire/firestore';
+
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 interface To {
+
   id: string;
+
   nev: string;
+
   telepules: string;
-  tipus: string; // 👈 ÚJ MEZŐ
+
+  tipus: string;
+
   kepUtvonal: string;
+
   kepUrl?: string;
+
+  megtekintesek?: number;
 }
 
 @Component({
   selector: 'app-to-lista',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule
+  ],
   templateUrl: './tavak.component.html',
   styleUrls: ['./tavak.component.scss']
 })
 export class ToListaComponent implements OnInit {
-  private firestore = inject(Firestore);
+
+  private firestore =
+    inject(Firestore);
 
   tavak = signal<To[]>([]);
 
   keresoSzoveg = signal('');
-  rendezes = signal<'nev' | 'telepules' | 'tipus'>('nev'); // 👈 bővítve
+
+  aktivTipus = signal('');
+
+  rendezes =
+    signal<'nev' | 'telepules' | 'tipus'>(
+      'nev'
+    );
+
+  tipusok: string[] = [];
+
+  uniqueCitiesCount = 0;
 
   rendezettTavak = computed(() => {
-    const keresett = this.keresoSzoveg().toLowerCase();
+
+    const keresett =
+      this.keresoSzoveg().toLowerCase();
+
+    const tipus =
+      this.aktivTipus();
 
     return [...this.tavak()]
-      .filter(
-        (to) =>
-          to.nev.toLowerCase().includes(keresett) ||
-          to.telepules.toLowerCase().includes(keresett) ||
-          to.tipus.toLowerCase().includes(keresett) // 👈 kereséshez is
-      )
+
+      .filter(to => {
+
+        const searchMatch =
+
+          to.nev
+            .toLowerCase()
+            .includes(keresett)
+
+          ||
+
+          to.telepules
+            .toLowerCase()
+            .includes(keresett)
+
+          ||
+
+          to.tipus
+            .toLowerCase()
+            .includes(keresett);
+
+        const tipusMatch =
+
+          !tipus ||
+
+          to.tipus === tipus;
+
+        return (
+          searchMatch &&
+          tipusMatch
+        );
+      })
+
       .sort((a, b) =>
-        (a[this.rendezes()] || '').localeCompare(
-          (b[this.rendezes()] || '')
-        )
+
+        (a[this.rendezes()] || '')
+          .localeCompare(
+
+            b[this.rendezes()] || ''
+          )
       );
   });
 
   async ngOnInit(): Promise<void> {
+
     try {
-      const colRef = collection(this.firestore, 'lakes');
-      const snapshot = await getDocs(colRef);
 
-      const adatok: To[] = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...(doc.data() as Omit<To, 'id'>)
-      }));
+      const colRef =
+        collection(this.firestore, 'lakes');
 
-      this.tavak.set(adatok);
+      const snapshot =
+        await getDocs(colRef);
+
+      const data: To[] =
+        snapshot.docs.map(doc => ({
+
+          id: doc.id,
+
+          ...(doc.data() as Omit<To, 'id'>)
+        }));
+
+      this.tavak.set(data);
+
+      this.generateFilters();
+
+      this.calculateStats();
+
     } catch (error) {
-      console.error('Firebase hiba:', error);
+
+      console.error(
+        'Firebase hiba:',
+        error
+      );
     }
   }
 
-  async novelMegtekintes(toId: string) {
-    const lakeRef = doc(this.firestore, 'lakes', toId);
+  generateFilters(): void {
 
-    await updateDoc(lakeRef, {
-      megtekintesek: increment(1)
-    });
+    const unique =
+      new Set(
+
+        this.tavak()
+          .map(to => to.tipus)
+      );
+
+    this.tipusok =
+      [...unique];
   }
+
+  calculateStats(): void {
+
+    const cities =
+      new Set(
+
+        this.tavak()
+          .map(to => to.telepules)
+      );
+
+    this.uniqueCitiesCount =
+      cities.size;
+  }
+
+  async novelMegtekintes(
+    toId: string
+  ): Promise<void> {
+
+    try {
+
+      const lakeRef =
+        doc(
+          this.firestore,
+          'lakes',
+          toId
+        );
+
+      await updateDoc(
+        lakeRef,
+        {
+          megtekintesek:
+            increment(1)
+        }
+      );
+
+    } catch (error) {
+
+      console.error(
+        'Megtekintés hiba:',
+        error
+      );
+    }
+  }
+
 }
