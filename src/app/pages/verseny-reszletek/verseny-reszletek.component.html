@@ -7,7 +7,7 @@
 
       <a
         routerLink="/versenyek"
-        class="back-link btn-glass"
+        class="btn btn-primary back-link"
       >
         <span class="arrow">←</span>
         Vissza a versenyekhez
@@ -42,6 +42,7 @@
         <img
           [src]="verseny.kepUrl"
           [alt]="verseny.nev"
+          loading="lazy"
         >
 
       </div>

@@ -1,9 +1,24 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import {
+  Firestore,
+  collection,
+  collectionData
+} from '@angular/fire/firestore';
+
+import { Observable } from 'rxjs';
+
 import { EventsService } from '../../services/events';
+
+interface Lake {
+
+  id: string;
+
+  nev: string;
+}
 
 @Component({
   selector: 'app-verseny-szerkeszto',
@@ -12,9 +27,13 @@ import { EventsService } from '../../services/events';
   templateUrl: './verseny-szerkeszto.component.html',
   styleUrls: ['./verseny-szerkeszto.component.scss']
 })
-export class VersenySzerkesztoComponent {
+export class VersenySzerkesztoComponent implements OnInit {
 
   private eventsService = inject(EventsService);
+
+  private firestore = inject(Firestore);
+
+  tavak$!: Observable<Lake[]>;
 
   event = {
 
@@ -34,9 +53,22 @@ export class VersenySzerkesztoComponent {
 
   mentesFolyamatban = signal(false);
 
+  ngOnInit(): void {
+
+    const lakesRef = collection(this.firestore, 'lakes');
+
+    this.tavak$ = collectionData(lakesRef, {
+      idField: 'id'
+    }) as Observable<Lake[]>;
+  }
+
   async versenyMentese() {
 
-    if (!this.event.nev || !this.event.leiras) {
+    if (
+      !this.event.nev ||
+      !this.event.leiras ||
+      !this.event.helyszin
+    ) {
 
       alert('Kötelező mezők hiányoznak!');
 

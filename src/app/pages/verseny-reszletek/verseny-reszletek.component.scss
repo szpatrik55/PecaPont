@@ -26,12 +26,13 @@
 }
 
 /* =========================
-   BACK
+   BACK NAV
 ========================= */
 .back-nav {
   margin-bottom: var(--space-lg);
 }
 
+/* 👉 HTML: class="btn btn-primary back-link" */
 .back-link {
   display: inline-flex;
   align-items: center;
@@ -39,7 +40,7 @@
 }
 
 .back-link .arrow {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   transition: transform 0.2s ease;
 }
 
@@ -56,12 +57,12 @@
 }
 
 .spinner {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
 
   margin: 0 auto var(--space-md);
 
-  border: 3px solid rgba(14, 165, 233, 0.1);
+  border: 3px solid rgba(14, 165, 233, 0.12);
   border-top: 3px solid var(--primary-light);
 
   border-radius: 50%;
@@ -89,10 +90,10 @@
   width: 100%;
   height: 420px;
 
+  margin-bottom: var(--space-xl);
+
   border-radius: var(--radius-lg);
   overflow: hidden;
-
-  margin-bottom: var(--space-xl);
 
   box-shadow: var(--shadow-lg);
 }
@@ -100,6 +101,7 @@
 .hero-image img {
   width: 100%;
   height: 100%;
+
   object-fit: cover;
 }
 
@@ -121,6 +123,12 @@
   font-size: 0.9rem;
 }
 
+.meta span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .event-header h1 {
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 800;
@@ -133,19 +141,24 @@
 .lead {
   color: var(--text-muted);
   font-size: 1.05rem;
+  line-height: 1.7;
 }
 
 /* =========================
-   CONTENT CARD
+   CONTENT
 ========================= */
+/* 👉 HTML: class="event-body card" */
 .event-body {
   padding: var(--space-xl);
 }
 
 .content-text {
   white-space: pre-wrap;
-  line-height: 1.8;
+
   font-size: 1.05rem;
+  line-height: 1.9;
+
+  color: var(--text-main);
 }
 
 /* =========================
@@ -154,6 +167,10 @@
 .not-found {
   text-align: center;
   padding: var(--space-xl);
+}
+
+.not-found h2 {
+  margin-bottom: var(--space-sm);
 }
 
 /* =========================
@@ -173,7 +190,7 @@
 }
 
 /* =========================
-   RESPONSIVE
+   TABLET
 ========================= */
 @media (max-width: 768px) {
 
@@ -188,8 +205,15 @@
   .event-body {
     padding: var(--space-lg);
   }
+
+  .content-text {
+    font-size: 1rem;
+  }
 }
 
+/* =========================
+   MOBILE
+========================= */
 @media (max-width: 480px) {
 
   .event-page {
@@ -198,13 +222,28 @@
 
   .hero-image {
     height: 220px;
+    margin-bottom: var(--space-lg);
+  }
+
+  .event-header h1 {
+    font-size: 1.7rem;
   }
 
   .event-body {
     padding: var(--space-md);
   }
 
-  .event-header h1 {
-    font-size: 1.8rem;
+  .meta {
+    gap: var(--space-sm);
+    font-size: 0.85rem;
+  }
+
+  .lead {
+    font-size: 0.95rem;
+  }
+
+  .content-text {
+    font-size: 0.95rem;
+    line-height: 1.8;
   }
 }

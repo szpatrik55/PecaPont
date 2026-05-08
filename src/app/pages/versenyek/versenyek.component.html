@@ -40,6 +40,7 @@
           class="event-image"
           [src]="verseny.kepUrl"
           [alt]="verseny.nev"
+          loading="lazy"
         >
 
       </div>
@@ -83,7 +84,7 @@
         <div class="card-footer">
 
           <a
-            class="btn-primary"
+            class="btn btn-primary"
             [routerLink]="['/versenyek', verseny.id]"
           >
             Részletek

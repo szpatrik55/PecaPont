@@ -45,11 +45,25 @@
 
         <label>Helyszín</label>
 
-        <input
-          type="text"
+        <select
           class="input"
           [(ngModel)]="event.helyszin"
         >
+
+          <option value="">
+            Válassz helyszínt
+          </option>
+
+          <option
+            *ngFor="let lake of tavak$ | async"
+            [value]="lake.nev"
+          >
+
+            {{ lake.nev }}
+
+          </option>
+
+        </select>
 
       </div>
 
@@ -112,8 +126,9 @@
     </div>
 
     <!-- BUTTON -->
+     
     <button
-      class="btn-primary save-btn"
+      class="btn btn-primary save-btn"
       (click)="versenyMentese()"
       [disabled]="mentesFolyamatban()"
     >

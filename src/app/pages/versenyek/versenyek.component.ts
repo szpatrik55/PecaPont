@@ -9,6 +9,7 @@ import {
   getDocs,
   query,
   orderBy,
+  where,
   Timestamp
 } from '@angular/fire/firestore';
 
@@ -46,11 +47,22 @@ export class VersenyekComponent implements OnInit {
 
     const search = this.searchTerm().toLowerCase();
 
-    return this.allEvents().filter(event =>
+    const today = new Date()
+      .toISOString()
+      .split('T')[0];
 
-      event.nev.toLowerCase().includes(search) ||
-      event.helyszin.toLowerCase().includes(search)
-    );
+    return this.allEvents().filter(event => {
+
+      const megfelelKeresesnek =
+
+        event.nev.toLowerCase().includes(search) ||
+        event.helyszin.toLowerCase().includes(search);
+
+      const nemJartLe =
+        event.datum >= today;
+
+      return megfelelKeresesnek && nemJartLe;
+    });
   });
 
   async ngOnInit(): Promise<void> {
@@ -59,7 +71,15 @@ export class VersenyekComponent implements OnInit {
 
       const colRef = collection(this.firestore, 'events');
 
-      const q = query(colRef, orderBy('letrehozva', 'desc'));
+      const today = new Date()
+        .toISOString()
+        .split('T')[0];
+
+      const q = query(
+        colRef,
+        where('datum', '>=', today),
+        orderBy('datum', 'asc')
+      );
 
       const snapshot = await getDocs(q);
 

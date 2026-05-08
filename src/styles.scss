@@ -166,6 +166,17 @@ select:focus {
   border-color: var(--primary);
 }
 
+select option {
+  background: var(--bg-surface);
+  color: var(--text-main);
+}
+
+/* kijelölt */
+select option:checked {
+  background: var(--primary);
+  color: white;
+}
+
 textarea {
   resize: vertical; /* 🔥 csak le-fel lehet húzni */
 }

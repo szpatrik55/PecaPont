@@ -3,10 +3,11 @@
   min-height: 100vh;
 
   background: var(--bg-main);
+  color: var(--text-main);
 }
 
 /* =========================
-   CONTAINER
+   PAGE
 ========================= */
 .admin-container {
   min-height: 100vh;
@@ -21,6 +22,7 @@
 /* =========================
    CARD
 ========================= */
+/* 👉 HTML: class="editor-card card" */
 .editor-card {
   width: 100%;
   max-width: 900px;
@@ -37,7 +39,7 @@
 }
 
 .editor-header h1 {
-  font-size: 2rem;
+  font-size: clamp(2rem, 4vw, 2.6rem);
   font-weight: 800;
 
   margin-bottom: var(--space-sm);
@@ -45,6 +47,7 @@
 
 .editor-header p {
   color: var(--text-muted);
+  font-size: 1rem;
 }
 
 /* =========================
@@ -62,24 +65,10 @@
   color: var(--text-muted);
 
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 700;
 
   text-transform: uppercase;
   letter-spacing: 0.04em;
-}
-
-/* =========================
-   INPUTS
-========================= */
-.form-group input,
-.form-group textarea,
-.form-group select {
-  margin: 0;
-}
-
-.form-group textarea {
-  min-height: 180px;
-  resize: vertical;
 }
 
 /* =========================
@@ -88,11 +77,12 @@
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
+
   gap: var(--space-md);
 }
 
 /* =========================
-   FILE UPLOAD
+   FILE DROPZONE
 ========================= */
 .file-drop-zone {
   display: flex;
@@ -101,19 +91,20 @@
 
   padding: var(--space-lg);
 
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   border: 1px dashed var(--glass-border);
 
   background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
 
   color: var(--text-muted);
 
   cursor: pointer;
   transition: 0.25s;
 
-  font-size: 14px;
-  font-weight: 500;
   text-align: center;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .file-drop-zone:hover {
@@ -126,13 +117,15 @@
 }
 
 /* =========================
-   PREVIEW
+   IMAGE PREVIEW
 ========================= */
 .image-preview {
   margin-top: var(--space-md);
 
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   overflow: hidden;
+
+  border: 1px solid var(--glass-border);
 
   box-shadow: var(--shadow-md);
 }
@@ -154,7 +147,7 @@
 }
 
 /* =========================
-   RESPONSIVE
+   TABLET
 ========================= */
 @media (max-width: 768px) {
 
@@ -169,8 +162,15 @@
   .form-grid {
     grid-template-columns: 1fr;
   }
+
+  .editor-header h1 {
+    font-size: 2rem;
+  }
 }
 
+/* =========================
+   MOBILE
+========================= */
 @media (max-width: 480px) {
 
   .admin-container {
@@ -179,5 +179,18 @@
 
   .editor-card {
     padding: var(--space-md);
+  }
+
+  .editor-header h1 {
+    font-size: 1.7rem;
+  }
+
+  .file-drop-zone {
+    padding: var(--space-md);
+    font-size: 0.9rem;
+  }
+
+  .image-preview img {
+    max-height: 240px;
   }
 }
