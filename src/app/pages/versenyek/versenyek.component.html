@@ -11,6 +11,77 @@
 
   </div>
 
+  <!-- MINI CALENDAR -->
+  <div class="mini-calendar">
+
+    <div class="calendar-top">
+
+      <button
+        class="calendar-btn"
+        (click)="previousMonth()"
+      >
+        ←
+      </button>
+
+      <div class="calendar-title">
+        {{ currentMonthLabel }}
+      </div>
+
+      <button
+        class="calendar-btn"
+        (click)="nextMonth()"
+      >
+        →
+      </button>
+
+    </div>
+
+    <!-- WEEKDAYS -->
+    <div class="weekdays">
+
+      <span>H</span>
+      <span>K</span>
+      <span>Sze</span>
+      <span>Cs</span>
+      <span>P</span>
+      <span>Szo</span>
+      <span>V</span>
+
+    </div>
+
+    <!-- DAYS -->
+    <div class="calendar-grid">
+
+      <div
+        *ngFor="let day of calendarDays"
+        class="calendar-day"
+        [class.other-month]="!day.currentMonth"
+        [class.today]="day.isToday"
+        [class.has-event]="day.hasEvent"
+      >
+
+        <span class="day-number">
+          {{ day.day }}
+        </span>
+
+        <div
+          class="event-name"
+          *ngIf="day.eventName"
+        >
+          {{ day.eventName }}
+        </div>
+
+        <div
+          class="event-dot"
+          *ngIf="day.hasEvent"
+        ></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
   <!-- SEARCH -->
   <div class="search-container">
 
