@@ -1,171 +1,289 @@
 <div class="events-page">
 
-  <!-- HEADER -->
-  <div class="page-header">
+  <!-- HERO -->
+  <section
+    class="hero-section"
+    *ngIf="filteredEvents().length"
+  >
 
-    <h1>Horgászversenyek</h1>
+    <div class="hero-overlay"></div>
 
-    <p class="subtitle">
-      Aktuális és közelgő versenykiírások
-    </p>
+    <img
+      class="hero-image"
+      [src]="filteredEvents()[0].kepUrl"
+      [alt]="filteredEvents()[0].nev"
+    >
 
-  </div>
+    <div class="hero-content">
 
-  <!-- MINI CALENDAR -->
-  <div class="mini-calendar">
-
-    <div class="calendar-top">
-
-      <button
-        class="calendar-btn"
-        (click)="previousMonth()"
-      >
-        ←
-      </button>
-
-      <div class="calendar-title">
-        {{ currentMonthLabel }}
+      <div class="hero-badge">
+        Következő verseny
       </div>
 
-      <button
-        class="calendar-btn"
-        (click)="nextMonth()"
-      >
-        →
-      </button>
+      <h1>
+        {{ filteredEvents()[0].nev }}
+      </h1>
 
-    </div>
+      <p>
+        {{ filteredEvents()[0].rovidLeiras }}
+      </p>
 
-    <!-- WEEKDAYS -->
-    <div class="weekdays">
+      <div class="hero-meta">
 
-      <span>H</span>
-      <span>K</span>
-      <span>Sze</span>
-      <span>Cs</span>
-      <span>P</span>
-      <span>Szo</span>
-      <span>V</span>
-
-    </div>
-
-    <!-- DAYS -->
-    <div class="calendar-grid">
-
-      <div
-        *ngFor="let day of calendarDays"
-        class="calendar-day"
-        [class.other-month]="!day.currentMonth"
-        [class.today]="day.isToday"
-        [class.has-event]="day.hasEvent"
-      >
-
-        <span class="day-number">
-          {{ day.day }}
+        <span>
+          📍 {{ filteredEvents()[0].helyszin }}
         </span>
 
-        <div
-          class="event-name"
-          *ngIf="day.eventName"
+        <span>
+          📅 {{ filteredEvents()[0].datum | date:'yyyy.MM.dd' }}
+        </span>
+
+      </div>
+
+      <a
+        class="hero-btn"
+        [routerLink]="['/versenyek', filteredEvents()[0].id]"
+      >
+        Részletek
+      </a>
+
+    </div>
+
+  </section>
+
+  <!-- MAIN LAYOUT -->
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <!-- SEARCH -->
+      <div class="sidebar-card">
+
+        <h3>Keresés</h3>
+
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Verseny vagy helyszín..."
+          [ngModel]="searchTerm()"
+          (ngModelChange)="searchTerm.set($event)"
         >
-          {{ day.eventName }}
+
+      </div>
+
+      <!-- FILTERS -->
+      <div class="sidebar-card">
+
+        <h3>Kategóriák</h3>
+
+        <div class="filter-list">
+
+          <button
+            class="filter-chip"
+            [class.active]="selectedCategory() === ''"
+            (click)="selectedCategory.set('')"
+          >
+            Összes
+          </button>
+
+          <button
+            class="filter-chip"
+            *ngFor="let cat of categories"
+            [class.active]="selectedCategory() === cat"
+            (click)="selectedCategory.set(cat)"
+          >
+            {{ cat }}
+          </button>
+
         </div>
 
-        <div
-          class="event-dot"
-          *ngIf="day.hasEvent"
-        ></div>
+      </div>
+
+      <!-- MINI CALENDAR -->
+      <div class="sidebar-card">
+
+        <div class="calendar-top">
+
+          <button
+            class="calendar-btn"
+            (click)="previousMonth()"
+          >
+            ←
+          </button>
+
+          <div class="calendar-title">
+            {{ currentMonthLabel }}
+          </div>
+
+          <button
+            class="calendar-btn"
+            (click)="nextMonth()"
+          >
+            →
+          </button>
+
+        </div>
+
+        <div class="weekdays">
+
+          <span>H</span>
+          <span>K</span>
+          <span>Sze</span>
+          <span>Cs</span>
+          <span>P</span>
+          <span>Szo</span>
+          <span>V</span>
+
+        </div>
+
+        <div class="calendar-grid">
+
+          <div
+            *ngFor="let day of calendarDays"
+            class="calendar-day"
+            [class.other-month]="!day.currentMonth"
+            [class.today]="day.isToday"
+            [class.selected]="selectedDate() === day.iso"
+            (click)="selectDate(day.iso)"
+          >
+
+            <span class="day-number">
+              {{ day.day }}
+            </span>
+
+            <div
+              class="event-indicator"
+              *ngIf="day.eventCount > 0"
+            >
+              {{ day.eventCount }}
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
 
-    </div>
+    </aside>
 
-  </div>
+    <!-- CONTENT -->
+    <main class="content">
 
-  <!-- SEARCH -->
-  <div class="search-container">
+      <!-- TOPBAR -->
+      <div class="topbar">
 
-    <input
-      type="text"
-      class="input search-input"
-      placeholder="Keresés versenyre vagy helyszínre..."
-      [ngModel]="searchTerm()"
-      (ngModelChange)="searchTerm.set($event)"
-    >
-
-  </div>
-
-  <!-- GRID -->
-  <div class="events-grid">
-
-    <div
-      class="event-card card"
-      *ngFor="let verseny of filteredEvents()"
-    >
-
-      <!-- IMAGE -->
-      <div class="event-image-wrapper">
-
-        <img
-          *ngIf="verseny.kepUrl"
-          class="event-image"
-          [src]="verseny.kepUrl"
-          [alt]="verseny.nev"
-          loading="lazy"
-        >
+        <div class="results-count">
+          {{ filteredEvents().length }} verseny
+        </div>
 
       </div>
 
-      <!-- DATE -->
-      <div class="date-badge">
+      <!-- EMPTY -->
+      <div
+        class="empty-state"
+        *ngIf="!filteredEvents().length"
+      >
 
-        <span class="day">
-          {{ verseny.datum | date:'dd' }}
-        </span>
+        <div class="empty-icon">
+          🎣
+        </div>
 
-        <span class="month">
-          {{ verseny.datum | date:'MMM' }}
-        </span>
+        <h2>Nincs találat</h2>
 
-      </div>
-
-      <!-- CONTENT -->
-      <div class="event-content">
-
-        <h2 class="event-title">
-          {{ verseny.nev }}
-        </h2>
-
-        <p class="short-desc">
-          {{ verseny.rovidLeiras }}
+        <p>
+          Próbálj más keresést vagy dátumot.
         </p>
 
-        <div class="event-meta">
+      </div>
 
-          <span>
-            📍 {{ verseny.helyszin }}
-          </span>
+      <!-- GRID -->
+      <div
+        class="events-grid"
+        *ngIf="filteredEvents().length"
+      >
 
-          <span>
-            📅 {{ verseny.datum | date:'yyyy.MM.dd' }}
-          </span>
+        <article
+          class="event-card"
+          *ngFor="let verseny of filteredEvents()"
+        >
 
-        </div>
+          <!-- IMAGE -->
+          <div class="event-image-wrapper">
 
-        <div class="card-footer">
+            <img
+              *ngIf="verseny.kepUrl"
+              class="event-image"
+              [src]="verseny.kepUrl"
+              [alt]="verseny.nev"
+              loading="lazy"
+            >
 
-          <a
-            class="btn btn-primary"
-            [routerLink]="['/versenyek', verseny.id]"
-          >
-            Részletek
-          </a>
+            <div class="event-gradient"></div>
 
-        </div>
+            <div class="date-badge">
+
+              <span class="day">
+                {{ verseny.datum | date:'dd' }}
+              </span>
+
+              <span class="month">
+                {{ verseny.datum | date:'MMM' }}
+              </span>
+
+            </div>
+
+            <div class="event-status">
+              Nyitott nevezés
+            </div>
+
+          </div>
+
+          <!-- CONTENT -->
+          <div class="event-content">
+
+            <div class="event-category">
+              {{ verseny.kategoria }}
+            </div>
+
+            <h2 class="event-title">
+              {{ verseny.nev }}
+            </h2>
+
+            <p class="short-desc">
+              {{ verseny.rovidLeiras }}
+            </p>
+
+            <div class="event-meta">
+
+              <div class="meta-item">
+                📍 {{ verseny.helyszin }}
+              </div>
+
+              <div class="meta-item">
+                📅 {{ verseny.datum | date:'yyyy.MM.dd' }}
+              </div>
+
+            </div>
+
+            <div class="card-footer">
+
+              <a
+                class="details-btn"
+                [routerLink]="['/versenyek', verseny.id]"
+              >
+                Részletek
+              </a>
+
+            </div>
+
+          </div>
+
+        </article>
 
       </div>
 
-    </div>
+    </main>
 
   </div>
 

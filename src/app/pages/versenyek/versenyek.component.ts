@@ -7,8 +7,6 @@ import {
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 
 import {
   Firestore,
@@ -20,16 +18,24 @@ import {
   Timestamp
 } from '@angular/fire/firestore';
 
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+
 interface EventItem {
 
   id: string;
 
   nev: string;
+
   rovidLeiras: string;
+
   leiras: string;
 
   helyszin: string;
+
   datum: string;
+
+  kategoria?: string;
 
   kepUrl?: string;
 
@@ -55,37 +61,75 @@ export class VersenyekComponent implements OnInit {
 
   searchTerm = signal('');
 
+  selectedCategory = signal('');
+
+  selectedDate = signal('');
+
   calendarDays: any[] = [];
 
   currentDate = new Date();
 
+  categories = [
+    'Bojlis',
+    'Feeder',
+    'Harcsa',
+    'Pergető',
+    'Gyermek'
+  ];
+
   get currentMonthLabel(): string {
 
-    return this.currentDate.toLocaleDateString('hu-HU', {
-      year: 'numeric',
-      month: 'long'
-    });
+    return this.currentDate.toLocaleDateString(
+      'hu-HU',
+      {
+        year: 'numeric',
+        month: 'long'
+      }
+    );
   }
 
   filteredEvents = computed(() => {
 
-    const search = this.searchTerm().toLowerCase();
+    const search =
+      this.searchTerm().toLowerCase();
 
-    const today = new Date()
-      .toISOString()
-      .split('T')[0];
+    const category =
+      this.selectedCategory();
+
+    const selectedDate =
+      this.selectedDate();
 
     return this.allEvents().filter(event => {
 
-      const megfelelKeresesnek =
+      const searchMatch =
 
-        event.nev.toLowerCase().includes(search) ||
-        event.helyszin.toLowerCase().includes(search);
+        event.nev
+          .toLowerCase()
+          .includes(search)
 
-      const nemJartLe =
-        event.datum >= today;
+        ||
 
-      return megfelelKeresesnek && nemJartLe;
+        event.helyszin
+          .toLowerCase()
+          .includes(search);
+
+      const categoryMatch =
+
+        !category ||
+
+        event.kategoria === category;
+
+      const dateMatch =
+
+        !selectedDate ||
+
+        event.datum === selectedDate;
+
+      return (
+        searchMatch &&
+        categoryMatch &&
+        dateMatch
+      );
     });
   });
 
@@ -93,11 +137,13 @@ export class VersenyekComponent implements OnInit {
 
     try {
 
-      const colRef = collection(this.firestore, 'events');
+      const colRef =
+        collection(this.firestore, 'events');
 
-      const today = new Date()
-        .toISOString()
-        .split('T')[0];
+      const today =
+        new Date()
+          .toISOString()
+          .split('T')[0];
 
       const q = query(
         colRef,
@@ -107,18 +153,21 @@ export class VersenyekComponent implements OnInit {
 
       const snapshot = await getDocs(q);
 
-      const adatok: EventItem[] = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...(doc.data() as any)
-      }));
+      const data: EventItem[] =
+        snapshot.docs.map(doc => ({
 
-      this.allEvents.set(adatok);
+          id: doc.id,
+
+          ...(doc.data() as any)
+        }));
+
+      this.allEvents.set(data);
 
       this.generateCalendar();
 
     } catch (error) {
 
-      console.error('Firebase hiba:', error);
+      console.error(error);
     }
   }
 
@@ -144,20 +193,54 @@ export class VersenyekComponent implements OnInit {
     this.generateCalendar();
   }
 
+  selectDate(date: string): void {
+
+    if (!date) return;
+
+    if (this.selectedDate() === date) {
+
+      this.selectedDate.set('');
+
+      return;
+    }
+
+    this.selectedDate.set(date);
+  }
+
   generateCalendar(): void {
 
-    const year = this.currentDate.getFullYear();
+    const year =
+      this.currentDate.getFullYear();
 
-    const month = this.currentDate.getMonth();
+    const month =
+      this.currentDate.getMonth();
 
-    const firstDay = new Date(year, month, 1);
+    const firstDay =
+      new Date(year, month, 1);
 
-    const lastDay = new Date(year, month + 1, 0);
+    const lastDay =
+      new Date(year, month + 1, 0);
 
     const startDay =
       (firstDay.getDay() + 6) % 7;
 
-    const totalDays = lastDay.getDate();
+    const totalDays =
+      lastDay.getDate();
+
+    const eventMap = new Map<
+      string,
+      EventItem[]
+    >();
+
+    this.allEvents().forEach(event => {
+
+      const arr =
+        eventMap.get(event.datum) || [];
+
+      arr.push(event);
+
+      eventMap.set(event.datum, arr);
+    });
 
     const days = [];
 
@@ -169,27 +252,35 @@ export class VersenyekComponent implements OnInit {
 
         currentMonth: false,
 
-        hasEvent: false,
-
         isToday: false,
 
-        eventName: ''
+        iso: '',
+
+        eventCount: 0
       });
     }
 
-    for (let day = 1; day <= totalDays; day++) {
+    for (
+      let day = 1;
+      day <= totalDays;
+      day++
+    ) {
 
-      const current = new Date(year, month, day);
+      const current =
+        new Date(year, month, day);
 
       const iso =
-        current.toISOString().split('T')[0];
+        current
+          .toISOString()
+          .split('T')[0];
 
-      const event = this.allEvents().find(
-        e => e.datum === iso
-      );
+      const events =
+        eventMap.get(iso) || [];
 
       const todayIso =
-        new Date().toISOString().split('T')[0];
+        new Date()
+          .toISOString()
+          .split('T')[0];
 
       days.push({
 
@@ -197,14 +288,17 @@ export class VersenyekComponent implements OnInit {
 
         currentMonth: true,
 
-        hasEvent: !!event,
+        iso,
 
-        eventName: event?.nev || '',
+        isToday:
+          iso === todayIso,
 
-        isToday: iso === todayIso
+        eventCount:
+          events.length
       });
     }
 
     this.calendarDays = days;
   }
+
 }
