@@ -1,5 +1,31 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* =========================
+   TABLE CONTAINER
+========================= */
+
 .users-table-container {
-  padding: var(--space-lg);
+  padding: 28px;
+
+  border-radius: 32px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.05),
+      rgba(255,255,255,0.03)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter: blur(14px);
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.25);
 
   overflow-x: auto;
 }
@@ -10,7 +36,7 @@
 
 .users-table {
   width: 100%;
-  min-width: 720px;
+  min-width: 760px;
 
   border-collapse: collapse;
 
@@ -19,29 +45,32 @@
 
 .users-table thead th {
   padding:
-    var(--space-md)
-    var(--space-md);
+    18px
+    20px;
 
   text-align: left;
 
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-size: .78rem;
+  font-weight: 800;
+
   text-transform: uppercase;
+  letter-spacing: .08em;
 
-  color: var(--text-muted);
+  color: rgba(248,250,252,0.5);
 
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom:
+    1px solid rgba(255,255,255,0.08);
 }
 
 .users-table tbody td {
   padding:
-    var(--space-md)
-    var(--space-md);
+    18px
+    20px;
 
   vertical-align: middle;
 
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom:
+    1px solid rgba(255,255,255,0.04);
 }
 
 .users-table tbody tr:last-child td {
@@ -49,11 +78,14 @@
 }
 
 .users-table tbody tr {
-  transition: background 0.2s ease;
+  transition:
+    background .2s ease,
+    transform .2s ease;
 }
 
 .users-table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background:
+    rgba(255,255,255,0.025);
 }
 
 /* =========================
@@ -61,48 +93,75 @@
 ========================= */
 
 .email {
-  font-weight: 500;
-  color: var(--text-main);
+  font-weight: 600;
+
+  color:
+    rgba(248,250,252,0.92);
+
+  font-size: .96rem;
 
   word-break: break-word;
 }
 
 /* =========================
-   SELECT
+   ROLE SELECT
 ========================= */
 
-.users-table select {
-  min-width: 150px;
+.role select,
+.mobile-role-select,
+.mobile-user-select {
+  width: 100%;
+
+  min-width: 170px;
 
   padding:
-    10px
-    14px;
+    13px
+    16px;
 
-  border-radius: var(--radius-sm);
+  border-radius: 16px;
 
-  border: 1px solid var(--glass-border);
+  border:
+    1px solid rgba(255,255,255,0.08);
 
-  background: rgba(255, 255, 255, 0.04);
+  background:
+    rgba(255,255,255,0.05);
 
   color: var(--text-main);
 
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: .92rem;
+  font-weight: 600;
 
   outline: none;
 
   transition:
-    border-color 0.2s ease,
-    background 0.2s ease;
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  cursor: pointer;
 }
 
-.users-table select:focus {
+.role select:focus,
+.mobile-role-select:focus,
+.mobile-user-select:focus {
   border-color: var(--primary);
+
+  background:
+    rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 0 0 4px rgba(37,99,235,0.15);
 }
 
-.users-table select option {
-  background: var(--bg-surface);
-  color: var(--text-main);
+.role select option,
+.mobile-role-select option,
+.mobile-user-select option {
+  background: #0f172a;
+  color: white;
 }
 
 /* =========================
@@ -112,7 +171,7 @@
 .actions {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: 12px;
 
   flex-wrap: wrap;
 }
@@ -121,94 +180,127 @@
    BUTTONS
 ========================= */
 
-.users-table button {
-  border: none;
+.save-btn,
+.delete-btn {
+  height: 46px;
 
   padding:
-    10px
-    16px;
+    0
+    18px;
 
-  border-radius: var(--radius-sm);
+  border: none;
 
-  font-size: 0.9rem;
+  border-radius: 14px;
+
+  font-size: .9rem;
   font-weight: 700;
 
   cursor: pointer;
 
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    opacity 0.2s ease;
+    transform .2s ease,
+    box-shadow .2s ease,
+    opacity .2s ease,
+    filter .2s ease;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  white-space: nowrap;
 }
 
-.users-table button:hover:not(:disabled) {
-  transform: translateY(-2px);
-}
-
-.users-table button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-
-  filter: grayscale(0.4);
-}
-
-/* SAVE BUTTON */
+/* SAVE */
 
 .save-btn {
-  background: linear-gradient(
-    135deg,
-    var(--primary-light),
-    var(--primary)
-  );
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary-light),
+      var(--primary)
+    );
 
   color: white;
 
-  box-shadow: var(--shadow-sm);
+  box-shadow:
+    0 10px 24px rgba(37,99,235,0.22);
 }
 
 .save-btn:hover:not(:disabled) {
-  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 16px 32px rgba(37,99,235,0.32);
 }
 
-/* DELETE BUTTON */
+/* DELETE */
 
 .delete-btn {
-  background: rgba(239, 68, 68, 0.14);
+  background:
+    rgba(239,68,68,0.14);
 
   color: #fca5a5;
 
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  border:
+    1px solid rgba(239,68,68,0.22);
 }
 
 .delete-btn:hover:not(:disabled) {
-  background: rgba(239, 68, 68, 0.2);
+  background:
+    rgba(239,68,68,0.2);
+
+  transform: translateY(-2px);
+}
+
+/* DISABLED */
+
+.save-btn:disabled,
+.delete-btn:disabled {
+  opacity: .5;
+
+  cursor: not-allowed;
+
+  transform: none;
+
+  filter: grayscale(.25);
+}
+
+/* =========================
+   MOBILE EDITOR
+========================= */
+
+.mobile-user-editor {
+  display: none;
 }
 
 /* =========================
    TABLET
 ========================= */
 
-@media (max-width: 900px) {
+@media (max-width: 920px) {
 
   .users-table-container {
-    padding: var(--space-md);
+    padding: 22px;
   }
 
   .users-table {
-    min-width: 640px;
+    min-width: 680px;
   }
 
   .users-table thead th,
   .users-table tbody td {
     padding:
-      14px
-      12px;
+      16px
+      14px;
   }
 
-  .users-table button {
+  .save-btn,
+  .delete-btn {
+    height: 44px;
+
     padding:
-      9px
-      14px;
+      0
+      16px;
   }
 }
 
@@ -219,38 +311,68 @@
 @media (max-width: 640px) {
 
   .users-table-container {
-    padding: var(--space-sm);
-    border-radius: var(--radius-md);
+    display: none;
   }
 
-  .users-table {
-    min-width: 600px;
+  .mobile-user-editor {
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
   }
 
-  .users-table thead th {
-    font-size: 0.78rem;
+  .mobile-user-card {
+    padding: 22px;
+
+    border-radius: 28px;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255,255,255,0.05),
+        rgba(255,255,255,0.03)
+      );
+
+    border:
+      1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter: blur(14px);
+
+    box-shadow:
+      0 12px 30px rgba(0,0,0,0.22);
   }
 
-  .users-table tbody td {
-    font-size: 0.88rem;
+  .mobile-user-email {
+    margin-bottom: 18px;
+
+    font-size: .95rem;
+    font-weight: 600;
+
+    line-height: 1.6;
+
+    color:
+      rgba(248,250,252,0.92);
+
+    overflow-wrap: anywhere;
   }
 
-  .users-table select {
-    min-width: 130px;
+  .mobile-actions {
+    display: flex;
+    flex-direction: column;
 
-    font-size: 0.85rem;
+    gap: 12px;
+
+    margin-top: 18px;
   }
 
-  .users-table button {
-    font-size: 0.82rem;
-
-    padding:
-      8px
-      12px;
+  .mobile-actions button {
+    width: 100%;
   }
 
-  .actions {
-    gap: 8px;
+  .save-btn,
+  .delete-btn {
+    width: 100%;
+    height: 48px;
   }
 }
 
@@ -261,13 +383,13 @@
 @media (min-width: 1600px) {
 
   .users-table-container {
-    padding: 32px;
+    padding: 36px;
   }
 
   .users-table thead th,
   .users-table tbody td {
     padding:
-      18px
-      20px;
+      20px
+      22px;
   }
 }

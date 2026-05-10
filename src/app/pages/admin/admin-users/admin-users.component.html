@@ -77,3 +77,71 @@
   </table>
 
 </div>
+
+<!-- MOBILE USER EDITOR -->
+<div class="mobile-user-editor card">
+
+  <select
+    class="mobile-user-select input"
+    [(ngModel)]="selectedUserId"
+  >
+
+    <option value="">
+      Válassz felhasználót
+    </option>
+
+    <option
+      *ngFor="let user of users$ | async"
+      [value]="user.uid"
+    >
+      {{ user.email }}
+    </option>
+
+  </select>
+
+  <div
+    class="mobile-user-card card"
+    *ngIf="selectedUser"
+  >
+
+    <div class="mobile-user-email">
+      {{ selectedUser.email }}
+    </div>
+
+    <select
+      class="mobile-role-select input"
+      [(ngModel)]="selectedUser.role"
+    >
+
+      <option value="user">
+        User
+      </option>
+
+      <option value="admin">
+        Admin
+      </option>
+
+    </select>
+
+    <div class="mobile-actions">
+
+      <button
+        class="save-btn"
+        (click)="updateRole(selectedUser)"
+      >
+        Mentés
+      </button>
+
+      <button
+            class="delete-btn"
+            (click)="deleteUser(selectedUser)"
+            [disabled]="loading[selectedUser.uid]"
+          >
+        Törlés
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
