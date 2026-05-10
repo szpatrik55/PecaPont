@@ -13,6 +13,10 @@ import {
 import {
   adapterFactory
 } from 'angular-calendar/date-adapters/date-fns';
+import {
+  provideFunctions,
+  getFunctions
+} from '@angular/fire/functions';
 
 const firebaseConfig = {
    apiKey: "AIzaSyB7k-N4xhzNaPt2pZc48kd4aAeyoLWKs_o",
@@ -36,6 +40,7 @@ export const appConfig: ApplicationConfig = {
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
     provideAuth(() => getAuth()),
-    provideCalendar({ provide: DateAdapter, useFactory: adapterFactory })
+    provideCalendar({ provide: DateAdapter, useFactory: adapterFactory }),
+    provideFunctions(() => getFunctions()),
 ]
 };

@@ -27,6 +27,12 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
+.users-table td:last-child {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
 /* SELECT ÉS GOMB INTEGRÁCIÓ */
 .users-table select {
   background: #0f172a;

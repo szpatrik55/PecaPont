@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, switchMap } from 'rxjs';
 import { CommonModule, AsyncPipe } from '@angular/common'; //
 import { FormsModule } from '@angular/forms'; //
 import { AdminService } from '../../../services/admin'; //
@@ -17,13 +17,17 @@ import { AppUser } from '../../../services/auth'; //
   styleUrls: ['./admin-users.component.scss']
 })
 export class AdminUsersComponent implements OnInit {
+  private refreshUsers$ = new BehaviorSubject<void>(undefined);
+
   users$: Observable<AppUser[]>;
   loading: Record<string, boolean> = {};
   pendingRoles: Record<string, AppUser['role']> = {};
 
   constructor(private adminService: AdminService) {
     // Az AdminService lekéri a 'users' kollekciót
-    this.users$ = this.adminService.getUsers();
+    this.users$ = this.refreshUsers$.pipe(
+      switchMap(() => this.adminService.getUsers())
+    );
   }
 
   ngOnInit(): void {}
@@ -53,6 +57,33 @@ export class AdminUsersComponent implements OnInit {
       console.error('Hiba:', err);
     } finally {
       this.loading[user.uid] = false;
+    }
+  }
+
+  async deleteUser(user: AppUser): Promise<void> {
+
+    const confirmed = confirm(
+      `Biztosan törölni akarod?\n\n${user.email}`
+    );
+
+    if (!confirmed) return;
+
+    this.loading[user.uid] = true;
+
+    try {
+
+      await this.adminService.deleteUser(user.uid);
+
+      this.refreshUsers$.next();
+
+    } catch (err) {
+
+      console.error(err);
+
+    } finally {
+
+      this.loading[user.uid] = false;
+
     }
   }
 }
