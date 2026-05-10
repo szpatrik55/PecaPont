@@ -1,3 +1,5 @@
+
+
 <div class="event-page">
 
   <div class="container">
@@ -56,11 +58,15 @@
             📍 {{ verseny.helyszin }}
           </span>
 
-          <span>
-            📅 {{ verseny.datum | date:'yyyy.MM.dd' }}
-          </span>
+        <span>
+          🏆 {{ verseny.kategoria }}
+        </span>
 
-        </div>
+        <span>
+          📅 {{ verseny.datum | date:'yyyy.MM.dd' }}
+        </span>
+
+      </div>
 
         <h1>
           {{ verseny.nev }}

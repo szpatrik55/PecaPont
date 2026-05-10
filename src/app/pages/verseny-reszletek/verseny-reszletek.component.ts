@@ -7,11 +7,20 @@ import {
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import {
+  ActivatedRoute,
+  RouterModule
+} from '@angular/router';
 
-import { Subscription, switchMap } from 'rxjs';
+import {
+  Subscription,
+  switchMap
+} from 'rxjs';
 
 import { EventsService } from '../../services/events';
+
+import { EventCategory } from '../../config/verseny-kategoriak';
+import { EventItem } from '../../models/event';
 
 @Component({
   selector: 'app-verseny-reszletek',
@@ -28,7 +37,7 @@ export class VersenyReszletekComponent implements OnInit, OnDestroy {
 
   protected cdr = inject(ChangeDetectorRef);
 
-  verseny: any = null;
+  verseny: EventItem | null = null;
 
   loading = true;
 

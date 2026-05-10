@@ -1,5 +1,8 @@
 import { Timestamp } from '@angular/fire/firestore';
 
+import { EventCategory } from '../config/verseny-kategoriak';
+
+
 export interface EventItem {
   id?: string;
 
@@ -9,6 +12,8 @@ export interface EventItem {
 
   helyszin: string;
   datum: string;
+
+  kategoria: EventCategory;
 
   kepUrl?: string;
 

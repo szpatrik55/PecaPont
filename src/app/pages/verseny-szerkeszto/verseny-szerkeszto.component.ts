@@ -1,4 +1,9 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal
+} from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,6 +17,8 @@ import {
 import { Observable } from 'rxjs';
 
 import { EventsService } from '../../services/events';
+
+import { EventCategory } from '../../config/verseny-kategoriak';
 
 interface Lake {
 
@@ -35,14 +42,30 @@ export class VersenySzerkesztoComponent implements OnInit {
 
   tavak$!: Observable<Lake[]>;
 
+  kategoriak: EventCategory[] = [
+    'Bojlis',
+    'Feeder',
+    'Method',
+    'Úszós',
+    'Gyerek',
+    'Esemény',
+    'Tábor',
+    'Rendezvény'
+  ];
+
   event = {
 
     nev: '',
+
     rovidLeiras: '',
+
     leiras: '',
 
     helyszin: '',
+
     datum: '',
+
+    kategoria: 'Esemény' as EventCategory,
 
     kepUrl: ''
   };
@@ -67,7 +90,8 @@ export class VersenySzerkesztoComponent implements OnInit {
     if (
       !this.event.nev ||
       !this.event.leiras ||
-      !this.event.helyszin
+      !this.event.helyszin ||
+      !this.event.kategoria
     ) {
 
       alert('Kötelező mezők hiányoznak!');
@@ -84,7 +108,9 @@ export class VersenySzerkesztoComponent implements OnInit {
       if (this.selectedFile) {
 
         finalImageUrl =
-          await this.eventsService.uploadEventImage(this.selectedFile);
+          await this.eventsService.uploadEventImage(
+            this.selectedFile
+          );
       }
 
       await this.eventsService.createEvent({
@@ -112,7 +138,8 @@ export class VersenySzerkesztoComponent implements OnInit {
 
   onFileSelected(event: Event) {
 
-    const input = event.target as HTMLInputElement;
+    const input =
+      event.target as HTMLInputElement;
 
     if (!input.files?.length) return;
 
@@ -122,7 +149,8 @@ export class VersenySzerkesztoComponent implements OnInit {
 
     reader.onload = () => {
 
-      this.previewUrl = reader.result as string;
+      this.previewUrl =
+        reader.result as string;
     };
 
     reader.readAsDataURL(this.selectedFile);
@@ -133,11 +161,16 @@ export class VersenySzerkesztoComponent implements OnInit {
     this.event = {
 
       nev: '',
+
       rovidLeiras: '',
+
       leiras: '',
 
       helyszin: '',
+
       datum: '',
+
+      kategoria: 'Esemény',
 
       kepUrl: ''
     };

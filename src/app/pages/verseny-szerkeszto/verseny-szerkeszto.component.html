@@ -41,6 +41,7 @@
     <!-- GRID -->
     <div class="form-grid">
 
+      <!-- HELYSZÍN -->
       <div class="form-group">
 
         <label>Helyszín</label>
@@ -67,6 +68,30 @@
 
       </div>
 
+      <!-- KATEGÓRIA -->
+      <div class="form-group">
+
+        <label>Kategória</label>
+
+        <select
+          class="input"
+          [(ngModel)]="event.kategoria"
+        >
+
+          <option
+            *ngFor="let kategoria of kategoriak"
+            [value]="kategoria"
+          >
+
+            {{ kategoria }}
+
+          </option>
+
+        </select>
+
+      </div>
+
+      <!-- DÁTUM -->
       <div class="form-group">
 
         <label>Dátum</label>
@@ -81,6 +106,7 @@
 
     </div>
 
+    <!-- LEÍRÁS -->
     <div class="form-group">
 
       <label>Leírás</label>
@@ -126,7 +152,6 @@
     </div>
 
     <!-- BUTTON -->
-     
     <button
       class="btn btn-primary save-btn"
       (click)="versenyMentese()"
