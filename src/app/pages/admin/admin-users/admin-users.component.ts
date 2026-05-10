@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  signal
+} from '@angular/core';
+
 import {
   Observable,
   BehaviorSubject,
@@ -14,6 +19,8 @@ import { FormsModule } from '@angular/forms';
 
 import { AdminService } from '../../../services/admin';
 import { AppUser } from '../../../services/auth';
+import { LakeService } from '../../../services/lake';
+import { Lake } from '../../../models/lake';
 
 @Component({
   selector: 'app-admin-users',
@@ -34,23 +41,28 @@ implements OnInit {
 
   users$: Observable<AppUser[]>;
 
-  // 🔥 MEGMARAD AZ EREDETI
   loading:
     Record<string, boolean> = {};
 
   pendingRoles:
     Record<string, AppUser['role']> = {};
 
-  // 🔥 ÚJ MOBILE VIEW
   selectedUserId = '';
 
   currentUsers: AppUser[] = [];
 
+  // 🆕 Tavak
+  lakes = signal<Lake[]>([]);
+
+  // 🆕 User -> selected lake
+  selectedLakeByUser:
+    Record<string, string> = {};
+
   constructor(
-    private adminService: AdminService
+    private adminService: AdminService,
+    private lakeService: LakeService
   ) {
 
-    // 🔥 EREDETI MEGMARAD
     this.users$ =
       this.refreshUsers$.pipe(
 
@@ -59,16 +71,23 @@ implements OnInit {
         )
       );
 
-    // 🔥 MOBILE CACHE
     this.users$.subscribe(users => {
 
       this.currentUsers = users;
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
 
-  // 🔥 EREDETI
+    // 🔥 Valódi Firestore tavak
+    this.lakeService
+      .getLakes()
+      .subscribe(lakes => {
+
+        this.lakes.set(lakes);
+      });
+  }
+
   trackByUser(
     index: number,
     user: AppUser
@@ -77,7 +96,6 @@ implements OnInit {
     return user.uid;
   }
 
-  // 🔥 EREDETI
   getPendingRole(
     user: AppUser
   ): AppUser['role'] {
@@ -88,7 +106,6 @@ implements OnInit {
     );
   }
 
-  // 🔥 EREDETI
   onRoleChange(
     user: AppUser,
     newRole: any
@@ -98,7 +115,6 @@ implements OnInit {
       newRole;
   }
 
-  // 🔥 MOBILE SELECTED USER
   get selectedUser():
     AppUser | undefined {
 
@@ -109,7 +125,6 @@ implements OnInit {
     );
   }
 
-  // 🔥 EREDETI + MOBILE SUPPORT
   async updateRole(
     user: AppUser
   ): Promise<void> {
@@ -131,7 +146,6 @@ implements OnInit {
         newRole
       );
 
-      // 🔥 AZONNALI UI UPDATE
       user.role = newRole;
 
       delete this.pendingRoles[user.uid];
@@ -146,7 +160,6 @@ implements OnInit {
     }
   }
 
-  // 🔥 EREDETI + MOBILE RESET
   async deleteUser(
     user: AppUser
   ): Promise<void> {
@@ -165,7 +178,6 @@ implements OnInit {
         user.uid
       );
 
-      // 🔥 MOBILE RESET
       if (
         this.selectedUserId ===
         user.uid
@@ -174,12 +186,59 @@ implements OnInit {
         this.selectedUserId = '';
       }
 
-      // 🔥 EREDETI REFRESH
       this.refreshUsers$.next();
 
     } catch (err) {
 
       console.error(err);
+
+    } finally {
+
+      this.loading[user.uid] = false;
+    }
+  }
+
+  // 🆕 Manager hozzárendelés
+  async assignManager(
+    user: AppUser
+  ) {
+
+    const lakeId =
+      this.selectedLakeByUser[user.uid];
+
+    if (!lakeId) {
+
+      alert('Válassz tavat!');
+      return;
+    }
+
+    const lake =
+      this.lakes().find(
+        l => l.id === lakeId
+      );
+
+    if (!lake) return;
+
+    this.loading[user.uid] = true;
+
+    try {
+
+      await this.adminService
+        .assignManagerToLake(
+          user,
+          lake.id!,
+          lake.nev
+        );
+
+      alert('Tókezelő hozzárendelve!');
+
+      this.refreshUsers$.next();
+
+    } catch (err) {
+
+      console.error(err);
+
+      alert('Hiba történt');
 
     } finally {
 

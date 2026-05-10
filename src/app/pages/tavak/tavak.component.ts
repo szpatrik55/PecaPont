@@ -20,22 +20,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
-interface To {
-
-  id: string;
-
-  nev: string;
-
-  telepules: string;
-
-  tipus: string;
-
-  kepUtvonal: string;
-
-  kepUrl?: string;
-
-  megtekintesek?: number;
-}
+import { Lake } from '../../models/lake';
 
 @Component({
   selector: 'app-to-lista',
@@ -56,7 +41,7 @@ implements OnInit, OnDestroy {
 
   private unsubscribe?: () => void;
 
-  tavak = signal<To[]>([]);
+  tavak = signal<Lake[]>([]);
 
   keresoSzoveg = signal('');
 
@@ -133,12 +118,12 @@ implements OnInit, OnDestroy {
       this.unsubscribe =
         onSnapshot(colRef, snapshot => {
 
-          const data: To[] =
+          const data: Lake[] =
             snapshot.docs.map(doc => ({
 
               id: doc.id,
 
-              ...(doc.data() as Omit<To, 'id'>)
+              ...(doc.data() as Omit<Lake, 'id'>)
             }));
 
           this.tavak.set(data);
@@ -220,5 +205,4 @@ implements OnInit, OnDestroy {
       );
     }
   }
-
 }

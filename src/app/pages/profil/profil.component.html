@@ -52,6 +52,115 @@
 
       </div>
 
+      <!-- FOGLALÁSAIM -->
+<div class="profile-card card">
+
+  <h2>Foglalásaim</h2>
+
+  <p *ngIf="myBookings.length === 0">
+    Nincs még foglalásod.
+  </p>
+
+  <div class="booking-list">
+
+    <div
+      class="booking-card"
+      *ngFor="
+        let booking of myBookings
+      "
+    >
+
+      <div class="booking-top">
+
+        <div>
+
+          <h3>
+            {{ booking.lakeName }}
+          </h3>
+
+          <div class="booking-dates">
+
+            📅
+            {{ booking.from }}
+            →
+            {{ booking.to }}
+
+          </div>
+
+        </div>
+
+        <div
+          class="booking-status"
+          [class.pending]="
+            booking.status === 'jóváhagyás alatt'
+          "
+          [class.approved]="
+            booking.status === 'jóváhagyva'
+          "
+          [class.rejected]="
+            booking.status === 'elutasítva'
+          "
+          [class.cancelled]="
+            booking.status === 'törölve'
+          "
+        >
+
+          {{
+            getBookingStatusLabel(
+              booking.status
+            )
+          }}
+
+        </div>
+
+      </div>
+
+      <div class="booking-info">
+
+        <div>
+          🎣
+          {{ booking.places }}
+          hely
+        </div>
+
+        <div>
+          💰
+          {{ booking.totalPrice }}
+          Ft
+        </div>
+
+      </div>
+
+      <div
+        class="booking-note"
+        *ngIf="booking.note"
+      >
+
+        {{ booking.note }}
+
+      </div>
+
+      <button
+        class="btn btn-danger"
+        *ngIf="
+          booking.status === 'jóváhagyás alatt'
+          ||
+          booking.status === 'jóváhagyva'
+        "
+        [disabled]="bookingLoading"
+        (click)="cancelBooking(booking)"
+      >
+
+        Foglalás lemondása
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
       <!-- SAJÁT POSZTOK -->
       <div class="profile-card card">
         <h2>Saját fogásaim</h2>

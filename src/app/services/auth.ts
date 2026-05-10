@@ -26,12 +26,13 @@ import { switchMap, map } from 'rxjs/operators';
 export interface AppUser {
   uid: string;
   email: string | null;
-  role: 'user' | 'admin' | 'news';
+  role: 'user' | 'admin' | 'news' | 'organiser' | 'manager';
   displayName?: string | null;
   username?: string | null;
   photo?: string | null;
   createdAt?: any;
   lastLoginAt?: any;
+  managedLakeIds?: string[];
 }
 
 @Injectable({
@@ -105,7 +106,7 @@ export class AuthService {
       username,
       role: 'user',
 
-      // 🔥 JAVÍTÁSOK
+      managedLakeIds: [],
       createdAt: serverTimestamp(),
       lastLoginAt: serverTimestamp()
     });
@@ -148,6 +149,7 @@ export class AuthService {
       displayName: result.user.displayName,
       photo: result.user.photoURL,
       role: 'user',
+      managedLakeIds: [],
       createdAt: serverTimestamp(),
       lastLoginAt: serverTimestamp()
     });

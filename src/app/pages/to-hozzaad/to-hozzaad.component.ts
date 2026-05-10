@@ -48,7 +48,11 @@ export class ToHozzaadComponent {
       leiras: '',
 
       megtekintesek: 0,
-      letrehozva: new Date()
+      letrehozva: new Date(),
+      
+      managerId: '',
+      managerName: '',
+
     };
   }
 

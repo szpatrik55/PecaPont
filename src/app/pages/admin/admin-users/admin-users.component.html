@@ -9,6 +9,8 @@
 
         <th>Jogosultság</th>
 
+        <th>Tókezelés</th>
+
         <th>Műveletek</th>
 
       </tr>
@@ -31,12 +33,64 @@
             (ngModelChange)="onRoleChange(user, $event)"
           >
 
-            <option value="user">User</option>
-            <option value="news">News</option>
-            <option value="organiser">Organiser</option>
-            <option value="admin">Admin</option>
+            <option value="user">
+              Felhasználó
+            </option>
+
+            <option value="news">
+              Újságíró
+            </option>
+
+            <option value="organiser">
+              Szervező
+            </option>
+
+            <option value="manager">
+              Tókezelő
+            </option>
+
+            <option value="admin">
+              Admin
+            </option>
 
           </select>
+
+        </td>
+
+        <!-- 🆕 Tó hozzárendelés -->
+        <td class="lake-manager-cell">
+
+          <div
+            class="manager-tools"
+            *ngIf="getPendingRole(user) === 'manager'"
+          >
+
+            <select
+              [(ngModel)]="selectedLakeByUser[user.uid]"
+            >
+
+              <option value="">
+                Tó kiválasztása
+              </option>
+
+              <option
+                *ngFor="let lake of lakes()"
+                [value]="lake.id"
+              >
+                {{ lake.nev }}
+              </option>
+
+            </select>
+
+            <button
+              class="assign-btn"
+              (click)="assignManager(user)"
+              [disabled]="loading[user.uid]"
+            >
+              Hozzárendelés
+            </button>
+
+          </div>
 
         </td>
 
@@ -117,11 +171,54 @@
         User
       </option>
 
+      <option value="news">
+        Újságíró
+      </option>
+
+      <option value="manager">
+        Tókezelő
+      </option>
+
       <option value="admin">
         Admin
       </option>
 
     </select>
+
+    <!-- 🆕 MOBILE LAKE SELECT -->
+    <div
+      class="mobile-manager-tools"
+      *ngIf="selectedUser.role === 'manager'"
+    >
+
+      <select
+        class="input"
+        [(ngModel)]="
+          selectedLakeByUser[selectedUser.uid]
+        "
+      >
+
+        <option value="">
+          Tó kiválasztása
+        </option>
+
+        <option
+          *ngFor="let lake of lakes()"
+          [value]="lake.id"
+        >
+          {{ lake.nev }}
+        </option>
+
+      </select>
+
+      <button
+        class="assign-btn"
+        (click)="assignManager(selectedUser)"
+      >
+        Tó hozzárendelése
+      </button>
+
+    </div>
 
     <div class="mobile-actions">
 
@@ -133,10 +230,10 @@
       </button>
 
       <button
-            class="delete-btn"
-            (click)="deleteUser(selectedUser)"
-            [disabled]="loading[selectedUser.uid]"
-          >
+        class="delete-btn"
+        (click)="deleteUser(selectedUser)"
+        [disabled]="loading[selectedUser.uid]"
+      >
         Törlés
       </button>
 

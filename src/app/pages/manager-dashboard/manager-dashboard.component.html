@@ -1,0 +1,116 @@
+<div class="manager-page">
+
+  <div class="manager-hero">
+
+    <div>
+      <h1>Tókezelői vezérlőpult</h1>
+
+      <p>
+        Saját tavak és foglalások kezelése
+      </p>
+    </div>
+
+  </div>
+
+  <div
+    class="loading"
+    *ngIf="loading()"
+  >
+    Betöltés...
+  </div>
+
+  <div
+    class="empty-state card"
+    *ngIf="
+      !loading() &&
+      lakes().length === 0
+    "
+  >
+
+    <h2>Nincs kezelt tó</h2>
+
+    <p>
+      Jelenleg nincs hozzád rendelt tó.
+    </p>
+
+  </div>
+
+  <div
+    class="lakes-grid"
+    *ngIf="!loading()"
+  >
+
+    <div
+      class="lake-card card"
+      *ngFor="let lake of lakes()"
+    >
+
+      <div class="lake-image">
+
+        <img
+          [src]="lake.kepUrl"
+          [alt]="lake.nev"
+        />
+
+      </div>
+
+      <div class="lake-content">
+
+        <div class="lake-header">
+
+          <h2>
+            {{ lake.nev }}
+          </h2>
+
+          <span class="lake-type">
+            {{ lake.tipus }}
+          </span>
+
+        </div>
+
+        <div class="lake-location">
+          📍 {{ lake.telepules }}
+        </div>
+
+        <div class="lake-stats">
+
+          <div class="stat">
+            👁️
+            {{ lake.megtekintesek || 0 }}
+          </div>
+
+          <div class="stat">
+            🎣
+            {{ lake.helyek_szama }}
+            hely
+          </div>
+
+        </div>
+
+        <div class="lake-actions">
+
+          <button
+            class="btn-primary"
+            [routerLink]="[
+              '/to',
+              lake.id
+            ]"
+          >
+            Adatlap
+          </button>
+
+          <button
+            class="btn-secondary"
+          >
+            Foglalások
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

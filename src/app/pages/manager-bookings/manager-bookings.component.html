@@ -1,0 +1,171 @@
+<div class="manager-bookings-page">
+
+  <div class="hero">
+
+    <div>
+
+      <h1>Foglalások kezelése</h1>
+
+      <p>
+        Beérkezett foglalások kezelése
+      </p>
+
+    </div>
+
+  </div>
+
+  <div
+    class="loading"
+    *ngIf="loading()"
+  >
+    Betöltés...
+  </div>
+
+  <div
+    class="empty-state card"
+    *ngIf="
+      !loading() &&
+      bookings().length === 0
+    "
+  >
+
+    <h2>Nincs foglalás</h2>
+
+    <p>
+      Jelenleg nincs beérkezett foglalás.
+    </p>
+
+  </div>
+
+  <div
+    class="bookings-grid"
+    *ngIf="!loading()"
+  >
+
+    <div
+      class="booking-card card"
+      *ngFor="
+        let booking of bookings()
+      "
+    >
+
+      <div class="booking-header">
+
+        <div>
+
+          <h2>
+            {{ booking.lakeName }}
+          </h2>
+
+          <div class="booking-user">
+            👤 {{ booking.userName }}
+          </div>
+
+          <div class="booking-email">
+            ✉️ {{ booking.userEmail }}
+          </div>
+
+        </div>
+
+        <div
+          class="status-badge"
+          [class.pending]="
+            booking.status === 'jóváhagyás alatt'
+          "
+          [class.approved]="
+            booking.status === 'jóváhagyva'
+          "
+          [class.rejected]="
+            booking.status === 'elutasítva'
+          "
+          [class.cancelled]="
+            booking.status === 'törölve'
+          "
+        >
+
+          {{
+            getStatusLabel(
+              booking.status
+            )
+          }}
+
+        </div>
+
+      </div>
+
+      <div class="booking-body">
+
+        <div class="info-row">
+          📅
+          {{ booking.from }}
+          →
+          {{ booking.to }}
+        </div>
+
+        <div class="info-row">
+          🎣
+          {{ booking.places }}
+          hely
+        </div>
+
+        <div class="info-row">
+          💰
+          {{ booking.totalPrice }}
+          Ft
+        </div>
+
+        <div
+          class="note"
+          *ngIf="booking.note"
+        >
+
+          <strong>
+            Megjegyzés:
+          </strong>
+
+          <p>
+            {{ booking.note }}
+          </p>
+
+        </div>
+
+      </div>
+
+      <div
+        class="booking-actions"
+        *ngIf="
+          booking.status === 'jóváhagyás alatt'
+        "
+      >
+
+        <button
+          class="approve-btn"
+          (click)="approveBooking(booking)"
+          [disabled]="
+            actionLoading[booking.id!]
+          "
+        >
+
+          Jóváhagyás
+
+        </button>
+
+        <button
+          class="reject-btn"
+          (click)="rejectBooking(booking)"
+          [disabled]="
+            actionLoading[booking.id!]
+          "
+        >
+
+          Elutasítás
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

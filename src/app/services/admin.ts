@@ -9,7 +9,8 @@ import {
   getCountFromServer,
   query,
   where,
-  getDocs
+  getDocs,
+  arrayUnion
 } from '@angular/fire/firestore';
 
 import {
@@ -150,5 +151,39 @@ export class AdminService {
       date,
       count
     }));
+  }
+
+  async assignManagerToLake(
+    user: AppUser,
+    lakeId: string,
+    lakeName: string
+  ) {
+
+    // user doc
+    const userRef = doc(
+      this.firestore,
+      `users/${user.uid}`
+    );
+
+    // lake doc
+    const lakeRef = doc(
+      this.firestore,
+      `lakes/${lakeId}`
+    );
+
+    // user -> manager role
+    await updateDoc(userRef, {
+      role: 'manager',
+      managedLakeIds: arrayUnion(lakeId)
+    });
+
+    // lake -> manager adatok
+    await updateDoc(lakeRef, {
+      managerId: user.uid,
+      managerName:
+        user.displayName
+        || user.email
+        || 'Ismeretlen'
+    });
   }
 }
