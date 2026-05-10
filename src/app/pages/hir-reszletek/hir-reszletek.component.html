@@ -1,46 +1,129 @@
-<div class="article-page card">
+<div class="article-page">
+
   <div class="container">
-    
+
     <nav class="back-nav">
-      <a routerLink="/hirek" class="btn btn-primary back-link">
-        <span class="arrow">←</span> Vissza a hírekhez
+
+      <a
+        routerLink="/hirek"
+        class="btn btn-primary back-link"
+      >
+
+        <span class="arrow">
+          ←
+        </span>
+
+        Vissza a hírekhez
+
       </a>
+
     </nav>
 
-    <div *ngIf="loading" class="loader-container">
+    <div
+      *ngIf="loading"
+      class="loader-container"
+    >
+
       <div class="spinner"></div>
+
       <p>Cikk betöltése...</p>
+
     </div>
 
     <ng-container *ngIf="!loading">
-      <article *ngIf="hir" class="full-article">
+
+      <article
+        *ngIf="hir"
+        class="full-article"
+      >
+
         <header class="article-header">
+
           <div class="meta">
-            <span class="category">Hírek</span>
-            <span class="separator">•</span>
-            <span class="date">{{ hir.letrehozva?.toDate ? (hir.letrehozva.toDate() | date:'yyyy. MMMM dd.') : (hir.letrehozva | date:'yyyy. MMMM dd.') }}</span>
+
+            <span class="category">
+              Hírek
+            </span>
+
+            <span class="separator">
+              •
+            </span>
+
+            <span class="date">
+              {{
+                hir.letrehozva?.toDate
+                  ? (
+                      hir.letrehozva.toDate()
+                      | date:'yyyy. MMMM dd.'
+                    )
+                  : (
+                      hir.letrehozva
+                      | date:'yyyy. MMMM dd.'
+                    )
+              }}
+            </span>
+
           </div>
-          <h1>{{ hir.cim }}</h1>
-          <p class="lead">{{ hir.rovidLeiras }}</p>
+
+          <h1>
+            {{ hir.cim }}
+          </h1>
+
+          <p class="lead">
+            {{ hir.rovidLeiras }}
+          </p>
+
         </header>
 
         <div class="article-image">
-          <img [src]="hir.kepUrl || 'assets/images/default-news.jpg'" 
-               [alt]="hir.cim"
-               (load)="cdr.detectChanges()"> </div>
 
-        <div class="article-body">
-          <p class="content-text">{{ hir.tartalom }}</p>
+          <img
+            [src]="
+              hir.kepUrl
+              || 'assets/images/default-news.jpg'
+            "
+            [alt]="hir.cim"
+            (load)="cdr.detectChanges()"
+          >
+
         </div>
+
+        <div class="article-body card">
+
+          <p class="content-text">
+            {{ hir.tartalom }}
+          </p>
+
+        </div>
+
       </article>
 
-      <div *ngIf="!hir" class="not-found">
-        <h2>A hír nem található</h2>
-        <p>Sajnos a keresett tartalom már nem érhető el.</p>
-        <button routerLink="/hirek" class="btn btn-primary">Vissza a hírekhez</button>
+      <div
+        *ngIf="!hir"
+        class="not-found card"
+      >
+
+        <h2>
+          A hír nem található
+        </h2>
+
+        <p>
+          Sajnos a keresett tartalom már nem érhető el.
+        </p>
+
+        <button
+          routerLink="/hirek"
+          class="btn btn-primary"
+        >
+
+          Vissza a hírekhez
+
+        </button>
+
       </div>
+
     </ng-container>
 
   </div>
-  
+
 </div>

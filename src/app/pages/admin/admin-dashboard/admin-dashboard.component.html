@@ -1,32 +1,44 @@
-<div class="cards">
-  <div class="card" *ngFor="let stat of stats">
-    <h3>{{ stat.label }}</h3>
-    <p>{{ stat.value ?? '—' }}</p>
+<div class="dashboard-container">
+
+  <div class="cards">
+    <div class="card" *ngFor="let stat of stats">
+
+      <h3>{{ stat.label }}</h3>
+
+      <p>{{ stat.value ?? '—' }}</p>
+
+    </div>
   </div>
-</div>
 
-<h3 class="mt">Felhasználói növekedés (7 nap)</h3>
+  <h3 class="mt">Felhasználói növekedés (7 nap)</h3>
 
-<div class="growth">
-  <div class="growth-item" *ngFor="let item of growthData">
-    
-    <!-- dátum -->
-    <span class="date">
-      {{ item.date | date:'yyyy.MM.dd' }}
-    </span>
+  <div class="growth card">
 
-    <!-- "grafikon" csík -->
-    <div class="bar">
-      <div
-        class="fill"
-        [style.width.%]="item.count * 20"
-      ></div>
+    <div
+      class="growth-item"
+      *ngFor="let item of growthData"
+    >
+
+      <!-- dátum -->
+      <span class="date">
+        {{ item.date | date:'yyyy.MM.dd' }}
+      </span>
+
+      <!-- grafikon -->
+      <div class="bar">
+        <div
+          class="fill"
+          [style.width.%]="item.count * 20"
+        ></div>
+      </div>
+
+      <!-- darabszám -->
+      <span class="count">
+        {{ item.count }}
+      </span>
+
     </div>
 
-    <!-- darabszám -->
-    <span class="count">
-      {{ item.count }}
-    </span>
-
   </div>
+
 </div>

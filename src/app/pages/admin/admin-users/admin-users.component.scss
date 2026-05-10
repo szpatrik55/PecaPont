@@ -1,67 +1,273 @@
 .users-table-container {
-  background: rgba(30, 41, 59, 0.96);
-  border-radius: 24px;
-  padding: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.28);
+  padding: var(--space-lg);
+
   overflow-x: auto;
 }
 
+/* =========================
+   TABLE
+========================= */
+
 .users-table {
   width: 100%;
+  min-width: 720px;
+
   border-collapse: collapse;
-  color: #f8fafc;
+
+  color: var(--text-main);
 }
 
-.users-table th {
+.users-table thead th {
+  padding:
+    var(--space-md)
+    var(--space-md);
+
   text-align: left;
-  padding: 16px;
-  color: #94a3b8;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border-bottom: 1px solid #334155;
+
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  color: var(--text-muted);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.users-table td {
-  padding: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+.users-table tbody td {
+  padding:
+    var(--space-md)
+    var(--space-md);
+
+  vertical-align: middle;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
-.users-table td:last-child {
-  display: flex;
-  gap: 12px;
-  align-items: center;
+.users-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
-/* SELECT ÉS GOMB INTEGRÁCIÓ */
+.users-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.users-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* =========================
+   EMAIL
+========================= */
+
+.email {
+  font-weight: 500;
+  color: var(--text-main);
+
+  word-break: break-word;
+}
+
+/* =========================
+   SELECT
+========================= */
+
 .users-table select {
-  background: #0f172a;
-  color: #f8fafc;
-  border: 1px solid #475569;
-  padding: 8px 12px;
-  border-radius: 10px;
+  min-width: 150px;
+
+  padding:
+    10px
+    14px;
+
+  border-radius: var(--radius-sm);
+
+  border: 1px solid var(--glass-border);
+
+  background: rgba(255, 255, 255, 0.04);
+
+  color: var(--text-main);
+
   font-size: 0.9rem;
+  font-weight: 500;
+
   outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
+
+.users-table select:focus {
+  border-color: var(--primary);
+}
+
+.users-table select option {
+  background: var(--bg-surface);
+  color: var(--text-main);
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+
+  flex-wrap: wrap;
+}
+
+/* =========================
+   BUTTONS
+========================= */
 
 .users-table button {
-  background: linear-gradient(135deg, #0ea5e9, #2563eb);
-  color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 10px;
-  font-weight: 600;
+
+  padding:
+    10px
+    16px;
+
+  border-radius: var(--radius-sm);
+
+  font-size: 0.9rem;
+  font-weight: 700;
+
   cursor: pointer;
-  transition: all 0.2s ease;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.users-table button:hover:not(:disabled) {
+  transform: translateY(-2px);
 }
 
 .users-table button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  filter: grayscale(1);
+
+  filter: grayscale(0.4);
 }
 
-.users-table button:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+/* SAVE BUTTON */
+
+.save-btn {
+  background: linear-gradient(
+    135deg,
+    var(--primary-light),
+    var(--primary)
+  );
+
+  color: white;
+
+  box-shadow: var(--shadow-sm);
+}
+
+.save-btn:hover:not(:disabled) {
+  box-shadow: var(--shadow-md);
+}
+
+/* DELETE BUTTON */
+
+.delete-btn {
+  background: rgba(239, 68, 68, 0.14);
+
+  color: #fca5a5;
+
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.delete-btn:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+
+  .users-table-container {
+    padding: var(--space-md);
+  }
+
+  .users-table {
+    min-width: 640px;
+  }
+
+  .users-table thead th,
+  .users-table tbody td {
+    padding:
+      14px
+      12px;
+  }
+
+  .users-table button {
+    padding:
+      9px
+      14px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 640px) {
+
+  .users-table-container {
+    padding: var(--space-sm);
+    border-radius: var(--radius-md);
+  }
+
+  .users-table {
+    min-width: 600px;
+  }
+
+  .users-table thead th {
+    font-size: 0.78rem;
+  }
+
+  .users-table tbody td {
+    font-size: 0.88rem;
+  }
+
+  .users-table select {
+    min-width: 130px;
+
+    font-size: 0.85rem;
+  }
+
+  .users-table button {
+    font-size: 0.82rem;
+
+    padding:
+      8px
+      12px;
+  }
+
+  .actions {
+    gap: 8px;
+  }
+}
+
+/* =========================
+   LARGE SCREEN
+========================= */
+
+@media (min-width: 1600px) {
+
+  .users-table-container {
+    padding: 32px;
+  }
+
+  .users-table thead th,
+  .users-table tbody td {
+    padding:
+      18px
+      20px;
+  }
 }

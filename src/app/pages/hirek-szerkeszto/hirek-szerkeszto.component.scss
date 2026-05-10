@@ -2,149 +2,308 @@
   display: block;
   min-height: 100vh;
 
-  background: var(--bg-main);
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(14, 165, 233, 0.08),
+      var(--bg-main) 60%
+    );
 }
 
 /* =========================
    CONTAINER
 ========================= */
-.admin-container {
-  min-height: 100vh;
-  padding: var(--space-xl) var(--space-md);
 
+.admin-container {
   display: flex;
   justify-content: center;
   align-items: flex-start;
+
+  min-height: 100vh;
+
+  padding:
+    40px
+    var(--space-lg);
 }
 
 /* =========================
    CARD
 ========================= */
+
 .editor-card {
   width: 100%;
-  max-width: 850px;
+  max-width: 900px;
 
-  padding: var(--space-xl);
+  padding: 40px;
 }
-
-/* 👉 HTML-ben: class="editor-card card" */
-
 
 /* =========================
    HEADER
 ========================= */
+
 .editor-header {
+  margin-bottom: 36px;
+
   text-align: center;
-  margin-bottom: var(--space-xl);
 }
 
 .editor-header h1 {
-  font-size: 2rem;
-  font-weight: 800;
   margin-bottom: var(--space-sm);
+
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  font-weight: 900;
+
+  letter-spacing: -0.03em;
+
+  color: var(--text-main);
 }
 
 .editor-header p {
   color: var(--text-muted);
+
+  line-height: 1.7;
 }
 
 /* =========================
    FORM
 ========================= */
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
 .form-group {
   margin-bottom: var(--space-lg);
 }
 
 .form-group label {
   display: block;
-  font-weight: 600;
-  margin-bottom: var(--space-xs);
+
+  margin-bottom: 10px;
 
   color: var(--text-muted);
+
   font-size: 0.8rem;
+  font-weight: 700;
+
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
 }
 
 /* =========================
-   INPUT (GLOBAL .input)
+   INPUTS
 ========================= */
+
 .form-group input,
 .form-group textarea,
 .form-group select {
   margin: 0;
 }
 
-/* 👉 HTML:
-   class="input"
-*/
+.input {
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
 
-/* textarea */
+.input:focus {
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
 .form-group textarea {
-  min-height: 120px;
-  resize: vertical;
+  min-height: 220px;
+
+  line-height: 1.75;
 }
 
 /* =========================
    FILE UPLOAD
 ========================= */
+
 .file-drop-zone {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 
-  padding: var(--space-sm);
+  gap: 8px;
 
-  border-radius: var(--radius-sm);
-  border: 1px dashed var(--glass-border);
+  width: 100%;
 
-  background: var(--glass-bg);
+  min-height: 150px;
+
+  padding: var(--space-lg);
+
+  border-radius: var(--radius-lg);
+
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.04),
+      rgba(255, 255, 255, 0.02)
+    );
+
   color: var(--text-muted);
 
-  cursor: pointer;
-  transition: 0.25s;
-
-  font-size: 14px;
-  font-weight: 500;
   text-align: center;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease;
+
+  backdrop-filter: var(--glass-blur);
 }
 
 .file-drop-zone:hover {
-  background: rgba(255,255,255,0.08);
-  border-color: var(--primary);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0.03)
+    );
+
+  border-color: rgba(37, 99, 235, 0.4);
+
+  color: var(--text-main);
+
+  transform: translateY(-2px);
 }
 
 .file-drop-zone input[type="file"] {
   display: none;
 }
 
+.file-name {
+  color: var(--primary-light);
+
+  font-weight: 700;
+}
+
+/* =========================
+   PREVIEW
+========================= */
+
+.preview {
+  width: 100%;
+
+  max-height: 340px;
+
+  margin-top: var(--space-md);
+
+  object-fit: cover;
+
+  border-radius: var(--radius-lg);
+
+  border: 1px solid var(--glass-border);
+
+  box-shadow: var(--shadow-md);
+}
+
 /* =========================
    BUTTON
 ========================= */
+
 .save-btn {
   width: 100%;
-  margin-top: var(--space-lg);
+
+  margin-top: var(--space-md);
 }
 
 /* =========================
-   📱 RESPONSIVE
+   TABLET
 ========================= */
+
 @media (max-width: 768px) {
+
   .admin-container {
-    padding: var(--space-md);
+    padding:
+      var(--space-xl)
+      var(--space-md);
   }
 
   .editor-card {
-    padding: var(--space-lg);
+    padding: var(--space-xl);
+  }
+
+  .form-group textarea {
+    min-height: 180px;
   }
 }
 
+/* =========================
+   MOBILE
+========================= */
+
 @media (max-width: 480px) {
+
   .admin-container {
     padding: var(--space-sm);
   }
 
   .editor-card {
+    padding: var(--space-lg);
+
+    border-radius: var(--radius-md);
+  }
+
+  .editor-header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .editor-header h1 {
+    font-size: 1.9rem;
+  }
+
+  .file-drop-zone {
+    min-height: 130px;
+
     padding: var(--space-md);
+
+    border-radius: var(--radius-md);
+
+    font-size: 0.92rem;
+  }
+
+  .preview {
+    max-height: 240px;
+
+    border-radius: var(--radius-md);
+  }
+
+  .form-group textarea {
+    min-height: 160px;
+  }
+
+  .btn {
+    padding:
+      13px
+      18px;
+
+    font-size: 0.95rem;
+  }
+
+  .input {
+    font-size: 15px;
+  }
+}
+
+/* =========================
+   LARGE SCREEN
+========================= */
+
+@media (min-width: 1600px) {
+
+  .editor-card {
+    max-width: 980px;
+
+    padding: 48px;
   }
 }

@@ -1,22 +1,35 @@
-<div class="users-table-container">
+<div class="users-table-container card">
+
   <table class="users-table">
+
     <thead>
       <tr>
+
         <th>Email</th>
+
         <th>Jogosultság</th>
+
         <th>Műveletek</th>
+
       </tr>
     </thead>
 
     <tbody>
-      <tr *ngFor="let user of users$ | async; trackBy: trackByUser">
 
-        <td>{{ user.email }}</td>
+      <tr
+        *ngFor="let user of users$ | async; trackBy: trackByUser"
+      >
 
-        <td>
+        <td class="email">
+          {{ user.email }}
+        </td>
+
+        <td class="role">
+
           <select
             [ngModel]="getPendingRole(user)"
-            (ngModelChange)="onRoleChange(user, $event)">
+            (ngModelChange)="onRoleChange(user, $event)"
+          >
 
             <option value="user">User</option>
             <option value="news">News</option>
@@ -24,22 +37,32 @@
             <option value="admin">Admin</option>
 
           </select>
+
         </td>
 
         <td class="actions">
 
           <button
+            class="save-btn"
             (click)="updateRole(user)"
-            [disabled]="loading[user.uid] || getPendingRole(user) === user.role">
+            [disabled]="
+              loading[user.uid] ||
+              getPendingRole(user) === user.role
+            "
+          >
 
-            {{ loading[user.uid] ? '⌛' : '💾 Mentés' }}
+            {{ loading[user.uid]
+              ? '⌛'
+              : '💾 Mentés'
+            }}
 
           </button>
 
           <button
             class="delete-btn"
             (click)="deleteUser(user)"
-            [disabled]="loading[user.uid]">
+            [disabled]="loading[user.uid]"
+          >
 
             🗑️ Törlés
 
@@ -48,6 +71,9 @@
         </td>
 
       </tr>
+
     </tbody>
+
   </table>
+
 </div>

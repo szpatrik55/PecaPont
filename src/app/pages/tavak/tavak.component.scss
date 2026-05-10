@@ -5,7 +5,7 @@
   background:
     radial-gradient(
       circle at top,
-      rgba(14,165,233,0.12),
+      rgba(14,165,233,0.10),
       var(--bg-main) 60%
     );
 
@@ -17,9 +17,13 @@
 ========================= */
 
 .tavak-page {
-  max-width: 1600px;
+  width: min(1600px, 100%);
   margin: 0 auto;
-  padding: 24px;
+
+  padding:
+    var(--space-lg)
+    var(--space-lg)
+    48px;
 }
 
 /* =========================
@@ -29,14 +33,13 @@
 .hero-section {
   position: relative;
 
-  min-height: 430px;
-  height: auto;
-
-  border-radius: 32px;
-
   overflow: hidden;
 
-  margin-bottom: 32px;
+  min-height: 460px;
+
+  margin-bottom: 36px;
+
+  border-radius: 36px;
 
   isolation: isolate;
 
@@ -45,7 +48,7 @@
   border: 1px solid rgba(255,255,255,0.08);
 
   box-shadow:
-    0 20px 60px rgba(0,0,0,0.45);
+    0 24px 70px rgba(0,0,0,0.45);
 }
 
 .hero-image {
@@ -57,7 +60,7 @@
 
   object-fit: cover;
 
-  transform: scale(1.02);
+  transform: scale(1.03);
 }
 
 .hero-overlay {
@@ -70,29 +73,29 @@
     linear-gradient(
       90deg,
       rgba(2,6,23,0.96) 0%,
-      rgba(2,6,23,0.82) 35%,
-      rgba(2,6,23,0.35) 70%,
+      rgba(2,6,23,0.82) 36%,
+      rgba(2,6,23,0.38) 70%,
       rgba(2,6,23,0.15) 100%
     );
 }
 
 .hero-section::after {
-  content: '';
+  content: "";
 
   position: absolute;
 
-  width: 420px;
-  height: 420px;
+  top: -140px;
+  right: -140px;
 
-  right: -120px;
-  top: -120px;
+  width: 480px;
+  height: 480px;
 
   border-radius: 50%;
 
   background:
     radial-gradient(
       circle,
-      rgba(14,165,233,0.25),
+      rgba(14,165,233,0.24),
       transparent 70%
     );
 
@@ -101,22 +104,23 @@
 
 .hero-content {
   position: relative;
-
   z-index: 2;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
 
+  min-height: 460px;
+
   max-width: 760px;
 
-  padding: 56px;
-
-  min-height: 430px;
+  padding: 64px 56px;
 }
 
 .hero-badge {
   width: fit-content;
+
+  margin-bottom: 24px;
 
   padding: 10px 18px;
 
@@ -125,47 +129,45 @@
   background:
     linear-gradient(
       135deg,
-      #38bdf8,
-      #2563eb
+      var(--primary-light),
+      var(--primary)
     );
 
   color: white;
 
   font-size: .85rem;
   font-weight: 700;
-  letter-spacing: .4px;
-
-  margin-bottom: 22px;
+  letter-spacing: .3px;
 
   box-shadow:
-    0 10px 30px rgba(37,99,235,0.35);
+    0 12px 30px rgba(37,99,235,0.28);
 }
 
 .hero-content h1 {
-  margin: 0 0 18px;
+  margin: 0 0 20px;
 
   font-size:
-    clamp(2.5rem, 5vw, 5rem);
+    clamp(2.8rem, 6vw, 5.2rem);
 
-  font-weight: 900;
-
-  line-height: 1.05;
+  line-height: 1.02;
 
   letter-spacing: -2px;
+
+  font-weight: 900;
 
   color: white;
 
   text-shadow:
-    0 6px 24px rgba(0,0,0,0.4);
+    0 10px 40px rgba(0,0,0,0.45);
 }
 
 .hero-content p {
   max-width: 620px;
 
-  margin: 0 0 34px;
+  margin: 0 0 36px;
 
   font-size: 1.05rem;
-  line-height: 1.8;
+  line-height: 1.85;
 
   color:
     rgba(248,250,252,0.82);
@@ -178,6 +180,7 @@
 .hero-stats {
   display: flex;
   flex-wrap: wrap;
+
   gap: 16px;
 }
 
@@ -186,7 +189,7 @@
 
   padding: 18px 22px;
 
-  border-radius: 22px;
+  border-radius: 24px;
 
   background:
     rgba(255,255,255,0.08);
@@ -197,7 +200,7 @@
     1px solid rgba(255,255,255,0.08);
 
   box-shadow:
-    0 10px 30px rgba(0,0,0,0.22);
+    0 10px 30px rgba(0,0,0,0.24);
 }
 
 .hero-stat .value {
@@ -228,6 +231,8 @@
   grid-template-columns: 320px 1fr;
 
   gap: 28px;
+
+  align-items: start;
 }
 
 /* =========================
@@ -235,12 +240,20 @@
 ========================= */
 
 .sidebar {
+  position: sticky;
+  top: 24px;
+
   display: flex;
   flex-direction: column;
+
   gap: 20px;
 }
 
 .sidebar-card {
+  padding: 24px;
+
+  border-radius: 28px;
+
   background:
     linear-gradient(
       180deg,
@@ -249,26 +262,23 @@
     );
 
   border:
-    1px solid var(--glass-border);
-
-  border-radius: 28px;
-
-  padding: 22px;
+    1px solid rgba(255,255,255,0.08);
 
   backdrop-filter: blur(14px);
 
   box-shadow:
-    0 10px 30px rgba(0,0,0,0.2);
+    0 12px 30px rgba(0,0,0,0.2);
 }
 
 .sidebar-card h3 {
   margin: 0 0 18px;
 
   font-size: 1.05rem;
+  font-weight: 700;
 }
 
 /* =========================
-   SEARCH / SELECT
+   INPUTS
 ========================= */
 
 .search-input {
@@ -288,7 +298,10 @@
 
   outline: none;
 
-  transition: .2s;
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
 }
 
 .search-input::placeholder {
@@ -296,20 +309,18 @@
 }
 
 .search-input:focus {
-  border-color: #38bdf8;
+  border-color: var(--primary-light);
+
+  background:
+    rgba(255,255,255,0.06);
 
   box-shadow:
-    0 0 0 4px rgba(56,189,248,0.15);
+    0 0 0 4px rgba(37,99,235,0.15);
 }
 
-/* SELECT */
-
 select.search-input {
-  cursor: pointer;
-
   appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  cursor: pointer;
 }
 
 select.search-input option {
@@ -318,43 +329,51 @@ select.search-input option {
 }
 
 /* =========================
-   FILTER
+   FILTERS
 ========================= */
 
 .filter-list {
   display: flex;
   flex-wrap: wrap;
+
   gap: 10px;
 }
 
 .filter-chip {
   border: none;
 
+  padding: 10px 14px;
+
+  border-radius: 999px;
+
   background:
     rgba(255,255,255,0.05);
 
   color: var(--text-main);
 
-  padding: 10px 14px;
-
-  border-radius: 999px;
+  font-weight: 600;
 
   cursor: pointer;
 
-  transition: .2s;
+  transition:
+    transform .2s ease,
+    background .2s ease;
 }
 
 .filter-chip:hover,
 .filter-chip.active {
-
   background:
     linear-gradient(
       135deg,
-      #38bdf8,
-      #2563eb
+      var(--primary-light),
+      var(--primary)
     );
 
   color: white;
+}
+
+.filter-chip:hover {
+  transform: translateY(-1px);
 }
 
 /* =========================
@@ -366,11 +385,17 @@ select.search-input option {
 }
 
 .topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   margin-bottom: 24px;
 }
 
 .results-count {
   color: var(--text-muted);
+
+  font-size: .95rem;
 }
 
 /* =========================
@@ -393,7 +418,7 @@ select.search-input option {
 .to-card {
   overflow: hidden;
 
-  border-radius: 28px;
+  border-radius: 30px;
 
   background:
     linear-gradient(
@@ -405,23 +430,27 @@ select.search-input option {
   border:
     1px solid rgba(255,255,255,0.08);
 
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 14px 34px rgba(0,0,0,0.22);
+
   cursor: pointer;
 
   transition:
     transform .25s ease,
-    box-shadow .25s ease;
-
-  box-shadow:
-    0 12px 30px rgba(0,0,0,0.22);
-
-  backdrop-filter: blur(12px);
+    box-shadow .25s ease,
+    border-color .25s ease;
 }
 
 .to-card:hover {
   transform: translateY(-6px);
 
+  border-color:
+    rgba(37,99,235,0.22);
+
   box-shadow:
-    0 18px 40px rgba(0,0,0,0.35);
+    0 22px 44px rgba(0,0,0,0.35);
 }
 
 /* =========================
@@ -442,7 +471,7 @@ select.search-input option {
 
   object-fit: cover;
 
-  transition: .45s;
+  transition: transform .45s ease;
 }
 
 .to-card:hover .lake-image {
@@ -456,7 +485,7 @@ select.search-input option {
   background:
     linear-gradient(
       180deg,
-      rgba(0,0,0,.08),
+      rgba(0,0,0,.06),
       rgba(2,6,23,.72)
     );
 }
@@ -473,6 +502,10 @@ select.search-input option {
 
   z-index: 2;
 
+  padding: 8px 14px;
+
+  border-radius: 999px;
+
   background:
     rgba(255,255,255,.12);
 
@@ -483,10 +516,6 @@ select.search-input option {
 
   color: white;
 
-  padding: 8px 14px;
-
-  border-radius: 999px;
-
   font-size: .8rem;
   font-weight: 700;
 }
@@ -496,30 +525,31 @@ select.search-input option {
 ========================= */
 
 .card-content {
-  padding: 22px;
+  padding: 24px;
 }
 
 .card-content h2 {
-  font-size: 1.4rem;
-
   margin: 0 0 12px;
 
+  font-size: 1.4rem;
   line-height: 1.3;
+
+  color: white;
 }
 
 .location {
-  color: var(--text-muted);
-
   margin-bottom: 20px;
+
+  color: var(--text-muted);
 }
 
 .card-divider {
   height: 1px;
 
+  margin-bottom: 20px;
+
   background:
     rgba(255,255,255,.06);
-
-  margin-bottom: 20px;
 }
 
 .card-footer {
@@ -528,11 +558,12 @@ select.search-input option {
 }
 
 .view-more {
-  color: rgba(125,211,252,0.95);
+  color:
+    rgba(125,211,252,0.95);
 
   font-weight: 700;
 
-  transition: .2s;
+  transition: transform .2s ease;
 }
 
 .to-card:hover .view-more {
@@ -544,15 +575,15 @@ select.search-input option {
 ========================= */
 
 .empty-state {
-  text-align: center;
-
   padding: 80px 20px;
+
+  text-align: center;
 }
 
 .empty-icon {
-  font-size: 4rem;
-
   margin-bottom: 18px;
+
+  font-size: 4rem;
 }
 
 /* =========================
@@ -566,11 +597,17 @@ select.search-input option {
   }
 
   .sidebar {
+    position: static;
+
     order: 2;
   }
 
   .hero-section {
-    height: 400px;
+    min-height: 420px;
+  }
+
+  .hero-content {
+    min-height: 420px;
   }
 }
 
@@ -580,51 +617,97 @@ select.search-input option {
 
 @media (max-width: 700px) {
 
-  .hero-section {
-    min-height: unset;
-    border-radius: 26px;
+  .tavak-page {
+    padding: 14px;
   }
 
-  .hero-content {
-    padding: 28px 22px;
-    min-height: 420px;
+  .hero-section {
+    border-radius: 28px;
+
+    min-height: unset;
   }
 
   .hero-overlay {
-
     background:
       linear-gradient(
         180deg,
-        rgba(2,6,23,0.92) 0%,
-        rgba(2,6,23,0.78) 55%,
-        rgba(2,6,23,0.92) 100%
+        rgba(2,6,23,0.94) 0%,
+        rgba(2,6,23,0.82) 55%,
+        rgba(2,6,23,0.94) 100%
       );
   }
 
-  .hero-content h1 {
-    font-size: 2.2rem;
+  .hero-content {
+    min-height: 520px;
 
-    line-height: 1.08;
+    padding: 28px 22px;
+  }
+
+  .hero-content h1 {
+    font-size: 2.3rem;
+
+    line-height: 1.06;
 
     letter-spacing: -1px;
   }
 
   .hero-content p {
-    font-size: .96rem;
+    font-size: .98rem;
   }
 
   .hero-stats {
-    flex-direction: row;
+    gap: 12px;
   }
 
   .hero-stat {
     flex: 1;
-    min-width: 0;
+    min-width: calc(50% - 6px);
 
-    padding: 14px;
+    padding: 16px;
   }
 
   .hero-stat .value {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+  }
+
+  .sidebar-card {
+    padding: 20px;
+
+    border-radius: 24px;
+  }
+
+  .tavak-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .image-wrapper {
+    height: 220px;
+  }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 480px) {
+
+  .hero-content {
+    min-height: 500px;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .hero-stat {
+    min-width: 100%;
+  }
+
+  .card-content {
+    padding: 20px;
+  }
+
+  .card-content h2 {
+    font-size: 1.25rem;
   }
 }

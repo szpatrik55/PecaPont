@@ -1,120 +1,205 @@
 :host {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(14, 165, 233, 0.08),
+      transparent 60%
+    );
 }
 
 /* =========================
-   📦 CONTAINER
+   WRAPPER
 ========================= */
+
+.auth-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 100vh;
+
+  padding: var(--space-xl);
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
 .auth-container {
   width: 100%;
-  max-width: 420px;
-  padding: var(--space-xl);
+  max-width: 440px;
+
+  padding: 40px;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+h2 {
+  margin-bottom: var(--space-xl);
+
+  text-align: center;
+
+  font-size: clamp(2rem, 4vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
 
   color: var(--text-main);
 }
 
-/* 👉 használd HTML-ben: class="auth-container card" */
-
-
 /* =========================
-   📝 TITLE
+   FORM
 ========================= */
-h2 {
-  text-align: center;
-  margin-bottom: var(--space-lg);
 
-  font-size: 28px;
+form {
+  display: flex;
+  flex-direction: column;
 }
 
-
-/* =========================
-   ✏️ INPUT (global .input használat)
-========================= */
-input {
+.input-group {
   margin-bottom: var(--space-md);
 }
 
+.input {
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.input:focus {
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
 /* =========================
-   🔘 BUTTON
+   BUTTONS
 ========================= */
-button {
+
+.submit-btn,
+.google-btn {
   width: 100%;
+}
+
+.submit-btn {
   margin-top: var(--space-xs);
 }
 
-/* 👉 HTML-ben:
-   class="btn btn-primary"
-*/
+/* GOOGLE */
 
+.google-btn {
+  margin-top: var(--space-sm);
 
-/* =========================
-   🔘 GOOGLE BUTTON (maradhat custom)
-========================= */
-.google {
-  margin-top: var(--space-md);
-  background: white;
+  background: rgba(255, 255, 255, 0.94);
   color: #111827;
-}
 
-.google:hover {
-  transform: translateY(-2px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+
   box-shadow: var(--shadow-sm);
 }
 
+.google-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  box-shadow: var(--shadow-md);
+}
+
+.google-btn img {
+  width: 18px;
+  height: 18px;
+}
 
 /* =========================
-   ➖ DIVIDER
+   DIVIDER
 ========================= */
+
 .divider {
-  margin: var(--space-lg) 0 var(--space-sm);
-  text-align: center;
   position: relative;
+
+  margin:
+    var(--space-lg)
+    0;
+
+  text-align: center;
 }
 
 .divider::before {
   content: "";
-  display: block;
+
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+
   height: 1px;
+
   background: var(--glass-border);
 }
 
+.divider span {
+  position: relative;
+
+  padding: 0 var(--space-sm);
+
+  background: rgba(17, 24, 39, 0.96);
+
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  color: var(--text-muted);
+}
 
 /* =========================
-   🔗 REGISTER LINK
+   REGISTER LINK
 ========================= */
+
 .register-link {
-  margin-top: var(--space-lg);
+  margin-top: var(--space-xl);
+
   text-align: center;
-  font-size: 14px;
+
+  font-size: 0.92rem;
+
   color: var(--text-muted);
 }
 
 .register-link a {
   color: var(--primary-light);
+
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
+
+  transition: opacity 0.2s ease;
 }
 
 .register-link a:hover {
+  opacity: 0.85;
   text-decoration: underline;
 }
 
-
 /* =========================
-   ❗ ERROR
+   ERROR
 ========================= */
+
 .error-container {
   max-height: 0;
+
   opacity: 0;
   overflow: hidden;
-  transition: 0.4s;
+
+  transition:
+    max-height 0.35s ease,
+    opacity 0.35s ease,
+    margin-bottom 0.35s ease;
 
   &.show {
-    max-height: 100px;
+    max-height: 120px;
     opacity: 1;
+
     margin-bottom: var(--space-md);
   }
 }
@@ -124,98 +209,168 @@ button {
   align-items: center;
   gap: var(--space-sm);
 
-  background: rgba(239, 68, 68, 0.1);
-  backdrop-filter: blur(8px);
+  padding:
+    var(--space-sm)
+    var(--space-md);
 
-  border: 1px solid rgba(248, 113, 113, 0.3);
-  border-left: 4px solid var(--danger);
+  border-radius: var(--radius-md);
+
+  background: rgba(239, 68, 68, 0.12);
+
+  border: 1px solid rgba(239, 68, 68, 0.22);
 
   color: #fca5a5;
-  padding: var(--space-sm) var(--space-md);
 
-  border-radius: var(--radius-sm);
-  font-size: 14px;
+  backdrop-filter: blur(10px);
 }
 
+.error-icon {
+  font-size: 1rem;
+}
+
+.error-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
 
 /* =========================
-   ❌ INPUT ERROR
+   INPUT ERROR
 ========================= */
+
 .input-error {
   border-color: rgba(239, 68, 68, 0.4) !important;
-  background: rgba(239, 68, 68, 0.05) !important;
-  color: #fecaca;
+
+  background: rgba(239, 68, 68, 0.06) !important;
+
+  color: #fecaca !important;
 
   &::placeholder {
-    color: rgba(252, 165, 165, 0.4);
+    color: rgba(252, 165, 165, 0.5);
   }
 
   &:focus {
     border-color: var(--danger) !important;
-    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15) !important;
+
+    box-shadow:
+      0 0 0 4px rgba(239, 68, 68, 0.12) !important;
   }
 }
 
+/* =========================
+   LOADING
+========================= */
+
+.loading-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+
+  border-radius: 50%;
+
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 /* =========================
-   🔄 BUTTON STATES
+   BUTTON STATES
 ========================= */
+
 button:active:not(:disabled) {
   transform: scale(0.98);
 }
 
 button:disabled {
-  opacity: 0.5;
+  opacity: 0.55;
+
   cursor: not-allowed;
+
   filter: saturate(0.5);
 }
 
 /* =========================
-   📱 RESPONSIVE
+   TABLET
 ========================= */
+
 @media (max-width: 768px) {
-  :host {
-    padding: var(--space-md);
+
+  .auth-wrapper {
+    padding: var(--space-lg);
+  }
+
+  .auth-container {
+    padding: var(--space-xl);
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 480px) {
+
+  .auth-wrapper {
+    padding: var(--space-sm);
   }
 
   .auth-container {
     padding: var(--space-lg);
+
+    border-radius: var(--radius-md);
   }
 
   h2 {
-    font-size: 26px;
-  }
-}
+    margin-bottom: var(--space-lg);
 
-@media (max-width: 480px) {
-  :host {
-    padding: var(--space-sm);
-  }
-
-  .auth-container {
-    padding: var(--space-md);
-  }
-
-  h2 {
-    font-size: 24px;
+    font-size: 1.9rem;
   }
 
   .btn {
-    padding: 12px;
-    font-size: 15px;
+    padding:
+      13px
+      18px;
+
+    font-size: 0.95rem;
   }
 
   .input {
-    padding: 10px 12px;
     font-size: 15px;
   }
 
   .register-link {
-    font-size: 13px;
+    font-size: 0.85rem;
   }
 
   .error-banner {
-    font-size: 13px;
     padding: var(--space-sm);
+  }
+
+  .error-text {
+    font-size: 0.84rem;
+  }
+}
+
+/* =========================
+   LARGE SCREEN
+========================= */
+
+@media (min-width: 1600px) {
+
+  .auth-container {
+    max-width: 480px;
+
+    padding: 48px;
   }
 }

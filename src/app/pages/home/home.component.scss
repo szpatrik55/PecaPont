@@ -2,52 +2,79 @@
   display: block;
   min-height: 100vh;
 
-  background: var(--bg-main);
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(14, 165, 233, 0.08),
+      var(--bg-main) 60%
+    );
+
   color: var(--text-main);
 }
 
 /* =========================
    GLOBAL SECTIONS
 ========================= */
+
 section {
-  padding: var(--space-xl) var(--space-lg);
+  position: relative;
+
+  padding:
+    80px
+    var(--space-xl);
 }
 
 section + section {
   border-top: 1px solid rgba(255, 255, 255, 0.03);
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   margin: 0;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+
+  font-weight: 800;
+
+  letter-spacing: -0.03em;
 }
 
 h2 {
-  font-size: 2rem;
-  margin-bottom: var(--space-lg);
   position: relative;
+
   display: inline-block;
+
+  margin-bottom: 36px;
+
+  font-size: clamp(1.9rem, 4vw, 2.8rem);
+
+  color: var(--text-main);
 }
 
 h2::after {
   content: "";
+
   position: absolute;
+
   left: 0;
-  bottom: -6px;
-  width: 60%;
+  bottom: -8px;
+
+  width: 64%;
   height: 3px;
-  border-radius: 10px;
-  background: linear-gradient(
-    90deg,
-    var(--primary-light),
-    transparent
-  );
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--primary-light),
+      transparent
+    );
 }
 
 p {
-  line-height: 1.7;
   color: var(--text-muted);
+
+  line-height: 1.8;
 }
 
 img {
@@ -57,32 +84,45 @@ img {
 /* =========================
    GRID HELPERS
 ========================= */
+
 .card-container,
 .lake-cards,
 .news-preview {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(280px, 1fr));
+
   gap: var(--space-lg);
 }
 
 .gallery-preview {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(320px, 1fr));
+
   gap: var(--space-lg);
 }
 
 /* =========================
    HERO
 ========================= */
+
 .hero {
-  min-height: 90vh;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  min-height: 92vh;
+
   text-align: center;
 
   background:
-    linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.8)),
+    linear-gradient(
+      rgba(15, 23, 42, 0.7),
+      rgba(15, 23, 42, 0.82)
+    ),
     url("/assets/images/hero/hero4.png");
 
   background-size: cover;
@@ -91,218 +131,389 @@ img {
 
 .hero-content {
   width: min(760px, 92%);
-  padding: var(--space-xl);
+
+  padding: 48px;
 }
 
-/* 👉 HTML: class="hero-content card" */
-
 .hero h1 {
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
   margin-bottom: var(--space-md);
+
+  font-size: clamp(3rem, 7vw, 5rem);
+
+  line-height: 1;
+}
+
+.hero h2 {
+  margin-bottom: var(--space-lg);
+
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+
+  color: rgba(248, 250, 252, 0.92);
+}
+
+.hero h2::after {
+  display: none;
 }
 
 .hero p {
-  margin-bottom: var(--space-lg);
-}
+  margin-bottom: var(--space-xl);
 
-.scroll-indicator {
-  margin-top: var(--space-md);
-  font-size: 28px;
-  opacity: 0.7;
+  font-size: 1.05rem;
 }
 
 /* =========================
    STATS
 ========================= */
+
 .stats {
-  margin: var(--space-lg) 0;
   display: flex;
   justify-content: center;
-  gap: var(--space-md);
   flex-wrap: wrap;
+
+  gap: var(--space-md);
+
+  margin:
+    var(--space-xl)
+    0;
 }
 
 .stats-item {
-  padding: var(--space-sm) var(--space-md);
-}
+  min-width: 140px;
 
-/* 👉 HTML: class="stats-item card" */
+  padding:
+    var(--space-md)
+    var(--space-lg);
+
+  text-align: center;
+}
 
 .stats strong {
   display: block;
-  font-size: 1.3rem;
+
+  margin-bottom: 6px;
+
+  font-size: 1.8rem;
+  font-weight: 900;
+
+  color: var(--text-main);
+}
+
+.stats span {
+  color: var(--text-muted);
+
+  font-size: 0.92rem;
 }
 
 /* =========================
    QUICK MENU
 ========================= */
+
 .quick-menu {
   background: var(--bg-surface);
 }
 
-/* saját card, NEM globális */
 .quick-card {
   aspect-ratio: 16 / 10;
+
   overflow: hidden;
-  transition: 0.3s;
+
+  border-radius: var(--radius-lg);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .quick-card:hover {
-  transform: translateY(-6px) scale(1.02);
+  transform:
+    translateY(-6px)
+    scale(1.02);
+
+  box-shadow: var(--shadow-lg);
 }
 
 .quick-card img {
   width: 100%;
   height: 100%;
+
   object-fit: cover;
 }
 
 /* =========================
    LATEST CATCHES
 ========================= */
+
 .catch-card {
-  cursor: pointer;
   position: relative;
+
   height: 320px;
-  border-radius: var(--radius-lg);
+
   overflow: hidden;
 
+  border-radius: 28px;
+
+  cursor: pointer;
+
   box-shadow: var(--shadow-md);
-  transition: 0.3s;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .catch-card:hover {
   transform: translateY(-6px);
+
   box-shadow: var(--shadow-lg);
 }
 
 .catch-card img {
   width: 100%;
   height: 100%;
+
   object-fit: cover;
+
+  transition: transform 0.45s ease;
+}
+
+.catch-card:hover img {
+  transform: scale(1.06);
 }
 
 .overlay {
   position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding: var(--space-md);
+  inset: 0;
 
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.75),
-    rgba(0, 0, 0, 0.15)
-  );
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  padding: var(--space-lg);
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.82),
+      rgba(0, 0, 0, 0.18)
+    );
 
   color: white;
+}
+
+.overlay h3 {
+  margin-bottom: 8px;
+
+  font-size: 1.4rem;
+}
+
+.overlay p {
+  margin-bottom: 6px;
+
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.overlay .stat {
+  font-weight: 700;
+
+  color: #7dd3fc;
 }
 
 /* =========================
    LAKES
 ========================= */
-.lake-card {
-  cursor: pointer;
-  overflow: hidden;
-}
 
-/* 👉 HTML: class="lake-card card" */
+.lake-card {
+  overflow: hidden;
+
+  cursor: pointer;
+}
 
 .lake-card img {
   width: 100%;
   height: 220px;
+
   object-fit: cover;
+
+  transition: transform 0.45s ease;
+}
+
+.lake-card:hover img {
+  transform: scale(1.04);
 }
 
 .lake-card h3 {
-  padding: var(--space-md) var(--space-md) var(--space-xs);
+  padding:
+    var(--space-md)
+    var(--space-md)
+    var(--space-xs);
+
+  font-size: 1.25rem;
 }
 
 .lake-card p {
-  padding: 0 var(--space-md) var(--space-md);
+  padding:
+    0
+    var(--space-md)
+    var(--space-md);
 }
 
 /* =========================
    NEWS
 ========================= */
+
 .latest-news {
-  background: var(--bg-main);
+  background: transparent;
 }
 
 .news-card {
-  cursor: pointer;
-  padding: var(--space-lg);
+  position: relative;
 
   display: flex;
   flex-direction: column;
-}
 
-/* 👉 HTML: class="news-card card" */
+  padding: var(--space-lg);
+
+  cursor: pointer;
+}
 
 .news-tag {
   display: inline-flex;
   align-self: flex-start;
 
-  padding: 4px 8px;
-
-  background: rgba(14, 165, 233, 0.15);
-  color: var(--primary-light);
-
-  border-radius: 6px;
-
-  font-size: 12px;
-  font-weight: 700;
-
   margin-bottom: var(--space-sm);
 
-  max-width: max-content;
+  padding:
+    5px
+    10px;
+
+  border-radius: 999px;
+
+  background: rgba(14, 165, 233, 0.15);
+
+  color: var(--primary-light);
+
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .news-card h3 {
   margin-bottom: var(--space-sm);
+
+  font-size: 1.35rem;
+
+  line-height: 1.35;
 }
 
 .news-card p {
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-lg);
+
+  flex: 1;
 }
 
-.news-card .read-more {
-  color: var(--primary-light);
-  font-weight: 600;
+.news-card .btn {
+  width: fit-content;
 }
 
 /* =========================
    COMMUNITY
 ========================= */
+
 .community {
   text-align: center;
-  background: linear-gradient(
-    135deg,
-    var(--bg-surface),
-    var(--bg-main)
-  );
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--bg-surface),
+      var(--bg-main)
+    );
 }
 
-.community-text {
-  max-width: 700px;
-  margin: 0 auto var(--space-lg);
+.community p {
+  max-width: 720px;
+
+  margin:
+    0 auto
+    var(--space-xl);
+
+  font-size: 1.05rem;
 }
 
 /* =========================
    RESPONSIVE
 ========================= */
-@media (max-width: 768px) {
+
+@media (max-width: 992px) {
 
   section {
-    padding: var(--space-lg) var(--space-md);
+    padding:
+      64px
+      var(--space-lg);
   }
 
   .hero {
-    padding: var(--space-xl) var(--space-md);
+    min-height: auto;
+
+    padding:
+      120px
+      var(--space-lg);
+  }
+
+  .gallery-preview {
+    grid-template-columns:
+      repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+  section {
+    padding:
+      56px
+      var(--space-md);
+  }
+
+  .hero {
+    padding:
+      100px
+      var(--space-md);
+
     background-attachment: scroll;
   }
 
+  .hero-content {
+    width: 100%;
+
+    padding: var(--space-xl);
+  }
+
   .hero h1 {
-    font-size: 2rem;
+    font-size: 2.6rem;
+  }
+
+  .hero h2 {
+    font-size: 1.15rem;
+  }
+
+  .hero p {
+    font-size: 0.98rem;
+  }
+
+  .stats {
+    gap: var(--space-sm);
+  }
+
+  .stats-item {
+    flex: 1;
+
+    min-width: 120px;
   }
 
   .card-container,
@@ -310,5 +521,101 @@ img {
   .lake-cards,
   .news-preview {
     grid-template-columns: 1fr;
+  }
+
+  .catch-card {
+    height: 280px;
+  }
+
+  .overlay {
+    padding: var(--space-md);
+  }
+
+  .news-card {
+    padding: var(--space-md);
+  }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 480px) {
+
+  section {
+    padding:
+      48px
+      var(--space-sm);
+  }
+
+  .hero {
+    padding:
+      80px
+      var(--space-sm);
+  }
+
+  .hero-content {
+    padding: var(--space-lg);
+
+    border-radius: var(--radius-lg);
+  }
+
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero h2 {
+    font-size: 1rem;
+  }
+
+  .stats-item {
+    min-width: calc(50% - 8px);
+
+    padding:
+      var(--space-sm)
+      var(--space-md);
+  }
+
+  .stats strong {
+    font-size: 1.5rem;
+  }
+
+  .catch-card {
+    height: 240px;
+
+    border-radius: 22px;
+  }
+
+  .overlay h3 {
+    font-size: 1.2rem;
+  }
+
+  .lake-card img {
+    height: 200px;
+  }
+
+  .news-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .community p {
+    font-size: 0.96rem;
+  }
+}
+
+/* =========================
+   LARGE SCREEN
+========================= */
+
+@media (min-width: 1600px) {
+
+  section {
+    padding:
+      100px
+      80px;
+  }
+
+  .hero-content {
+    width: min(820px, 92%);
   }
 }

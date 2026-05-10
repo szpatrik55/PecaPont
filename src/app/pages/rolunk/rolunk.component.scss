@@ -2,108 +2,177 @@
   display: block;
   min-height: 100vh;
 
-  background: var(--bg-main);
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(14, 165, 233, 0.08),
+      var(--bg-main) 60%
+    );
+
   color: var(--text-main);
 }
 
 /* =========================
    PAGE TITLE
 ========================= */
+
 .page-title {
-  padding: var(--space-xl) var(--space-md);
+  padding:
+    72px
+    var(--space-lg)
+    48px;
+
   text-align: center;
 }
 
 .page-title h1 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
   position: relative;
+
   display: inline-block;
+
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+
+  letter-spacing: -0.04em;
+
+  color: var(--text-main);
 }
 
 .page-title h1::after {
   content: "";
-  position: absolute;
-  left: 20%;
-  bottom: -8px;
-  width: 60%;
-  height: 3px;
-  border-radius: 10px;
 
-  background: linear-gradient(
-    90deg,
-    var(--primary-light),
-    transparent
-  );
+  position: absolute;
+
+  left: 20%;
+  bottom: -10px;
+
+  width: 60%;
+  height: 4px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--primary-light),
+      transparent
+    );
 }
 
 /* =========================
    INTRO
 ========================= */
-/* 👉 HTML: class="szovegdoboz card" */
-.szovegdoboz {
-  width: min(1200px, 92%);
-  margin: 0 auto var(--space-xl);
 
-  padding: var(--space-xl);
+.szovegdoboz {
+  width: min(1240px, 92%);
+
+  margin:
+    0 auto
+    var(--space-xl);
+
+  padding: 40px;
 
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: var(--space-lg);
+
+  grid-template-columns: 1.15fr 1fr;
+
+  gap: 40px;
   align-items: center;
 }
 
 .intro-text h2 {
-  font-size: 2.2rem;
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-lg);
+
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 800;
+
+  letter-spacing: -0.03em;
+
+  color: var(--text-main);
 }
 
 .intro-text p {
-  font-size: 1rem;
-  line-height: 1.7;
+  margin: 0;
+
   color: var(--text-muted);
+
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.intro-image {
+  width: 100%;
 }
 
 .intro-image img {
   width: 100%;
-  height: 480px;
+  height: 520px;
 
   object-fit: cover;
   object-position: center top;
 
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
+  border-radius: 28px;
+
+  border: 1px solid var(--glass-border);
+
+  box-shadow: var(--shadow-lg);
 }
 
 /* =========================
    CONTENT BLOCKS
 ========================= */
+
 .egymasmellett {
-  width: min(1200px, 92%);
-  margin: 0 auto var(--space-lg);
+  width: min(1240px, 92%);
+
+  margin:
+    0 auto
+    var(--space-lg);
 
   display: grid;
+
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-md);
+
+  gap: var(--space-lg);
 }
 
-/* 👉 HTML: class="mellett card" */
 .mellett {
-  padding: var(--space-lg);
-  transition: 0.3s;
+  padding: 30px;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
 .mellett:hover {
   transform: translateY(-6px);
+
+  border-color: rgba(37, 99, 235, 0.2);
+
   box-shadow: var(--shadow-lg);
+}
+
+.mellett p {
+  margin: 0;
+
+  color: var(--text-muted);
+
+  line-height: 1.85;
+
+  font-size: 1rem;
 }
 
 /* =========================
    TABLET
 ========================= */
+
 @media (max-width: 1024px) {
 
   .szovegdoboz {
     grid-template-columns: 1fr;
+
+    gap: var(--space-xl);
   }
 
   .egymasmellett {
@@ -111,44 +180,112 @@
   }
 
   .intro-image img {
-    height: 380px;
+    height: 420px;
   }
 }
 
 /* =========================
    MOBILE
 ========================= */
+
 @media (max-width: 768px) {
 
   .page-title {
-    padding: var(--space-lg) var(--space-md);
+    padding:
+      56px
+      var(--space-md)
+      36px;
   }
 
   .szovegdoboz {
-    padding: var(--space-lg);
-    gap: var(--space-md);
+    padding: var(--space-xl);
+
+    gap: var(--space-lg);
   }
 
   .intro-text h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
+  }
+
+  .intro-text p {
+    font-size: 0.98rem;
+
+    line-height: 1.8;
   }
 
   .intro-image img {
-    height: 300px;
+    height: 340px;
+
+    border-radius: 22px;
+  }
+
+  .mellett {
+    padding: var(--space-lg);
+  }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 480px) {
+
+  .page-title {
+    padding:
+      48px
+      var(--space-sm)
+      28px;
+  }
+
+  .page-title h1 {
+    font-size: 2.2rem;
+  }
+
+  .szovegdoboz {
+    width: calc(100% - 16px);
+
+    padding: var(--space-lg);
+  }
+
+  .intro-text h2 {
+    font-size: 1.7rem;
+  }
+
+  .intro-image img {
+    height: 280px;
+
+    border-radius: var(--radius-lg);
+  }
+
+  .egymasmellett {
+    width: calc(100% - 16px);
+
+    gap: var(--space-md);
   }
 
   .mellett {
     padding: var(--space-md);
+
+    border-radius: var(--radius-md);
+  }
+
+  .mellett p {
+    font-size: 0.95rem;
   }
 }
 
-@media (max-width: 480px) {
+/* =========================
+   LARGE SCREEN
+========================= */
 
-  .page-title h1 {
-    font-size: 2rem;
+@media (min-width: 1600px) {
+
+  .szovegdoboz,
+  .egymasmellett {
+    width: min(1380px, 90%);
   }
 
   .intro-image img {
-    height: 260px;
+    height: 580px;
   }
 }

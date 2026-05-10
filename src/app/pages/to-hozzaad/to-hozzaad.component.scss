@@ -2,113 +2,187 @@
   display: block;
   min-height: 100vh;
 
-  background: var(--bg-main);
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(14,165,233,0.08),
+      var(--bg-main) 60%
+    );
+
   color: var(--text-main);
 }
 
 /* =========================
    PAGE
 ========================= */
+
 .to-hozzaad-page {
-  max-width: 1200px;
+  width: min(1200px, 100%);
+
   margin: 0 auto;
 
-  padding: var(--space-xl) var(--space-md);
+  padding:
+    48px
+    var(--space-lg)
+    64px;
 }
 
 /* =========================
    HEADER
 ========================= */
+
 .page-header {
+  margin-bottom: 40px;
+
   text-align: center;
-  margin-bottom: var(--space-xl);
 }
 
 .page-header h1 {
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 800;
+  margin-bottom: var(--space-sm);
+
+  font-size:
+    clamp(2.4rem, 5vw, 4rem);
+
+  font-weight: 900;
+
+  letter-spacing: -0.04em;
+
+  color: var(--text-main);
 }
 
 .page-header p {
+  margin: 0;
+
   color: var(--text-muted);
+
+  font-size: 1rem;
+  line-height: 1.7;
 }
 
 /* =========================
    LAYOUT
 ========================= */
+
 .to-hozzaad-layout {
   display: flex;
   flex-direction: column;
+
   gap: var(--space-lg);
 }
 
 /* =========================
    SECTION CARD
 ========================= */
-/* 👉 HTML: class="form-section card" */
+
 .form-section {
-  padding: var(--space-xl);
+  padding: 36px;
+
+  border-radius: 28px;
 }
 
 .form-section h3 {
-  font-size: 1.2rem;
-  margin-bottom: var(--space-md);
+  margin-bottom: 24px;
+
+  font-size: 1.25rem;
+  font-weight: 700;
+
+  color: var(--text-main);
 }
 
 /* =========================
    GRID
 ========================= */
+
 .input-row {
   display: grid;
+
   grid-template-columns: repeat(2, 1fr);
+
   gap: var(--space-md);
+
   margin-bottom: var(--space-md);
+}
+
+.input-row:last-child {
+  margin-bottom: 0;
 }
 
 /* =========================
    INPUT GROUP
 ========================= */
+
 .input-group {
   display: flex;
   flex-direction: column;
+
   gap: var(--space-xs);
 }
 
 .input-group label {
-  font-size: 0.9rem;
-  font-weight: 600;
   color: var(--text-muted);
+
+  font-size: 0.85rem;
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.04em;
 }
 
-/* 👉 használjuk a globális inputot */
 .input-group .input {
   width: 100%;
 }
 
 /* =========================
+   TEXTAREA
+========================= */
+
+textarea.input {
+  min-height: 160px;
+
+  resize: vertical;
+}
+
+/* =========================
    FILE UPLOAD
 ========================= */
+
 .file-drop-zone {
   display: flex;
   align-items: center;
   justify-content: center;
 
-  padding: var(--space-md);
+  min-height: 140px;
 
-  border-radius: var(--radius-sm);
-  border: 1px dashed var(--glass-border);
+  padding: var(--space-lg);
 
-  background: rgba(255,255,255,0.04);
+  border-radius: var(--radius-lg);
+
+  border:
+    1px dashed rgba(255,255,255,0.14);
+
+  background:
+    rgba(255,255,255,0.03);
+
   color: var(--text-muted);
 
-  cursor: pointer;
-  transition: 0.25s;
   text-align: center;
+
+  cursor: pointer;
+
+  transition:
+    border-color .25s ease,
+    background .25s ease,
+    transform .25s ease;
 }
 
 .file-drop-zone:hover {
-  background: rgba(255,255,255,0.08);
-  border-color: var(--primary);
+  border-color: var(--primary-light);
+
+  background:
+    rgba(255,255,255,0.06);
+
+  transform: translateY(-2px);
 }
 
 .file-drop-zone input {
@@ -116,75 +190,165 @@
 }
 
 .file-name {
-  font-weight: 600;
   color: var(--primary-light);
+
+  font-weight: 700;
 }
 
 /* =========================
    IMAGE
 ========================= */
+
 .image-preview {
   width: 100%;
-  max-height: 280px;
+
+  max-height: 320px;
+
   object-fit: cover;
 
-  border-radius: var(--radius-md);
-  margin-top: var(--space-sm);
+  border-radius: 24px;
 
-  border: 1px solid var(--glass-border);
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  box-shadow: var(--shadow-md);
 }
 
 /* =========================
    CHECKBOX
 ========================= */
+
 .checkbox-group label {
   display: flex;
   align-items: center;
+
   gap: var(--space-sm);
 
-  font-size: 0.9rem;
-  color: var(--text-muted);
+  text-transform: none;
+
+  letter-spacing: 0;
+
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .checkbox-group input[type="checkbox"] {
   width: 18px;
   height: 18px;
+
   accent-color: var(--primary);
 }
 
 /* =========================
    BUTTON
 ========================= */
+
 .submit-btn {
   width: 100%;
+
   margin-top: var(--space-sm);
 }
 
 /* =========================
-   📱 MOBILE
+   TABLET
 ========================= */
-@media (max-width: 768px) {
+
+@media (max-width: 900px) {
+
+  .to-hozzaad-page {
+    padding:
+      40px
+      var(--space-md)
+      56px;
+  }
+
+  .form-section {
+    padding: 28px;
+  }
 
   .input-row {
     grid-template-columns: 1fr;
   }
+}
 
-  .form-section {
-    padding: var(--space-lg);
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+  .page-header {
+    margin-bottom: 32px;
   }
 
   .page-header h1 {
-    font-size: 1.8rem;
+    font-size: 2.3rem;
+  }
+
+  .form-section {
+    padding: var(--space-xl);
+
+    border-radius: 24px;
+  }
+
+  .file-drop-zone {
+    min-height: 120px;
+  }
+
+  .image-preview {
+    max-height: 240px;
+
+    border-radius: var(--radius-lg);
   }
 }
+
+/* =========================
+   SMALL MOBILE
+========================= */
 
 @media (max-width: 480px) {
 
   .to-hozzaad-page {
-    padding: var(--space-md);
+    padding:
+      24px
+      var(--space-sm)
+      48px;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .page-header p {
+    font-size: 0.95rem;
   }
 
   .form-section {
-    padding: var(--space-md);
+    padding: var(--space-lg);
+
+    border-radius: 22px;
+  }
+
+  .form-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .checkbox-group label {
+    align-items: flex-start;
+  }
+
+  .submit-btn {
+    padding: 14px 18px;
+  }
+}
+
+/* =========================
+   LARGE SCREEN
+========================= */
+
+@media (min-width: 1600px) {
+
+  .to-hozzaad-page {
+    width: min(1320px, 92%);
   }
 }

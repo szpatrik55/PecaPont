@@ -1,145 +1,249 @@
 :host {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
   min-height: 100vh;
-  padding: var(--space-lg);
 
-  background: var(--bg-main);
+  padding: var(--space-xl);
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(14, 165, 233, 0.08),
+      transparent 60%
+    );
+
   color: var(--text-main);
 }
 
 /* =========================
    CONTAINER
 ========================= */
-/* 👉 HTML: class="auth-container card" */
+
 .auth-container {
   width: 100%;
-  max-width: 420px;
+  max-width: 460px;
 
-  padding: var(--space-xl);
+  padding: 40px;
 }
 
 /* =========================
    TITLE
 ========================= */
-h2 {
-  text-align: center;
-  margin-bottom: var(--space-xs);
 
-  font-size: 28px;
-  font-weight: 700;
+h2 {
+  margin-bottom: 10px;
+
+  text-align: center;
+
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-weight: 900;
+
+  letter-spacing: -0.03em;
+
+  color: var(--text-main);
 }
 
 .subtitle {
-  text-align: center;
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-xl);
 
-  font-size: 14px;
+  text-align: center;
+
   color: var(--text-muted);
+
+  font-size: 0.95rem;
+  line-height: 1.7;
 }
 
 /* =========================
    ERROR
 ========================= */
+
 .error-container {
   max-height: 0;
+
   opacity: 0;
   overflow: hidden;
 
-  transition: 0.3s;
+  transition:
+    max-height 0.35s ease,
+    opacity 0.35s ease,
+    margin 0.35s ease;
 }
 
 .error-container.show {
-  max-height: 100px;
+  max-height: 120px;
+
   opacity: 1;
+
   margin-bottom: var(--space-md);
 }
 
 .error-banner {
   display: flex;
   align-items: center;
+
   gap: var(--space-sm);
 
-  padding: var(--space-sm) var(--space-md);
+  padding:
+    var(--space-sm)
+    var(--space-md);
 
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
 
   background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(248, 113, 113, 0.3);
+
+  border: 1px solid rgba(248, 113, 113, 0.28);
   border-left: 4px solid var(--danger);
 
   color: #fca5a5;
-  font-size: 14px;
+
+  font-size: 0.92rem;
+
+  backdrop-filter: blur(10px);
+}
+
+.error-icon {
+  font-size: 1rem;
+
+  flex-shrink: 0;
 }
 
 /* =========================
    FORM
 ========================= */
+
 form {
   display: flex;
   flex-direction: column;
+
   gap: var(--space-md);
 }
 
-/* 👉 INPUT: használd class="input" */
+/* =========================
+   INPUTS
+========================= */
+
 input {
   margin: 0;
+}
+
+.input {
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.input:focus {
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+/* =========================
+   INPUT ERROR
+========================= */
+
+.input-error {
+  border-color: rgba(239, 68, 68, 0.45) !important;
+
+  background: rgba(239, 68, 68, 0.05) !important;
+
+  color: #fecaca;
+}
+
+.input-error::placeholder {
+  color: rgba(252, 165, 165, 0.55);
+}
+
+.input-error:focus {
+  border-color: var(--danger) !important;
+
+  box-shadow:
+    0 0 0 4px rgba(239, 68, 68, 0.14) !important;
 }
 
 /* =========================
    BUTTON
 ========================= */
-/* 👉 HTML: class="btn btn-primary" */
+
 button {
   width: 100%;
+}
+
+.btn {
+  margin-top: var(--space-xs);
+}
+
+button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  filter: saturate(0.7);
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 /* =========================
    LINK
 ========================= */
+
 .login-link {
-  margin-top: var(--space-lg);
+  margin-top: var(--space-xl);
+
   text-align: center;
-  font-size: 14px;
+
   color: var(--text-muted);
+
+  font-size: 0.92rem;
 }
 
 .login-link a {
   color: var(--primary-light);
+
+  font-weight: 700;
+
   text-decoration: none;
-  font-weight: 600;
+
+  transition: opacity 0.2s ease;
 }
 
 .login-link a:hover {
+  opacity: 0.85;
+
   text-decoration: underline;
 }
 
 /* =========================
-   📱 RESPONSIVE
+   TABLET
 ========================= */
+
 @media (max-width: 768px) {
 
   :host {
-    align-items: flex-start;
-    padding: var(--space-md);
+    padding: var(--space-lg);
   }
 
   .auth-container {
-    padding: var(--space-lg);
-    border-radius: var(--radius-md);
+    padding: var(--space-xl);
   }
 
   h2 {
-    font-size: 24px;
+    font-size: 2rem;
   }
 
   .subtitle {
-    font-size: 13px;
-    margin-bottom: var(--space-md);
+    margin-bottom: var(--space-lg);
   }
 }
+
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 480px) {
 
@@ -148,10 +252,51 @@ button {
   }
 
   .auth-container {
-    padding: var(--space-md);
+    padding: var(--space-lg);
+
+    border-radius: var(--radius-md);
   }
 
   h2 {
-    font-size: 22px;
+    font-size: 1.8rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    padding:
+      13px
+      18px;
+
+    font-size: 0.95rem;
+  }
+
+  .input {
+    font-size: 15px;
+  }
+
+  .error-banner {
+    padding: var(--space-sm);
+
+    font-size: 0.85rem;
+  }
+
+  .login-link {
+    font-size: 0.88rem;
+  }
+}
+
+/* =========================
+   LARGE SCREEN
+========================= */
+
+@media (min-width: 1600px) {
+
+  .auth-container {
+    max-width: 500px;
+
+    padding: 48px;
   }
 }
