@@ -2,6 +2,7 @@ import {
   Component,
   inject,
   OnInit,
+  OnDestroy,
   signal,
   computed
 } from '@angular/core';
@@ -13,10 +14,10 @@ import { FormsModule } from '@angular/forms';
 import {
   Firestore,
   collection,
-  getDocs,
   query,
   orderBy,
-  Timestamp
+  Timestamp,
+  onSnapshot
 } from '@angular/fire/firestore';
 
 interface NewsItem {
@@ -45,9 +46,12 @@ interface NewsItem {
   templateUrl: './hirek.component.html',
   styleUrls: ['./hirek.component.scss']
 })
-export class HirekComponent implements OnInit {
+export class HirekComponent
+implements OnInit, OnDestroy {
 
   private firestore = inject(Firestore);
+
+  private unsubscribe?: () => void;
 
   allNews = signal<NewsItem[]>([]);
 
@@ -82,18 +86,18 @@ export class HirekComponent implements OnInit {
     return news.filter(item =>
 
       item.cim
-        .toLowerCase()
+        ?.toLowerCase()
         .includes(search)
 
       ||
 
       item.rovidLeiras
-        .toLowerCase()
+        ?.toLowerCase()
         .includes(search)
     );
   });
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
 
     try {
 
@@ -105,20 +109,20 @@ export class HirekComponent implements OnInit {
         orderBy('letrehozva', 'desc')
       );
 
-      const snapshot =
-        await getDocs(q);
+      this.unsubscribe = onSnapshot(q, snapshot => {
 
-      const data: NewsItem[] =
-        snapshot.docs.map(doc => ({
+        const data: NewsItem[] =
+          snapshot.docs.map(doc => ({
 
-          id: doc.id,
+            id: doc.id,
 
-          ...(doc.data() as any)
-        }));
+            ...(doc.data() as any)
+          }));
 
-      this.allNews.set(data);
+        this.allNews.set(data);
 
-      this.calculateCurrentMonth();
+        this.calculateCurrentMonth();
+      });
 
     } catch (error) {
 
@@ -129,12 +133,25 @@ export class HirekComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+
+    if (this.unsubscribe) {
+
+      this.unsubscribe();
+    }
+  }
+
   calculateCurrentMonth(): void {
 
     const now = new Date();
 
     this.currentMonthCount =
       this.allNews().filter(item => {
+
+        if (!item.letrehozva) {
+
+          return false;
+        }
 
         const date =
           item.letrehozva.toDate();

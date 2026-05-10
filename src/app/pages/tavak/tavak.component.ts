@@ -2,6 +2,7 @@ import {
   Component,
   inject,
   OnInit,
+  OnDestroy,
   signal,
   computed
 } from '@angular/core';
@@ -9,10 +10,10 @@ import {
 import {
   Firestore,
   collection,
-  getDocs,
   doc,
   updateDoc,
-  increment
+  increment,
+  onSnapshot
 } from '@angular/fire/firestore';
 
 import { CommonModule } from '@angular/common';
@@ -47,10 +48,13 @@ interface To {
   templateUrl: './tavak.component.html',
   styleUrls: ['./tavak.component.scss']
 })
-export class ToListaComponent implements OnInit {
+export class ToListaComponent
+implements OnInit, OnDestroy {
 
   private firestore =
     inject(Firestore);
+
+  private unsubscribe?: () => void;
 
   tavak = signal<To[]>([]);
 
@@ -82,19 +86,19 @@ export class ToListaComponent implements OnInit {
         const searchMatch =
 
           to.nev
-            .toLowerCase()
+            ?.toLowerCase()
             .includes(keresett)
 
           ||
 
           to.telepules
-            .toLowerCase()
+            ?.toLowerCase()
             .includes(keresett)
 
           ||
 
           to.tipus
-            .toLowerCase()
+            ?.toLowerCase()
             .includes(keresett);
 
         const tipusMatch =
@@ -119,29 +123,30 @@ export class ToListaComponent implements OnInit {
       );
   });
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
 
     try {
 
       const colRef =
         collection(this.firestore, 'lakes');
 
-      const snapshot =
-        await getDocs(colRef);
+      this.unsubscribe =
+        onSnapshot(colRef, snapshot => {
 
-      const data: To[] =
-        snapshot.docs.map(doc => ({
+          const data: To[] =
+            snapshot.docs.map(doc => ({
 
-          id: doc.id,
+              id: doc.id,
 
-          ...(doc.data() as Omit<To, 'id'>)
-        }));
+              ...(doc.data() as Omit<To, 'id'>)
+            }));
 
-      this.tavak.set(data);
+          this.tavak.set(data);
 
-      this.generateFilters();
+          this.generateFilters();
 
-      this.calculateStats();
+          this.calculateStats();
+        });
 
     } catch (error) {
 
@@ -149,6 +154,14 @@ export class ToListaComponent implements OnInit {
         'Firebase hiba:',
         error
       );
+    }
+  }
+
+  ngOnDestroy(): void {
+
+    if (this.unsubscribe) {
+
+      this.unsubscribe();
     }
   }
 
