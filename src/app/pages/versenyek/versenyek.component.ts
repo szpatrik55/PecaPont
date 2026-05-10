@@ -14,33 +14,19 @@ import {
   getDocs,
   query,
   orderBy,
-  where,
-  Timestamp
+  where
 } from '@angular/fire/firestore';
 
 import { RouterModule } from '@angular/router';
+
 import { FormsModule } from '@angular/forms';
 
-interface EventItem {
+import {
+  EventCategory,
+  EVENT_CATEGORIES
+} from '../../config/verseny-kategoriak';
 
-  id: string;
-
-  nev: string;
-
-  rovidLeiras: string;
-
-  leiras: string;
-
-  helyszin: string;
-
-  datum: string;
-
-  kategoria?: string;
-
-  kepUrl?: string;
-
-  letrehozva: Timestamp;
-}
+import { EventItem } from '../../models/event';
 
 @Component({
   selector: 'app-versenyek',
@@ -61,7 +47,8 @@ export class VersenyekComponent implements OnInit {
 
   searchTerm = signal('');
 
-  selectedCategory = signal('');
+  selectedCategory =
+    signal<EventCategory | ''>('');
 
   selectedDate = signal('');
 
@@ -69,13 +56,7 @@ export class VersenyekComponent implements OnInit {
 
   currentDate = new Date();
 
-  categories = [
-    'Bojlis',
-    'Feeder',
-    'Harcsa',
-    'Pergető',
-    'Gyermek'
-  ];
+  categories = EVENT_CATEGORIES;
 
   get currentMonthLabel(): string {
 
@@ -151,14 +132,16 @@ export class VersenyekComponent implements OnInit {
         orderBy('datum', 'asc')
       );
 
-      const snapshot = await getDocs(q);
+      const snapshot =
+        await getDocs(q);
 
       const data: EventItem[] =
         snapshot.docs.map(doc => ({
 
           id: doc.id,
 
-          ...(doc.data() as any)
+          ...(doc.data() as Omit<EventItem, 'id'>)
+
         }));
 
       this.allEvents.set(data);
@@ -300,5 +283,4 @@ export class VersenyekComponent implements OnInit {
 
     this.calendarDays = days;
   }
-
 }

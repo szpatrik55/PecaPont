@@ -77,26 +77,26 @@
 
         <h3>Kategóriák</h3>
 
-        <div class="filter-list">
+        <select
+          class="search-input"
+          [ngModel]="selectedCategory()"
+          (ngModelChange)="selectedCategory.set($event)"
+        >
 
-          <button
-            class="filter-chip"
-            [class.active]="selectedCategory() === ''"
-            (click)="selectedCategory.set('')"
-          >
-            Összes
-          </button>
+          <option value="">
+            Összes kategória
+          </option>
 
-          <button
-            class="filter-chip"
+          <option
             *ngFor="let cat of categories"
-            [class.active]="selectedCategory() === cat"
-            (click)="selectedCategory.set(cat)"
+            [ngValue]="cat"
           >
-            {{ cat }}
-          </button>
 
-        </div>
+            {{ cat }}
+
+          </option>
+
+        </select>
 
       </div>
 
