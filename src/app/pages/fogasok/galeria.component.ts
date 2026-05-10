@@ -61,7 +61,9 @@ implements OnInit, OnDestroy {
 
   private unsubscribe: any;
 
-  posts: GalleryPost[] = [];
+  /* SIGNAL */
+  posts =
+    signal<GalleryPost[]>([]);
 
   selectedPost:
     GalleryPost | null = null;
@@ -88,7 +90,7 @@ implements OnInit, OnDestroy {
     const selected =
       this.selectedGroup();
 
-    return this.posts.filter(post => {
+    return this.posts().filter(post => {
 
       const searchMatch =
 
@@ -201,7 +203,8 @@ implements OnInit, OnDestroy {
                 } as GalleryPost;
               });
 
-            this.posts = posts;
+            /* SIGNAL UPDATE */
+            this.posts.set(posts);
 
             this.postsSubject
               .next(posts);
@@ -228,7 +231,7 @@ implements OnInit, OnDestroy {
     const unique =
       new Set(
 
-        this.posts.map(
+        this.posts().map(
           post => post.fishGroup
         )
       );
@@ -242,7 +245,7 @@ implements OnInit, OnDestroy {
     const unique =
       new Set(
 
-        this.posts
+        this.posts()
           .map(
             post => post.species
           )

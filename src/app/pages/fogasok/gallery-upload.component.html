@@ -4,12 +4,26 @@
   <form [formGroup]="form" (ngSubmit)="upload()">
 
     <div class="form-section">
-      <input class="input" type="text" placeholder="Fogás címe (pl. Kapitális Ponty)" formControlName="title">
 
-      <textarea class="input" placeholder="Meséld el a fogás körülményeit..." formControlName="description"></textarea>
+      <input
+        class="input"
+        type="text"
+        placeholder="Fogás címe (pl. Kapitális Ponty)"
+        formControlName="title"
+      >
+
+      <textarea
+        class="input"
+        placeholder="Meséld el a fogás körülményeit..."
+        formControlName="description"
+      ></textarea>
 
       <div class="file-wrapper">
-        <label for="file-upload" class="custom-file-upload">
+
+        <label
+          for="file-upload"
+          class="custom-file-upload"
+        >
           Kép kiválasztása
         </label>
 
@@ -19,24 +33,54 @@
           accept="image/*"
           (change)="onFileSelected($event)"
         >
+
       </div>
 
-      <img *ngIf="previewUrl" [src]="previewUrl" class="preview" alt="Előnézet">
+      <img
+        *ngIf="previewUrl"
+        [src]="previewUrl"
+        class="preview"
+        alt="Előnézet"
+      >
+
     </div>
 
     <div class="form-grid">
-      <select class="input" formControlName="fishGroup">
-        <option value="">Kategória</option>
-        <option *ngFor="let group of fishCategoryKeys" [value]="group">
+
+      <select
+        class="input"
+        formControlName="fishGroup"
+      >
+
+        <option value="">
+          Kategória
+        </option>
+
+        <option
+          *ngFor="let group of fishCategoryKeys"
+          [value]="group"
+        >
           {{ group }}
         </option>
+
       </select>
 
-      <select class="input" formControlName="species">
-        <option value="">Halfaj</option>
-        <option *ngFor="let fish of selectedFishList" [value]="fish">
+      <select
+        class="input"
+        formControlName="species"
+      >
+
+        <option value="">
+          Halfaj
+        </option>
+
+        <option
+          *ngFor="let fish of selectedFishList"
+          [value]="fish"
+        >
           {{ fish }}
         </option>
+
       </select>
 
       <input
@@ -55,41 +99,126 @@
         placeholder="Hossz (cm)"
         formControlName="length"
       >
+
     </div>
 
     <div class="form-section">
-      <input class="input" type="text" placeholder="Vízterület neve" formControlName="water">
 
-      <input class="input" type="text" placeholder="Helyszín / Szektor (opcionális)" formControlName="spot">
+      <!-- WATER SELECT -->
+      <select
+        class="input"
+        formControlName="water"
+      >
+
+        <option value="">
+          Vízterület kiválasztása
+        </option>
+
+        <option
+          *ngFor="let lake of lakes"
+          [value]="lake"
+        >
+          {{ lake }}
+        </option>
+
+        <option value="__other__">
+          Egyéb...
+        </option>
+
+      </select>
+
+      <!-- CUSTOM WATER -->
+      <input
+        *ngIf="form.get('water')?.value === '__other__'"
+        class="input"
+        type="text"
+        placeholder="Add meg a vízterület nevét"
+        formControlName="customWater"
+      >
+
+      <input
+        class="input"
+        type="text"
+        placeholder="Helyszín / Szektor (opcionális)"
+        formControlName="spot"
+      >
+
     </div>
 
     <div class="form-grid">
-      <select class="input" formControlName="bait">
-        <option value="">Csali</option>
-        <option *ngFor="let bait of baitOptions" [value]="bait">
+
+      <select
+        class="input"
+        formControlName="bait"
+      >
+
+        <option value="">
+          Csali
+        </option>
+
+        <option
+          *ngFor="let bait of baitOptions"
+          [value]="bait"
+        >
           {{ bait }}
         </option>
+
       </select>
 
-      <select class="input" formControlName="method">
-        <option value="">Módszer</option>
-        <option *ngFor="let method of methodOptions" [value]="method">
+      <select
+        class="input"
+        formControlName="method"
+      >
+
+        <option value="">
+          Módszer
+        </option>
+
+        <option
+          *ngFor="let method of methodOptions"
+          [value]="method"
+        >
           {{ method }}
         </option>
+
       </select>
 
-      <select class="input" formControlName="timeOfDay">
-        <option value="">Napszak</option>
-        <option *ngFor="let time of timeOptions" [value]="time">
+      <select
+        class="input"
+        formControlName="timeOfDay"
+      >
+
+        <option value="">
+          Napszak
+        </option>
+
+        <option
+          *ngFor="let time of timeOptions"
+          [value]="time"
+        >
           {{ time }}
         </option>
+
       </select>
 
-      <input class="input" type="date" formControlName="catchDate">
+      <input
+        class="input"
+        type="date"
+        formControlName="catchDate"
+      >
+
     </div>
 
-    <button class="btn btn-primary" type="submit" [disabled]="uploading || form.invalid">
-      {{ uploading ? 'Feltöltés folyamatban...' : 'Fogás beküldése' }}
+    <button
+      class="btn btn-primary"
+      type="submit"
+      [disabled]="uploading || form.invalid"
+    >
+      {{
+        uploading
+          ? 'Feltöltés folyamatban...'
+          : 'Fogás beküldése'
+      }}
     </button>
 
   </form>
