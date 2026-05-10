@@ -145,31 +145,63 @@ export class ProfilComponent implements OnInit, OnDestroy {
 
   // 💾 SAVE
   async saveEdit() {
+
     if (this.editForm.invalid) {
+
       this.editForm.markAllAsTouched();
+
       alert('Hiányos adatok!');
+
       return;
     }
 
-    await updateDoc(
-      doc(this.firestore, 'gallery', this.editingPost.id),
-      {
-        ...this.editForm.value,
-        weight: this.editForm.value.weight || null,
-        length: this.editForm.value.length || null
+    try {
+
+      await updateDoc(
+        doc(this.firestore, 'gallery', this.editingPost.id),
+        {
+          ...this.editForm.value,
+
+          weight:
+            this.editForm.value.weight || null,
+
+          length:
+            this.editForm.value.length || null
+        }
+      );
+
+      const index =
+        this.myPosts.findIndex(
+          p => p.id === this.editingPost.id
+        );
+
+      if (index !== -1) {
+
+        this.myPosts[index] = {
+
+          ...this.myPosts[index],
+
+          ...this.editForm.value
+        };
       }
-    );
 
-    const index = this.myPosts.findIndex(p => p.id === this.editingPost.id);
-    if (index !== -1) {
-      this.myPosts[index] = {
-        ...this.myPosts[index],
-        ...this.editForm.value
-      };
+      // 🔥 MODAL BEZÁRÁS
+      this.editingPost = null;
+
+      // 🔥 FORM RESET
+      this.editForm.reset();
+
+      // 🔥 UI FRISSÍTÉS
+      this.cdr.detectChanges();
+
+      alert('Mentve!');
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert('Mentés sikertelen!');
     }
-
-    this.closeEdit();
-    alert('Mentve!');
   }
 
   // 👤 USERNAME
