@@ -21,7 +21,7 @@ export const adminGuard: CanActivateFn = async () => {
     return true;
   }
 
-  // ✅ 2. FALLBACK Firestore
+  // ✅ 2. BACK Firestore
   const userRef = doc(firestore, 'users', user.uid);
   const snap = await getDoc(userRef);
 
