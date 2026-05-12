@@ -7,6 +7,7 @@ import {
 
 import {
   ActivatedRoute,
+  Router,
   RouterModule
 } from '@angular/router';
 
@@ -25,19 +26,21 @@ import {
 } from '@angular/forms';
 
 import {
-  switchMap
-} from 'rxjs';
-
-import { ReviewService } from '../../services/review';
+  ReviewService
+} from '../../services/review';
 
 import {
   AuthService,
   AppUser
 } from '../../services/auth';
 
-import { BookingService } from '../../services/booking';
+import {
+  BookingService
+} from '../../services/booking';
 
-import { Booking } from '../../models/booking';
+import {
+  Booking
+} from '../../models/booking';
 
 @Component({
   selector: 'app-to-adatlap',
@@ -47,14 +50,21 @@ import { Booking } from '../../models/booking';
     RouterModule,
     FormsModule
   ],
-  templateUrl: './to-reszletek.component.html',
-  styleUrl: './to-reszletek.component.scss'
+  templateUrl:
+    './to-reszletek.component.html',
+
+  styleUrls: [
+    './to-reszletek.component.scss'
+  ]
 })
 export class ToReszletekComponent
 implements OnInit {
 
   private route =
     inject(ActivatedRoute);
+
+  private router =
+    inject(Router);
 
   private firestore =
     inject(Firestore);
@@ -89,20 +99,11 @@ implements OnInit {
     signal(false);
 
   // =========================
-  // BOOKING INFO
+  // REALTIME SZABAD HELYEK
   // =========================
-  lakeBookings =
-    signal<Booking[]>([]);
+  availablePlaces =
+    signal<number | null>(null);
 
-  occupiedPlaces =
-    signal(0);
-
-  remainingPlaces =
-    signal(0);
-
-  // =========================
-  // BOOKING FORM
-  // =========================
   bookingForm = signal({
 
     from: '',
@@ -113,9 +114,6 @@ implements OnInit {
     note: ''
   });
 
-  // =========================
-  // REVIEW FORM
-  // =========================
   ujErtekeles = signal({
 
     rating: 5,
@@ -123,67 +121,6 @@ implements OnInit {
   });
 
   ngOnInit() {
-
-    // =========================
-    // LAKE
-    // =========================
-    this.route.paramMap.pipe(
-
-      switchMap(params => {
-
-        const id =
-          params.get('id');
-
-        if (!id) {
-
-          throw new Error(
-            'Nincs ID'
-          );
-        }
-
-        this.lakeId = id;
-
-        const ref =
-          doc(
-            this.firestore,
-            `lakes/${id}`
-          );
-
-        return docData(ref);
-      })
-
-    ).subscribe(data => {
-
-      this.toAdat.set(data);
-
-      // 🔥 remainingPlaces inicializálás
-      if (data) {
-
-        this.remainingPlaces.set(
-          data['helyek_szama'] || 0
-        );
-      }
-    });
-
-    // =========================
-    // REVIEWS
-    // =========================
-    this.route.paramMap.subscribe(
-      params => {
-
-        const id =
-          params.get('id');
-
-        if (!id) return;
-
-        this.reviewService
-          .getReviewsByLake(id)
-          .subscribe(data => {
-
-            this.reviews.set(data);
-          });
-      }
-    );
 
     // =========================
     // USER
@@ -203,74 +140,152 @@ implements OnInit {
       });
 
     // =========================
-    // REALTIME BOOKING INFO
+    // ROUTE
     // =========================
-    this.route.paramMap.subscribe(
-      params => {
+    this.route.paramMap
+      .subscribe(params => {
 
         const id =
           params.get('id');
 
         if (!id) return;
 
-        this.bookingService
-          .getBookingsByLake(id)
-          .subscribe(bookings => {
+        this.lakeId = id;
 
-            this.lakeBookings.set(
-              bookings
-            );
+        // =========================
+        // LAKE
+        // =========================
+        const ref =
+          doc(
+            this.firestore,
+            `lakes/${id}`
+          );
 
-            const activeBookings =
+        docData(ref)
+          .subscribe(data => {
 
-              bookings.filter(
-
-                booking =>
-
-                  booking.status === 'jóváhagyás alatt'
-                  ||
-                  booking.status === 'jóváhagyva'
-              );
-
-            const occupied =
-
-              activeBookings.reduce(
-
-                (sum, booking) =>
-
-                  sum + booking.places,
-
-                0
-              );
-
-            this.occupiedPlaces.set(
-              occupied
-            );
-
-            const lake =
-              this.toAdat();
-
-            if (!lake) return;
-
-            const maxPlaces =
-              lake.helyek_szama || 0;
-
-            this.remainingPlaces.set(
-
-              Math.max(
-                maxPlaces - occupied,
-                0
-              )
-            );
+            this.toAdat.set(data);
           });
-      }
-    );
+
+        // =========================
+        // REVIEWS
+        // =========================
+        this.reviewService
+          .getReviewsByLake(id)
+          .subscribe(data => {
+
+            this.reviews.set(data);
+          });
+
+        // =========================
+        // SZABAD HELYEK
+        // =========================
+        this.updateAvailablePlaces();
+      });
+  }
+
+  // =========================
+  // SZABAD HELYEK SZÁMOLÁSA
+  // =========================
+  async updateAvailablePlaces() {
+
+    const form =
+      this.bookingForm();
+
+    const lake =
+      this.toAdat();
+
+    if (
+      !form.from
+      ||
+      !form.to
+      ||
+      !lake
+    ) {
+
+      this.availablePlaces.set(
+        null
+      );
+
+      return;
+    }
+
+    try {
+
+      const occupied =
+
+        await this.bookingService
+          .getOccupiedPlaces(
+
+            this.lakeId,
+
+            form.from,
+
+            form.to
+          );
+
+      const available =
+
+        Math.max(
+
+          lake.helyek_szama
+          - occupied,
+
+          0
+        );
+
+      this.availablePlaces.set(
+        available
+      );
+
+    } catch (err) {
+
+      console.error(
+        'Szabad hely számolási hiba:',
+        err
+      );
+
+      this.availablePlaces.set(
+        null
+      );
+    }
+  }
+
+  // =========================
+  // FORM UPDATE
+  // =========================
+  async updateBookingForm(
+    field: string,
+    value: any
+  ) {
+
+    this.bookingForm.set({
+
+      ...this.bookingForm(),
+
+      [field]: value
+    });
+
+    await this.updateAvailablePlaces();
   }
 
   // =========================
   // REVIEW
   // =========================
   async submitReview() {
+
+    if (
+      !this.ujErtekeles()
+        .comment
+        .trim()
+    ) {
+
+      alert(
+        'Írj véleményt!'
+      );
+
+      return;
+    }
 
     await this.reviewService
       .addReview(
@@ -294,6 +309,7 @@ implements OnInit {
   ): boolean {
 
     return (
+
       this.isAdmin()
 
       ||
@@ -306,6 +322,13 @@ implements OnInit {
   async deleteReview(
     id: string
   ) {
+
+    const confirmed =
+      confirm(
+        'Biztosan törlöd az értékelést?'
+      );
+
+    if (!confirmed) return;
 
     await this.reviewService
       .deleteReview(id);
@@ -328,6 +351,10 @@ implements OnInit {
         'Bejelentkezés szükséges!'
       );
 
+      this.router.navigate(
+        ['/belepes']
+      );
+
       return;
     }
 
@@ -336,11 +363,9 @@ implements OnInit {
     const form =
       this.bookingForm();
 
-    // =========================
-    // VALIDÁCIÓ
-    // =========================
     if (
-      !form.from ||
+      !form.from
+      ||
       !form.to
     ) {
 
@@ -364,7 +389,9 @@ implements OnInit {
     const toDate =
       new Date(form.to);
 
-    // ❌ múltbeli dátum
+    // =========================
+    // MÚLTBELI DÁTUM
+    // =========================
     if (fromDate < today) {
 
       alert(
@@ -374,17 +401,20 @@ implements OnInit {
       return;
     }
 
-    // ❌ hibás intervallum
-    if (toDate <= fromDate) {
+   // =========================
+  // HIBÁS INTERVALLUM
+  // =========================
+  if (toDate < fromDate) {
 
-      alert(
-        'A távozás dátuma hibás!'
-      );
+    alert(
+      'A távozás dátuma hibás!'
+    );
 
-      return;
-    }
-
-    // ❌ hibás hely szám
+    return;
+  }
+    // =========================
+    // HIBÁS HELY
+    // =========================
     if (
       form.places <= 0
     ) {
@@ -396,26 +426,33 @@ implements OnInit {
       return;
     }
 
-    // ❌ több hely mint maximum
+    // =========================
+    // NINCS ELÉG HELY
+    // =========================
     if (
+
+      this.availablePlaces() !== null
+
+      &&
+
       form.places >
-      lake.helyek_szama
+      this.availablePlaces()!
     ) {
 
       alert(
-        `Maximum ${lake.helyek_szama} hely foglalható!`
+
+        `Maximum ${this.availablePlaces()} szabad hely foglalható!`
       );
 
       return;
     }
 
-    this.bookingLoading.set(true);
+    this.bookingLoading.set(
+      true
+    );
 
     try {
 
-      // =========================
-      // AVAILABILITY CHECK
-      // =========================
       const available =
 
         await this.bookingService
@@ -432,7 +469,6 @@ implements OnInit {
             lake.helyek_szama
           );
 
-      // ❌ nincs hely
       if (!available) {
 
         alert(
@@ -442,9 +478,6 @@ implements OnInit {
         return;
       }
 
-      // =========================
-      // BOOKING
-      // =========================
       const booking: Booking = {
 
         lakeId:
@@ -460,9 +493,14 @@ implements OnInit {
           user.uid,
 
         userName:
+
           user.displayName
-          || user.email
-          || 'Felhasználó',
+          ||
+
+          user.email
+          ||
+
+          'Felhasználó',
 
         userEmail:
           user.email || '',
@@ -477,18 +515,15 @@ implements OnInit {
           form.places,
 
         note:
-          form.note,
+          form.note || '',
 
         totalPrice:
+
           (lake.sport_napijegy_ar || 0)
           * form.places,
 
-        // 🔥 EGYSÉGES STATUS
         status:
-          'jóváhagyás alatt',
-
-        createdAt:
-          new Date()
+          'jóváhagyás alatt'
       };
 
       await this.bookingService
@@ -510,6 +545,10 @@ implements OnInit {
         note: ''
       });
 
+      this.availablePlaces.set(
+        null
+      );
+
     } catch (err) {
 
       console.error(err);
@@ -520,7 +559,9 @@ implements OnInit {
 
     } finally {
 
-      this.bookingLoading.set(false);
+      this.bookingLoading.set(
+        false
+      );
     }
   }
 }

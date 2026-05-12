@@ -4,7 +4,7 @@ export type BookingStatus =
   | 'elutasítva'
   | 'törölve';
 
-  export interface Booking {
+export interface Booking {
   id?: string;
 
   lakeId: string;
@@ -16,8 +16,8 @@ export type BookingStatus =
   userName: string;
   userEmail: string;
 
-  from: any;
-  to: any;
+  from: string;
+  to: string;
 
   places: number;
 
@@ -27,5 +27,5 @@ export type BookingStatus =
 
   status: BookingStatus;
 
-  createdAt: any;
+  createdAt?: any;
 }

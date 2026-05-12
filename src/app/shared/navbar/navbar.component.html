@@ -42,6 +42,15 @@
         </a>
       }
 
+      @if ((isManager$ | async) || (isAdmin$ | async)) {
+        <a routerLink="/manager"
+            (click)="closeMenu()"
+            routerLinkActive="active"
+        >
+          Foglalások
+        </a>
+      }
+
       <!-- ADMIN -->
       @if (isAdmin$ | async) {
         <a routerLink="/admin" (click)="closeMenu()">Admin</a>

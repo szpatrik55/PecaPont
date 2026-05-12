@@ -1,4 +1,7 @@
-import { Injectable, inject } from '@angular/core';
+import {
+  Injectable,
+  inject
+} from '@angular/core';
 
 import {
   Firestore,
@@ -14,7 +17,9 @@ import {
   getDocs
 } from '@angular/fire/firestore';
 
-import { Observable } from 'rxjs';
+import {
+  Observable
+} from 'rxjs';
 
 import {
   Booking,
@@ -30,15 +35,13 @@ export class BookingService {
     inject(Firestore);
 
   // =========================
-  // ELÉRHETŐSÉG ELLENŐRZÉS
+  // FOGLALT HELYEK
   // =========================
-  async checkAvailability(
+  async getOccupiedPlaces(
     lakeId: string,
     from: string,
-    to: string,
-    requestedPlaces: number,
-    maxPlaces: number
-  ): Promise<boolean> {
+    to: string
+  ): Promise<number> {
 
     const ref =
       collection(
@@ -49,7 +52,6 @@ export class BookingService {
     const q =
       query(
         ref,
-
         where(
           'lakeId',
           '==',
@@ -66,14 +68,14 @@ export class BookingService {
     const toDate =
       new Date(to);
 
-    let occupiedPlaces = 0;
+    let occupied = 0;
 
-    snapshot.forEach(doc => {
+    snapshot.forEach(docSnap => {
 
       const booking =
-        doc.data() as Booking;
+        docSnap.data() as Booking;
 
-      // ❌ Csak aktív bookingok
+      // csak aktív
       if (
         booking.status !== 'jóváhagyás alatt'
         &&
@@ -88,7 +90,6 @@ export class BookingService {
       const bookingTo =
         new Date(booking.to);
 
-      // 🔥 Dátum átfedés
       const overlaps =
 
         fromDate < bookingTo
@@ -97,19 +98,43 @@ export class BookingService {
 
       if (overlaps) {
 
-        occupiedPlaces +=
+        occupied +=
           booking.places;
       }
     });
 
+    return occupied;
+  }
+
+  // =========================
+  // ELÉRHETŐSÉG
+  // =========================
+  async checkAvailability(
+    lakeId: string,
+    from: string,
+    to: string,
+    requestedPlaces: number,
+    maxPlaces: number
+  ): Promise<boolean> {
+
+    const occupied =
+
+      await this.getOccupiedPlaces(
+        lakeId,
+        from,
+        to
+      );
+
     return (
-      occupiedPlaces
+
+      occupied
       + requestedPlaces
+
     ) <= maxPlaces;
   }
 
   // =========================
-  // ÚJ FOGLALÁS
+  // CREATE
   // =========================
   async createBooking(
     booking: Booking
@@ -126,7 +151,8 @@ export class BookingService {
       {
         ...booking,
 
-        status: 'pending',
+        status:
+          'jóváhagyás alatt',
 
         createdAt:
           serverTimestamp()
@@ -135,9 +161,9 @@ export class BookingService {
   }
 
   // =========================
-  // TÓ FOGLALÁSAI
+  // TÓ BOOKINGOK
   // =========================
-  getBookingsByLake(
+  getLakeBookings(
     lakeId: string
   ): Observable<Booking[]> {
 
@@ -172,7 +198,7 @@ export class BookingService {
   }
 
   // =========================
-  // MANAGER FOGLALÁSAI
+  // MANAGER
   // =========================
   getBookingsByManager(
     managerId: string
@@ -209,7 +235,7 @@ export class BookingService {
   }
 
   // =========================
-  // USER FOGLALÁSAI
+  // USER
   // =========================
   getBookingsByUser(
     userId: string
@@ -246,7 +272,7 @@ export class BookingService {
   }
 
   // =========================
-  // STÁTUSZ FRISSÍTÉS
+  // STATUS UPDATE
   // =========================
   async updateBookingStatus(
     bookingId: string,
@@ -267,40 +293,31 @@ export class BookingService {
     );
   }
 
-  // =========================
-  // JÓVÁHAGYÁS
-  // =========================
   async approveBooking(
     bookingId: string
   ): Promise<void> {
 
-    await this.updateBookingStatus(
+    return this.updateBookingStatus(
       bookingId,
       'jóváhagyva'
     );
   }
 
-  // =========================
-  // ELUTASÍTÁS
-  // =========================
   async rejectBooking(
     bookingId: string
   ): Promise<void> {
 
-    await this.updateBookingStatus(
+    return this.updateBookingStatus(
       bookingId,
       'elutasítva'
     );
   }
 
-  // =========================
-  // LEMONDÁS
-  // =========================
   async cancelBooking(
     bookingId: string
   ): Promise<void> {
 
-    await this.updateBookingStatus(
+    return this.updateBookingStatus(
       bookingId,
       'törölve'
     );

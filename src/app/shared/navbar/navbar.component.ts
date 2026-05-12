@@ -99,6 +99,37 @@ export class NavbarComponent {
       );
     })
   );
+
+  isManager$ = this.user$.pipe(
+    switchMap(user => {
+
+      if (!user) return of(false);
+
+      const userDocRef = doc(this.firestore, 'users', user.uid);
+
+      return from(getDoc(userDocRef)).pipe(
+
+        map(snapshot => {
+
+          if (snapshot.exists()) {
+
+            const data = snapshot.data();
+
+            return data?.['role'] === 'manager';
+          }
+
+          return false;
+        }),
+
+        catchError(err => {
+
+          console.error('Firestore hiba:', err);
+
+          return of(false);
+        })
+      );
+    })
+  );
   
   closeMenu() {
   this.menuOpen = false;

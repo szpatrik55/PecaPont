@@ -466,13 +466,16 @@ implements OnInit, OnDestroy {
 
     switch (status) {
 
-      case 'approved':
+      case 'jóváhagyás alatt':
+        return 'Függőben';
+
+      case 'jóváhagyva':
         return 'Jóváhagyva';
 
-      case 'rejected':
+      case 'elutasítva':
         return 'Elutasítva';
 
-      case 'cancelled':
+      case 'törölve':
         return 'Lemondva';
 
       default:

@@ -27,6 +27,9 @@ import { adminGuard } from './guards/admin-guard';
 
 import { ToHozzaadComponent } from './pages/to-hozzaad/to-hozzaad.component';
 
+import { ManagerDashboardComponent } from './pages/manager-dashboard/manager-dashboard.component';
+import { ManagerBookingsComponent } from './pages/manager-bookings/manager-bookings.component';
+
 export const routes: Routes = [
 
   { path: '', component: HomeComponent },
@@ -36,6 +39,10 @@ export const routes: Routes = [
   // =========================
   { path: 'tavak', component: ToListaComponent },
 
+  { path: 'manager', component: ManagerDashboardComponent },
+
+  { path: 'manager/:id', component: ManagerBookingsComponent },
+  
   { path: 'tavak/:id', component: ToReszletekComponent },
 
   // =========================

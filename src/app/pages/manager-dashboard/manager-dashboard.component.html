@@ -42,14 +42,14 @@
 
     <div
       class="lake-card card"
-      *ngFor="let lake of lakes()"
+      *ngFor="let to of lakes()"
     >
 
       <div class="lake-image">
 
         <img
-          [src]="lake.kepUrl"
-          [alt]="lake.nev"
+          [src]="to.kepUrl"
+          [alt]="to.nev"
         />
 
       </div>
@@ -59,29 +59,29 @@
         <div class="lake-header">
 
           <h2>
-            {{ lake.nev }}
+            {{ to.nev }}
           </h2>
 
           <span class="lake-type">
-            {{ lake.tipus }}
+            {{ to.tipus }}
           </span>
 
         </div>
 
         <div class="lake-location">
-          📍 {{ lake.telepules }}
+          📍 {{ to.telepules }}
         </div>
 
         <div class="lake-stats">
 
           <div class="stat">
             👁️
-            {{ lake.megtekintesek || 0 }}
+            {{ to.megtekintesek || 0 }}
           </div>
 
           <div class="stat">
             🎣
-            {{ lake.helyek_szama }}
+            {{ to.helyek_szama }}
             hely
           </div>
 
@@ -92,8 +92,8 @@
           <button
             class="btn-primary"
             [routerLink]="[
-              '/to',
-              lake.id
+              '/tavak',
+              to.id
             ]"
           >
             Adatlap
@@ -101,6 +101,10 @@
 
           <button
             class="btn-secondary"
+            [routerLink]="[
+              '/manager',
+              to.id
+            ]"
           >
             Foglalások
           </button>

@@ -136,162 +136,233 @@
 
           <section class="content-section card booking-card">
 
-  <h3>Helyfoglalás</h3>
+            <h3>Helyfoglalás</h3>
 
-  <div class="booking-form">
+            <div class="booking-form">
 
-    <div class="booking-availability">
+              <!-- ========================= -->
+              <!-- SZABAD HELYEK -->
+              <!-- ========================= -->
 
-      <div class="availability-header">
+              <div
+                class="booking-availability"
+                *ngIf="availablePlaces() !== null"
+              >
 
-      <span>
-        Szabad helyek
-      </span>
+                <div class="availability-header">
 
-      <strong>
+                  <span>
+                    Szabad helyek
+                  </span>
 
-        {{ remainingPlaces() }}
+                  <strong>
 
-        /
+                    {{ availablePlaces() }}
 
-        {{ to.helyek_szama }}
+                    /
 
-     </strong>
+                    {{ to.helyek_szama }}
 
-    </div>
+                  </strong>
 
-    <div class="availability-bar">
+                </div>
 
-     <div
-        class="availability-fill"
-        [style.width.%]="
-          (occupiedPlaces()
-         / to.helyek_szama)
-          * 100
-        "
-      ></div>
+                <div class="availability-bar">
 
-    </div>
+                <div
+                    class="availability-fill"
+                    [style.width.%]="
+                      (
+                        (
+                          to.helyek_szama
+                          - availablePlaces()!
+                        )
+                        /
+                        to.helyek_szama
+                      ) * 100
+                    "
+                  ></div>
 
-    <div
-      class="availability-warning"
-      *ngIf="
-        remainingPlaces() <= 3
-        &&
-        remainingPlaces() > 0
-      "
-    >
+                </div>
 
-      ⚠️ Már csak
-      {{ remainingPlaces() }}
-      hely maradt
+                <!-- FIGYELMEZTETÉS -->
 
-    </div>
+                <div
+                  class="availability-warning"
+                  *ngIf="
+                    availablePlaces()! <= 3
+                    &&
+                    availablePlaces()! > 0
+                  "
+                >
 
-    <div
-      class="availability-full"
-      *ngIf="
-        remainingPlaces() === 0
-      "
-    >
+                  ⚠️ Már csak
+                  {{ availablePlaces() }}
+                  hely maradt erre az időpontra
 
-      ❌ Jelenleg nincs szabad hely
+                </div>
 
-    </div>
+                <!-- TELT HÁZ -->
 
-  </div>
+                <div
+                  class="availability-full"
+                  *ngIf="
+                    availablePlaces() === 0
+                  "
+                >
 
-    <div class="field">
+                  ❌ Erre az időpontra nincs szabad hely
 
-      <label>Érkezés</label>
+                </div>
 
-      <input
-        type="date"
-        class="input"
-        [ngModel]="bookingForm().from"
-        (ngModelChange)="
-          bookingForm.set({
-            ...bookingForm(),
-            from: $event
-          })
-        "
-      />
+              </div>
 
-    </div>
+              <!-- ========================= -->
+              <!-- ÉRKEZÉS -->
+              <!-- ========================= -->
 
-    <div class="field">
+              <div class="field">
 
-      <label>Távozás</label>
+                <label>Érkezés</label>
 
-      <input
-        type="date"
-        class="input"
-        [ngModel]="bookingForm().to"
-        (ngModelChange)="
-          bookingForm.set({
-            ...bookingForm(),
-            to: $event
-          })
-        "
-      />
+                <input
+                  type="date"
+                  class="input"
+                  [ngModel]="bookingForm().from"
+                  (ngModelChange)="
+                    updateBookingForm(
+                      'from',
+                      $event
+                    )
+                  "
+                />
 
-    </div>
+              </div>
 
-    <div class="field">
+              <!-- ========================= -->
+              <!-- TÁVOZÁS -->
+              <!-- ========================= -->
 
-      <label>Helyek száma</label>
+              <div class="field">
 
-      <input
-        type="number"
-        min="1"
-        class="input"
-        [ngModel]="bookingForm().places"
-        (ngModelChange)="
-          bookingForm.set({
-            ...bookingForm(),
-            places: +$event
-          })
-        "
-      />
+                <label>Távozás</label>
 
-    </div>
+                <input
+                  type="date"
+                  class="input"
+                  [ngModel]="bookingForm().to"
+                  (ngModelChange)="
+                    updateBookingForm(
+                      'to',
+                      $event
+                    )
+                  "
+                />
 
-    <div class="field">
+              </div>
 
-      <label>Megjegyzés</label>
+              <!-- ========================= -->
+              <!-- HELYEK -->
+              <!-- ========================= -->
 
-      <textarea
-        class="input"
-        rows="4"
-        placeholder="Extra kérés, információ..."
-        [ngModel]="bookingForm().note"
-        (ngModelChange)="
-          bookingForm.set({
-            ...bookingForm(),
-            note: $event
-          })
-        "
-      ></textarea>
+              <div class="field">
 
-    </div>
+                <label>Helyek száma</label>
 
-    <button
-      class="btn btn-primary booking-btn"
-      (click)="createBooking()"
-      [disabled]="bookingLoading()"
-    >
+                <input
+                  type="number"
+                  min="1"
+                  class="input"
+                  [ngModel]="bookingForm().places"
+                  (ngModelChange)="
+                    updateBookingForm(
+                      'places',
+                      +$event
+                    )
+                  "
+                />
 
-      {{
-        bookingLoading()
-          ? 'Foglalás küldése...'
-          : 'Foglalás elküldése'
-      }}
+              </div>
 
-    </button>
+              <!-- ========================= -->
+              <!-- NOTE -->
+              <!-- ========================= -->
 
-  </div>
+              <div class="field">
 
-</section>
+                <label>Megjegyzés</label>
+
+                <textarea
+                  class="input"
+                  rows="4"
+                  placeholder="Extra kérés, információ..."
+                  [ngModel]="bookingForm().note"
+                  (ngModelChange)="
+                    updateBookingForm(
+                      'note',
+                      $event
+                    )
+                  "
+                ></textarea>
+
+              </div>
+
+              <!-- ========================= -->
+              <!-- ÖSSZEG -->
+              <!-- ========================= -->
+
+              <div
+                class="booking-price"
+                *ngIf="bookingForm().places > 0"
+              >
+
+                <span>Várható összeg:</span>
+
+                <strong>
+
+                  {{
+
+                  (to.sport_napijegy_ar || 0)
+                    *
+                    bookingForm().places
+
+                  }}
+
+                  Ft
+
+              </strong>
+
+            </div>
+
+            <!-- ========================= -->
+            <!-- BUTTON -->
+            <!-- ========================= -->
+
+              <button
+                class="btn btn-primary booking-btn"
+                (click)="createBooking()"
+                [disabled]="
+                  bookingLoading()
+                  ||
+                  availablePlaces() === 0
+                "
+              >
+
+                {{
+
+                  bookingLoading()
+
+                    ? 'Foglalás küldése...'
+
+                    : 'Foglalás elküldése'
+
+                }}
+
+              </button>
+
+            </div>
+
+          </section>
 
         </div>
 

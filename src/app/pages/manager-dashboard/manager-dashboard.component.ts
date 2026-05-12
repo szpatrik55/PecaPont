@@ -26,6 +26,7 @@ export class ManagerDashboardComponent {
 
   private authService =
     inject(AuthService);
+    
 
   private lakeService =
     inject(LakeService);
