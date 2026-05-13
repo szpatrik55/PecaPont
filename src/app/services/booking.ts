@@ -1,3 +1,5 @@
+// src/app/services/booking.ts
+
 import {
   Injectable,
   inject
@@ -35,12 +37,31 @@ export class BookingService {
     inject(Firestore);
 
   // =========================
+  // ÁTFEDÉS ELLENŐRZÉS
+  // =========================
+
+  private isOverlapping(
+    from: Date,
+    to: Date,
+    bookingFrom: Date,
+    bookingTo: Date
+  ): boolean {
+
+    return (
+      from < bookingTo
+      &&
+      to > bookingFrom
+    );
+  }
+
+  // =========================
   // FOGLALT HELYEK
   // =========================
+
   async getOccupiedPlaces(
     lakeId: string,
-    from: string,
-    to: string
+    from: Date,
+    to: Date
   ): Promise<number> {
 
     const ref =
@@ -52,21 +73,25 @@ export class BookingService {
     const q =
       query(
         ref,
+
         where(
           'lakeId',
           '==',
           lakeId
+        ),
+
+        where(
+          'status',
+          'in',
+          [
+            'jóváhagyás alatt',
+            'jóváhagyva'
+          ]
         )
       );
 
     const snapshot =
       await getDocs(q);
-
-    const fromDate =
-      new Date(from);
-
-    const toDate =
-      new Date(to);
 
     let occupied = 0;
 
@@ -75,26 +100,19 @@ export class BookingService {
       const booking =
         docSnap.data() as Booking;
 
-      // csak aktív
-      if (
-        booking.status !== 'jóváhagyás alatt'
-        &&
-        booking.status !== 'jóváhagyva'
-      ) {
-        return;
-      }
-
       const bookingFrom =
-        new Date(booking.from);
+        booking.from.toDate();
 
       const bookingTo =
-        new Date(booking.to);
+        booking.to.toDate();
 
       const overlaps =
-
-        fromDate < bookingTo
-        &&
-        toDate > bookingFrom;
+        this.isOverlapping(
+          from,
+          to,
+          bookingFrom,
+          bookingTo
+        );
 
       if (overlaps) {
 
@@ -109,10 +127,11 @@ export class BookingService {
   // =========================
   // ELÉRHETŐSÉG
   // =========================
+
   async checkAvailability(
     lakeId: string,
-    from: string,
-    to: string,
+    from: Date,
+    to: Date,
     requestedPlaces: number,
     maxPlaces: number
   ): Promise<boolean> {
@@ -136,6 +155,7 @@ export class BookingService {
   // =========================
   // CREATE
   // =========================
+
   async createBooking(
     booking: Booking
   ): Promise<void> {
@@ -163,6 +183,7 @@ export class BookingService {
   // =========================
   // TÓ BOOKINGOK
   // =========================
+
   getLakeBookings(
     lakeId: string
   ): Observable<Booking[]> {
@@ -200,6 +221,7 @@ export class BookingService {
   // =========================
   // MANAGER
   // =========================
+
   getBookingsByManager(
     managerId: string
   ): Observable<Booking[]> {
@@ -237,6 +259,7 @@ export class BookingService {
   // =========================
   // USER
   // =========================
+
   getBookingsByUser(
     userId: string
   ): Observable<Booking[]> {
@@ -272,8 +295,9 @@ export class BookingService {
   }
 
   // =========================
-  // STATUS UPDATE
+  // STÁTUSZ FRISSÍTÉS
   // =========================
+
   async updateBookingStatus(
     bookingId: string,
     status: BookingStatus
@@ -321,5 +345,43 @@ export class BookingService {
       bookingId,
       'törölve'
     );
+  }
+
+  // =========================
+  // TÓ FOGLALÁSAI
+  // =========================
+
+  getBookingsByLake(
+    lakeId: string
+  ): Observable<Booking[]> {
+
+    const ref =
+      collection(
+        this.firestore,
+        'bookings'
+      );
+
+    const q =
+      query(
+        ref,
+
+        where(
+          'lakeId',
+          '==',
+          lakeId
+        ),
+
+        orderBy(
+          'createdAt',
+          'desc'
+        )
+      );
+
+    return collectionData(
+      q,
+      {
+        idField: 'id'
+      }
+    ) as Observable<Booking[]>;
   }
 }

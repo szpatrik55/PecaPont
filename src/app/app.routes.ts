@@ -29,6 +29,11 @@ import { ToHozzaadComponent } from './pages/to-hozzaad/to-hozzaad.component';
 
 import { ManagerDashboardComponent } from './pages/manager-dashboard/manager-dashboard.component';
 import { ManagerBookingsComponent } from './pages/manager-bookings/manager-bookings.component';
+import { newsGuard } from './guards/news-guard';
+import { managerGuard } from './guards/manager-guard';
+import { eventsGuard } from './guards/events-guard';
+
+
 
 export const routes: Routes = [
 
@@ -39,9 +44,9 @@ export const routes: Routes = [
   // =========================
   { path: 'tavak', component: ToListaComponent },
 
-  { path: 'manager', component: ManagerDashboardComponent },
+  { path: 'manager', component: ManagerDashboardComponent, canActivate: [managerGuard] },
 
-  { path: 'manager/:id', component: ManagerBookingsComponent },
+  { path: 'manager/:id', component: ManagerBookingsComponent, canActivate: [managerGuard] },
   
   { path: 'tavak/:id', component: ToReszletekComponent },
 
@@ -55,7 +60,7 @@ export const routes: Routes = [
   {
     path: 'hirek-szerkeszto',
     component: HirekSzerkesztoComponent,
-    canActivate: [authGuard]
+    canActivate: [newsGuard]
   },
 
   // =========================
@@ -74,7 +79,7 @@ export const routes: Routes = [
   {
     path: 'verseny-szerkeszto',
     component: VersenySzerkesztoComponent,
-    canActivate: [authGuard]
+    canActivate: [eventsGuard]
   },
 
   // =========================

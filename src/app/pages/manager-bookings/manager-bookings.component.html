@@ -98,9 +98,9 @@
 
         <div class="info-row">
           📅
-          {{ booking.from }}
+          {{ booking.from.toDate() | date:'yyyy.MM.dd' }}
           →
-          {{ booking.to }}
+          {{ booking.to.toDate() | date:'yyyy.MM.dd' }}
         </div>
 
         <div class="info-row">

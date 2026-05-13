@@ -19,7 +19,7 @@ import {
 
 import { EventsService } from '../../services/events';
 
-import { EventCategory } from '../../config/verseny-kategoriak';
+import { EventCategory } from '../../config/event-categories';
 import { EventItem } from '../../models/event';
 
 @Component({

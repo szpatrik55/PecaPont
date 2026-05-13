@@ -4,6 +4,10 @@ import {
   signal
 } from '@angular/core';
 
+import {
+  ActivatedRoute
+} from '@angular/router';
+
 import { CommonModule } from '@angular/common';
 
 import { BookingService } from '../../services/booking';
@@ -22,6 +26,9 @@ import { Booking } from '../../models/booking';
 })
 export class ManagerBookingsComponent {
 
+  private route =
+  inject(ActivatedRoute);
+
   private bookingService =
     inject(BookingService);
 
@@ -39,27 +46,26 @@ export class ManagerBookingsComponent {
 
   constructor() {
 
-    this.authService.appUser$
-      .subscribe(user => {
+    const lakeId =
+      this.route.snapshot.paramMap.get('id');
 
-        if (!user?.uid) {
+    if (!lakeId) {
 
-          this.loading.set(false);
-          return;
-        }
+      this.loading.set(false);
+      return;
+    }
 
-        this.bookingService
-          .getBookingsByManager(
-            user.uid
-          )
-          .subscribe(bookings => {
+    this.bookingService
+      .getBookingsByLake(
+        lakeId
+      )
+      .subscribe(bookings => {
 
-            this.bookings.set(
-              bookings
-            );
+        this.bookings.set(
+          bookings
+        );
 
-            this.loading.set(false);
-          });
+        this.loading.set(false);
       });
   }
 

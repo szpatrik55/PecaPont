@@ -1,3 +1,7 @@
+// src/app/models/booking.ts
+
+import { Timestamp } from '@angular/fire/firestore';
+
 export type BookingStatus =
   | 'jóváhagyás alatt'
   | 'jóváhagyva'
@@ -5,27 +9,56 @@ export type BookingStatus =
   | 'törölve';
 
 export interface Booking {
+
   id?: string;
+
+  // =========================
+  // TÓ
+  // =========================
 
   lakeId: string;
   lakeName: string;
 
+  // =========================
+  // KEZELŐ
+  // =========================
+
   managerId: string;
+
+  // =========================
+  // FELHASZNÁLÓ
+  // =========================
 
   userId: string;
   userName: string;
   userEmail: string;
 
-  from: string;
-  to: string;
+  // =========================
+  // FOGLALÁS
+  // =========================
+
+  from: Timestamp;
+  to: Timestamp;
 
   places: number;
 
   note?: string;
 
+  // =========================
+  // ÁR
+  // =========================
+
   totalPrice: number;
+
+  // =========================
+  // ÁLLAPOT
+  // =========================
 
   status: BookingStatus;
 
-  createdAt?: any;
+  // =========================
+  // META
+  // =========================
+
+  createdAt?: Timestamp;
 }

@@ -1,3 +1,5 @@
+// src/app/pages/to-reszletek/to-reszletek.component.ts
+
 import {
   Component,
   inject,
@@ -14,7 +16,8 @@ import {
 import {
   Firestore,
   doc,
-  docData
+  docData,
+  Timestamp
 } from '@angular/fire/firestore';
 
 import {
@@ -98,9 +101,6 @@ implements OnInit {
   bookingLoading =
     signal(false);
 
-  // =========================
-  // REALTIME SZABAD HELYEK
-  // =========================
   availablePlaces =
     signal<number | null>(null);
 
@@ -122,9 +122,6 @@ implements OnInit {
 
   ngOnInit() {
 
-    // =========================
-    // USER
-    // =========================
     this.authService.appUser$
       .subscribe(user => {
 
@@ -139,9 +136,6 @@ implements OnInit {
         );
       });
 
-    // =========================
-    // ROUTE
-    // =========================
     this.route.paramMap
       .subscribe(params => {
 
@@ -152,9 +146,6 @@ implements OnInit {
 
         this.lakeId = id;
 
-        // =========================
-        // LAKE
-        // =========================
         const ref =
           doc(
             this.firestore,
@@ -167,26 +158,19 @@ implements OnInit {
             this.toAdat.set(data);
           });
 
-        // =========================
-        // REVIEWS
-        // =========================
         this.reviewService
           .getReviewsByLake(id)
           .subscribe(data => {
 
             this.reviews.set(data);
           });
-
-        // =========================
-        // SZABAD HELYEK
-        // =========================
-        this.updateAvailablePlaces();
       });
   }
 
   // =========================
-  // SZABAD HELYEK SZÁMOLÁSA
+  // SZABAD HELYEK
   // =========================
+
   async updateAvailablePlaces() {
 
     const form =
@@ -219,9 +203,9 @@ implements OnInit {
 
             this.lakeId,
 
-            form.from,
+            new Date(form.from),
 
-            form.to
+            new Date(form.to)
           );
 
       const available =
@@ -240,10 +224,7 @@ implements OnInit {
 
     } catch (err) {
 
-      console.error(
-        'Szabad hely számolási hiba:',
-        err
-      );
+      console.error(err);
 
       this.availablePlaces.set(
         null
@@ -254,6 +235,7 @@ implements OnInit {
   // =========================
   // FORM UPDATE
   // =========================
+
   async updateBookingForm(
     field: string,
     value: any
@@ -266,12 +248,21 @@ implements OnInit {
       [field]: value
     });
 
-    await this.updateAvailablePlaces();
+    // csak dátumváltozáskor query
+    if (
+      field === 'from'
+      ||
+      field === 'to'
+    ) {
+
+      await this.updateAvailablePlaces();
+    }
   }
 
   // =========================
   // REVIEW
   // =========================
+
   async submitReview() {
 
     if (
@@ -335,8 +326,9 @@ implements OnInit {
   }
 
   // =========================
-  // BOOKING
+  // FOGLALÁS
   // =========================
+
   async createBooking() {
 
     const user =
@@ -392,6 +384,7 @@ implements OnInit {
     // =========================
     // MÚLTBELI DÁTUM
     // =========================
+
     if (fromDate < today) {
 
       alert(
@@ -401,20 +394,23 @@ implements OnInit {
       return;
     }
 
-   // =========================
-  // HIBÁS INTERVALLUM
-  // =========================
-  if (toDate < fromDate) {
+    // =========================
+    // HIBÁS INTERVALLUM
+    // =========================
 
-    alert(
-      'A távozás dátuma hibás!'
-    );
+    if (toDate < fromDate) {
 
-    return;
-  }
+      alert(
+        'A távozás dátuma hibás!'
+      );
+
+      return;
+    }
+
     // =========================
     // HIBÁS HELY
     // =========================
+
     if (
       form.places <= 0
     ) {
@@ -429,6 +425,7 @@ implements OnInit {
     // =========================
     // NINCS ELÉG HELY
     // =========================
+
     if (
 
       this.availablePlaces() !== null
@@ -460,9 +457,9 @@ implements OnInit {
 
             this.lakeId,
 
-            form.from,
+            fromDate,
 
-            form.to,
+            toDate,
 
             form.places,
 
@@ -477,6 +474,39 @@ implements OnInit {
 
         return;
       }
+
+      // =========================
+      // NAPOK SZÁMA
+      // =========================
+
+      const diffMs =
+
+        toDate.getTime()
+        -
+        fromDate.getTime();
+
+      const days =
+
+        Math.max(
+          1,
+          Math.ceil(
+            diffMs / (
+              1000 * 60 * 60 * 24
+            )
+          )
+        );
+
+      // =========================
+      // ÁR
+      // =========================
+
+      const totalPrice =
+
+        days
+        *
+        form.places
+        *
+        (lake.sport_napijegy_ar || 0);
 
       const booking: Booking = {
 
@@ -506,10 +536,14 @@ implements OnInit {
           user.email || '',
 
         from:
-          form.from,
+          Timestamp.fromDate(
+            fromDate
+          ),
 
         to:
-          form.to,
+          Timestamp.fromDate(
+            toDate
+          ),
 
         places:
           form.places,
@@ -517,10 +551,7 @@ implements OnInit {
         note:
           form.note || '',
 
-        totalPrice:
-
-          (lake.sport_napijegy_ar || 0)
-          * form.places,
+        totalPrice,
 
         status:
           'jóváhagyás alatt'

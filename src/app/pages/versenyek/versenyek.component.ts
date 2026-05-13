@@ -24,7 +24,7 @@ import { FormsModule } from '@angular/forms';
 import {
   EventCategory,
   EVENT_CATEGORIES
-} from '../../config/verseny-kategoriak';
+} from '../../config/event-categories';
 
 import { EventItem } from '../../models/event';
 

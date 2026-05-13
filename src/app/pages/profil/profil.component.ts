@@ -57,7 +57,7 @@ import {
   METHOD_OPTIONS,
   BAIT_OPTIONS,
   TIME_OPTIONS
-} from '../../config/fogas-adatok';
+} from '../../config/catch-categories';
 
 import {
   BookingService

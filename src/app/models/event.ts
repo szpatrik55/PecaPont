@@ -1,6 +1,6 @@
 import { Timestamp } from '@angular/fire/firestore';
 
-import { EventCategory } from '../config/verseny-kategoriak';
+import { EventCategory } from '../config/event-categories';
 
 
 export interface EventItem {

@@ -18,7 +18,7 @@ import { Observable } from 'rxjs';
 
 import { EventsService } from '../../services/events';
 
-import { EventCategory } from '../../config/verseny-kategoriak';
+import { EventCategory } from '../../config/event-categories';
 
 interface Lake {
 
