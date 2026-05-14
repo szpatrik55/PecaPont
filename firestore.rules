@@ -31,16 +31,27 @@ service cloud.firestore {
 
       allow update: if
 
-        hasRole('admin')
+      hasRole('admin')
 
-        ||
+      ||
 
-        (
-          request.resource.data
-            .diff(resource.data)
-            .affectedKeys()
-            .hasOnly(['megtekintesek'])
-        );
+      (
+        isLoggedIn()
+
+        &&
+
+        resource.data.managerId
+        == request.auth.uid
+      )
+
+      ||
+
+      (
+        request.resource.data
+          .diff(resource.data)
+          .affectedKeys()
+          .hasOnly(['megtekintesek'])
+      );
     }
 
     // =========================

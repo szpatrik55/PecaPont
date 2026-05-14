@@ -109,9 +109,345 @@
             Foglalások
           </button>
 
+          <button
+            class="btn-edit"
+            (click)="openEditModal(to)"
+          >
+            Szerkesztés
+          </button>
+
         </div>
 
       </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- MODAL -->
+
+<div
+  class="modal-backdrop"
+  *ngIf="editModalOpen()"
+  (click)="closeModal()"
+>
+
+  <div
+    class="modal-card"
+    (click)="$event.stopPropagation()"
+  >
+
+    <h2>
+      Tó szerkesztése
+    </h2>
+
+    <!-- ALAPADATOK -->
+
+    <div class="input-row">
+
+      <input
+        type="text"
+        placeholder="Tó neve"
+
+        [ngModel]="editLake().nev"
+
+        (ngModelChange)="
+          editLake.set({
+            ...editLake(),
+            nev: $event
+          })
+        "
+      />
+
+      <input
+        type="text"
+        placeholder="Település"
+
+        [ngModel]="editLake().telepules"
+
+        (ngModelChange)="
+          editLake.set({
+            ...editLake(),
+            telepules: $event
+          })
+        "
+      />
+
+    </div>
+
+    <div class="input-row">
+
+      <input
+        type="text"
+        placeholder="Cím"
+
+        [ngModel]="editLake().cim"
+
+        (ngModelChange)="
+          editLake.set({
+            ...editLake(),
+            cim: $event
+          })
+        "
+      />
+
+      <input
+        type="text"
+        placeholder="Típus"
+
+        [ngModel]="editLake().tipus"
+
+        (ngModelChange)="
+          editLake.set({
+            ...editLake(),
+            tipus: $event
+          })
+        "
+      />
+
+    </div>
+
+    <!-- KÉP FELTÖLTÉS -->
+
+    <div
+      class="upload-area"
+
+      (dragover)="onDragOver($event)"
+      (drop)="onDrop($event)"
+    >
+
+      <input
+        #fileInput
+        type="file"
+        accept="image/*"
+        hidden
+
+        (change)="onFileSelected($event)"
+      />
+
+      <div class="upload-content">
+
+        <div class="upload-icon">
+          🖼️
+        </div>
+
+        <h3>
+          Kép feltöltése
+        </h3>
+
+        <p>
+          Húzd ide a képet vagy
+        </p>
+
+        <button
+          type="button"
+          class="btn-primary"
+
+          (click)="fileInput.click()"
+        >
+          Tallózás
+        </button>
+
+      </div>
+
+    </div>
+
+    <img
+      *ngIf="editLake().kepUrl"
+      [src]="editLake().kepUrl"
+      class="image-preview"
+    />
+
+    
+
+    <!-- JELLEMZŐK -->
+
+    <div class="input-row">
+
+      <input
+        type="number"
+        placeholder="Terület (ha)"
+
+        [ngModel]="editLake().terulet_ha"
+
+        (ngModelChange)="
+          editLake.set({
+            ...editLake(),
+            terulet_ha: $event
+          })
+        "
+      />
+
+      <input
+        type="number"
+        placeholder="Mélység (m)"
+
+        [ngModel]="editLake().vizmelyseg"
+
+        (ngModelChange)="
+          editLake.set({
+            ...editLake(),
+            vizmelyseg: $event
+          })
+        "
+      />
+
+    </div>
+
+    <div class="input-row">
+
+      <input
+        type="number"
+        placeholder="Helyek száma"
+
+        [ngModel]="editLake().helyek_szama"
+
+        (ngModelChange)="
+          editLake.set({
+            ...editLake(),
+            helyek_szama: $event
+          })
+        "
+      />
+
+      <input
+        type="number"
+        placeholder="Napijegy ár"
+
+        [ngModel]="editLake().sport_napijegy_ar"
+
+        (ngModelChange)="
+          editLake.set({
+            ...editLake(),
+            sport_napijegy_ar: $event
+          })
+        "
+      />
+
+    </div>
+
+    <!-- HALFajok -->
+
+    <input
+      type="text"
+      placeholder="Halfajok"
+
+      [ngModel]="editLake().halfajok"
+
+      (ngModelChange)="
+        editLake.set({
+          ...editLake(),
+          halfajok: $event
+        })
+      "
+    />
+
+    <input
+      type="text"
+      placeholder="Ajánlott módszerek"
+
+      [ngModel]="editLake().ajanlott_modszerek"
+
+      (ngModelChange)="
+        editLake.set({
+          ...editLake(),
+          ajanlott_modszerek: $event
+        })
+      "
+    />
+
+    <input
+      type="text"
+      placeholder="Szabályok"
+
+      [ngModel]="editLake().szabalyok"
+
+      (ngModelChange)="
+        editLake.set({
+          ...editLake(),
+          szabalyok: $event
+        })
+      "
+    />
+
+    <!-- CHECKBOX -->
+
+    <div class="checkbox-row">
+
+      <label class="checkbox-group">
+
+        <input
+          type="checkbox"
+
+          [ngModel]="editLake().ejszakai_horgaszat"
+
+          (ngModelChange)="
+            editLake.set({
+              ...editLake(),
+              ejszakai_horgaszat: $event
+            })
+          "
+        />
+
+        Éjszakai horgászat
+
+      </label>
+
+      <label class="checkbox-group">
+
+        <input
+          type="checkbox"
+
+          [ngModel]="editLake().csonak_hasznalat"
+
+          (ngModelChange)="
+            editLake.set({
+              ...editLake(),
+              csonak_hasznalat: $event
+            })
+          "
+        />
+
+        Csónakhasználat
+
+      </label>
+
+    </div>
+
+    <!-- LEÍRÁS -->
+
+    <textarea
+      placeholder="Leírás"
+
+      [ngModel]="editLake().leiras"
+
+      (ngModelChange)="
+        editLake.set({
+          ...editLake(),
+          leiras: $event
+        })
+      "
+    ></textarea>
+
+    <!-- ACTIONS -->
+
+    <div class="modal-actions">
+
+      <button
+        class="btn-secondary"
+        (click)="closeModal()"
+      >
+        Mégse
+      </button>
+
+      <button
+        class="btn-primary"
+        (click)="saveLake()"
+      >
+        Mentés
+      </button>
 
     </div>
 

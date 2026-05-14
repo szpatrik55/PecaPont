@@ -140,4 +140,24 @@ export class LakeService {
       }
     );
   }
+
+  // =========================
+  // TÓ FRISSÍTÉS
+  // =========================
+  async updateLake(
+    lakeId: string,
+    data: Partial<Lake>
+  ): Promise<void> {
+
+    const ref =
+      doc(
+        this.firestore,
+        `lakes/${lakeId}`
+      );
+
+    await updateDoc(
+      ref,
+      data
+    );
+  }
 }

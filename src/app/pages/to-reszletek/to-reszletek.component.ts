@@ -248,7 +248,6 @@ implements OnInit {
       [field]: value
     });
 
-    // csak dátumváltozáskor query
     if (
       field === 'from'
       ||
