@@ -1,0 +1,398 @@
+rules_version = '2';
+
+service cloud.firestore {
+
+  match /databases/{database}/documents {
+
+    // =========================
+    // HELPERS
+    // =========================
+    function isLoggedIn() {
+      return request.auth != null;
+    }
+
+    function hasRole(role) {
+      return isLoggedIn()
+        &&
+        get(
+          /databases/$(database)/documents/users/$(request.auth.uid)
+        ).data.role == role;
+    }
+
+    // =========================
+    // TAVAK
+    // =========================
+    match /lakes/{doc} {
+
+      allow read: if true;
+
+      allow create, delete: if
+        hasRole('admin');
+
+      allow update: if
+
+        hasRole('admin')
+
+        ||
+
+        (
+          request.resource.data
+            .diff(resource.data)
+            .affectedKeys()
+            .hasOnly(['megtekintesek'])
+        );
+    }
+
+    // =========================
+    // GALÉRIA
+    // =========================
+    match /gallery/{doc} {
+
+      allow read: if true;
+
+      allow create: if
+
+        isLoggedIn()
+
+        &&
+
+        request.resource.data.uid
+        == request.auth.uid;
+
+      allow update, delete: if
+
+        isLoggedIn()
+
+        &&
+
+        (
+          request.auth.uid
+          == resource.data.uid
+
+          ||
+
+          hasRole('admin')
+        );
+    }
+
+    // =========================
+    // HÍREK
+    // =========================
+    match /news/{newsId} {
+
+      allow read: if true;
+
+      allow create, update, delete: if
+
+        hasRole('admin')
+
+        ||
+
+        hasRole('news');
+    }
+
+    // =========================
+    // ESEMÉNYEK
+    // =========================
+    match /events/{eventsId} {
+
+      allow read: if true;
+
+      allow create, update, delete: if
+
+        hasRole('admin')
+
+        ||
+
+        hasRole('organiser');
+    }
+
+    // =========================
+    // USERS
+    // =========================
+    match /users/{userId} {
+
+      // READ
+      allow read: if
+
+        isLoggedIn()
+
+        &&
+
+        (
+          request.auth.uid == userId
+
+          ||
+
+          hasRole('admin')
+        );
+
+      // CREATE
+      allow create: if
+
+        isLoggedIn()
+
+        &&
+
+        request.auth.uid == userId;
+
+      // UPDATE
+      allow update: if
+
+        isLoggedIn()
+
+        &&
+
+        (
+
+          // saját profil
+          (
+            request.auth.uid == userId
+
+            &&
+
+            request.resource.data.role
+            == resource.data.role
+          )
+
+          ||
+
+          // admin
+          hasRole('admin')
+        );
+
+      // DELETE
+      allow delete: if
+        hasRole('admin');
+    }
+
+    // =========================
+    // REVIEWS
+    // =========================
+    match /reviews/{reviewId} {
+
+      // READ
+      allow read: if true;
+
+      // CREATE
+      allow create: if
+
+        isLoggedIn()
+
+        &&
+
+        request.resource.data.userId
+        == request.auth.uid
+
+        &&
+
+        request.resource.data.rating >= 1
+
+        &&
+
+        request.resource.data.rating <= 5;
+
+      // UPDATE
+      allow update: if
+
+        isLoggedIn()
+
+        &&
+
+        request.auth.uid
+        == resource.data.userId;
+
+      // DELETE
+      allow delete: if
+
+        isLoggedIn()
+
+        &&
+
+        (
+          request.auth.uid
+          == resource.data.userId
+
+          ||
+
+          hasRole('admin')
+        );
+    }
+
+    // =========================
+// 🎣 BOOKINGS
+// =========================
+
+match /bookings/{bookingId} {
+
+  // =========================
+  // READ
+  // =========================
+
+  allow read: if isLoggedIn();
+
+  // =========================
+  // CREATE
+  // =========================
+
+  allow create: if
+
+    isLoggedIn()
+
+    &&
+
+    request.resource.data.userId
+    == request.auth.uid
+
+    // =========================
+    // KÖTELEZŐ STRINGEK
+    // =========================
+
+    &&
+
+    request.resource.data.lakeId
+    is string
+
+    &&
+
+    request.resource.data.lakeName
+    is string
+
+    &&
+
+    request.resource.data.managerId
+    is string
+
+    &&
+
+    request.resource.data.userName
+    is string
+
+    &&
+
+    request.resource.data.userEmail
+    is string
+
+    // =========================
+    // TIMESTAMP
+    // =========================
+
+    &&
+
+    request.resource.data.from
+    is timestamp
+
+    &&
+
+    request.resource.data.to
+    is timestamp
+
+    // =========================
+    // DÁTUM VALIDÁLÁS
+    // =========================
+
+    &&
+
+    request.resource.data.from
+    <=
+
+    request.resource.data.to
+
+    // =========================
+    // HELYEK
+    // =========================
+
+    &&
+
+    request.resource.data.places
+    is number
+
+    &&
+
+    request.resource.data.places
+    > 0
+
+    // =========================
+    // ÁR
+    // =========================
+
+    &&
+
+    request.resource.data.totalPrice
+    is number
+
+    &&
+
+    request.resource.data.totalPrice
+    >= 0
+
+    // =========================
+    // STÁTUSZ
+    // =========================
+
+    &&
+
+    request.resource.data.status
+    == 'jóváhagyás alatt';
+
+  // =========================
+  // UPDATE
+  // =========================
+
+  allow update: if
+
+    // ADMIN
+    hasRole('admin')
+
+    ||
+
+    // MANAGER
+    (
+      isLoggedIn()
+
+      &&
+
+      request.auth.uid
+      == resource.data.managerId
+
+      &&
+
+      request.resource.data
+        .diff(resource.data)
+        .affectedKeys()
+        .hasOnly(['status'])
+    )
+
+    ||
+
+    // USER TÖRLÉS
+    (
+      isLoggedIn()
+
+      &&
+
+      request.auth.uid
+      == resource.data.userId
+
+      &&
+
+      request.resource.data.status
+      == 'törölve'
+
+      &&
+
+      request.resource.data
+        .diff(resource.data)
+        .affectedKeys()
+        .hasOnly(['status'])
+    );
+
+  // =========================
+  // DELETE
+  // =========================
+
+  allow delete: if
+    hasRole('admin');
+}
+  }
+}

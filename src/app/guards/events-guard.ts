@@ -12,7 +12,7 @@ export const eventsGuard: CanActivateFn = async () => {
     return router.createUrlTree(['/bejelentkezes']);
   }
 
-  const token = await user.getIdTokenResult();
+  const token = await user.getIdTokenResult(true);
 
   if (token.claims['organiser'] || token.claims['admin']) {
     return true;

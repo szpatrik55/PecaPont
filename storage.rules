@@ -1,0 +1,61 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Segédfüggvények a kód tisztaságáért
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.admin == true;
+    }
+    
+    function isNewsEditor() {
+      return isSignedIn() && (request.auth.token.news == true || request.auth.token.admin == true);
+    }
+    
+    function isOrganiser() {
+  		return isSignedIn() && (request.auth.token.organiser == true || request.auth.token.admin == true);
+		}
+
+    // 1. NEWS: Cikkek képei
+    // Olvasni bárki tudja, írni csak admin vagy news role-al rendelkezők
+    match /news/{allPaths=**} {
+      allow read: if true;
+      allow write: if isNewsEditor();
+    }
+
+    // 2. GALLERY: Feltöltött fogások
+    // Olvasni bárki tudja, írni (feltölteni) bármilyen belépett felhasználó
+    match /gallery/{userId}/{allPaths=**} {
+      // Bárki láthatja a képeket
+      allow read: if true;
+      // Csak a bejelentkezett felhasználó tölthet fel a saját mappájába
+      allow create: if isSignedIn() && request.auth.uid == userId;
+      // Csak a tulajdonos (vagy az admin) módosíthatja vagy törölheti
+      allow update, delete: if isAdmin() || (isSignedIn() && request.auth.uid == userId);
+    }
+
+    // 3. LAKES: Tavak képei
+    // Olvasni bárki tudja, írni csak admin
+    match /lakes/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // 4. EVENTS: Verseny képek
+    // Olvasni bárki tudja
+    // Írni organiser vagy admin jogosultság kell
+    match /events/{allPaths=**} {
+      allow read: if true;
+      allow write: if isOrganiser();
+    }
+    
+    // Alapértelmezett: minden más tiltott
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

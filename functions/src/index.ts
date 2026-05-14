@@ -14,32 +14,23 @@ export const syncUserRole = onDocumentWritten(
   async (event) => {
 
     const data = event.data?.after.data();
-
     const uid = event.params.uid;
 
     if (!data) return;
 
     const role = data.role;
 
-    let claims: any = {};
+    // 🔥 Custom claims generálása
+    const claims = {
+      admin: role === "admin",
 
-    if (role === "admin") {
+      // admin automatikusan news jogot is kap
+      news: role === "news" || role === "admin",
 
-      claims = {
-        admin: true,
-        news: true
-      };
+      manager: role === "manager",
 
-    } else if (role === "news") {
-
-      claims = {
-        news: true
-      };
-
-    } else {
-
-      claims = {};
-    }
+      organiser: role === "organiser"
+    };
 
     await admin.auth().setCustomUserClaims(
       uid,
@@ -94,7 +85,7 @@ export const deleteUser = functions.https.onCall(
       );
     }
 
-    // saját magát ne törölhesse
+    // 🔥 Saját magát ne törölhesse
     if (uid === callerUid) {
 
       throw new functions.https.HttpsError(
@@ -103,14 +94,14 @@ export const deleteUser = functions.https.onCall(
       );
     }
 
-    // Firestore user doc törlés
+    // 🔥 Firestore user doc törlés
     await admin
       .firestore()
       .collection("users")
       .doc(uid)
       .delete();
 
-    // Firebase Auth user törlés
+    // 🔥 Firebase Auth user törlés
     await admin
       .auth()
       .deleteUser(uid);

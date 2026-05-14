@@ -15,7 +15,7 @@ export const adminGuard: CanActivateFn = async () => {
   }
 
   // ✅ 1. TOKEN CHECK (gyors)
-  const token = await user.getIdTokenResult();
+  const token = await user.getIdTokenResult(true);
 
   if (token.claims['admin']) {
     return true;

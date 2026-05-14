@@ -12,7 +12,7 @@ export const managerGuard: CanActivateFn = async () => {
     return router.createUrlTree(['/bejelentkezes']);
   }
 
-  const token = await user.getIdTokenResult();
+  const token = await user.getIdTokenResult(true);
 
   if (token.claims['manager'] || token.claims['admin']) {
     return true;

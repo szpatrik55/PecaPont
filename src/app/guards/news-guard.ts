@@ -12,7 +12,7 @@ export const newsGuard: CanActivateFn = async () => {
     return router.createUrlTree(['/bejelentkezes']);
   }
 
-  const token = await user.getIdTokenResult();
+  const token = await user.getIdTokenResult(true);
 
   if (token.claims['news'] || token.claims['admin']) {
     return true;
