@@ -14,14 +14,12 @@ export const adminGuard: CanActivateFn = async () => {
     return router.createUrlTree(['/bejelentkezes']);
   }
 
-  // ✅ 1. TOKEN CHECK (gyors)
   const token = await user.getIdTokenResult(true);
 
   if (token.claims['admin']) {
     return true;
   }
 
-  // ✅ 2. BACK Firestore
   const userRef = doc(firestore, 'users', user.uid);
   const snap = await getDoc(userRef);
 

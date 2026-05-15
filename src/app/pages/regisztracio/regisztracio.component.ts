@@ -61,7 +61,6 @@ export class RegisztracioComponent {
     } catch (error: any) {
       console.error('Regisztrációs hiba:', error.code);
       
-      // Hibakódok magyarítása
       switch (error.code) {
         case 'auth/email-already-in-use':
           this.errorMessage = 'Ez az email cím már használatban van!';
