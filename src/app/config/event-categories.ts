@@ -6,7 +6,8 @@ export type EventCategory =
   | 'Gyerek'
   | 'Esemény'
   | 'Tábor'
-  | 'Rendezvény';
+  | 'Rendezvény'
+  | 'Verseny';
 
 export const EVENT_CATEGORIES: EventCategory[] = [
   'Bojlis',
@@ -16,5 +17,6 @@ export const EVENT_CATEGORIES: EventCategory[] = [
   'Gyerek',
   'Esemény',
   'Tábor',
-  'Rendezvény'
+  'Rendezvény',
+  'Verseny'
 ];

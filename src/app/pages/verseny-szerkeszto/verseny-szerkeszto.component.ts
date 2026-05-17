@@ -18,7 +18,7 @@ import { Observable } from 'rxjs';
 
 import { EventsService } from '../../services/events';
 
-import { EventCategory } from '../../config/event-categories';
+import { EventCategory, EVENT_CATEGORIES } from '../../config/event-categories';
 
 interface Lake {
 
@@ -42,16 +42,7 @@ export class VersenySzerkesztoComponent implements OnInit {
 
   tavak$!: Observable<Lake[]>;
 
-  kategoriak: EventCategory[] = [
-    'Bojlis',
-    'Feeder',
-    'Method',
-    'Úszós',
-    'Gyerek',
-    'Esemény',
-    'Tábor',
-    'Rendezvény'
-  ];
+  kategoriak = EVENT_CATEGORIES;
 
   event = {
 

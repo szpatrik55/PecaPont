@@ -90,7 +90,7 @@ export class AuthService {
   }
 
   // =========================
-  // REGISTER (Módosítva a névvel és felhasználónévvel)
+  // REGISTER
   // =========================
   async register(email: string, password: string, displayName: string, username: string) {
     const cred = await createUserWithEmailAndPassword(
@@ -111,7 +111,7 @@ export class AuthService {
       lastLoginAt: serverTimestamp()
     });
   }
-
+;
   // =========================
   // LOGIN
   // =========================

@@ -40,6 +40,10 @@ export class BookingService {
   // ÁTFEDÉS ELLENŐRZÉS
   // =========================
 
+  // =========================
+  // ELÉRHETŐSÉG
+  // =========================
+
   private isOverlapping(
     from: Date,
     to: Date,
@@ -52,6 +56,30 @@ export class BookingService {
       &&
       to > bookingFrom
     );
+  }
+
+  async checkAvailability(
+    lakeId: string,
+    from: Date,
+    to: Date,
+    requestedPlaces: number,
+    maxPlaces: number
+  ): Promise<boolean> {
+
+    const occupied =
+
+      await this.getOccupiedPlaces(
+        lakeId,
+        from,
+        to
+      );
+
+    return (
+
+      occupied
+      + requestedPlaces
+
+    ) <= maxPlaces;
   }
 
   // =========================
@@ -122,34 +150,6 @@ export class BookingService {
     });
 
     return occupied;
-  }
-
-  // =========================
-  // ELÉRHETŐSÉG
-  // =========================
-
-  async checkAvailability(
-    lakeId: string,
-    from: Date,
-    to: Date,
-    requestedPlaces: number,
-    maxPlaces: number
-  ): Promise<boolean> {
-
-    const occupied =
-
-      await this.getOccupiedPlaces(
-        lakeId,
-        from,
-        to
-      );
-
-    return (
-
-      occupied
-      + requestedPlaces
-
-    ) <= maxPlaces;
   }
 
   // =========================

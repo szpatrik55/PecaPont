@@ -337,13 +337,6 @@ implements OnInit {
 
       this.uploading = true;
 
-      const imageUrl =
-        await this.galleryService
-          .uploadImage(
-            this.selectedFile,
-            user.uid
-          );
-
       /* USERNAME */
       const userDoc =
         await getDoc(
@@ -376,6 +369,13 @@ implements OnInit {
           ? this.form.value.customWater
 
           : this.form.value.water;
+
+      const imageUrl =
+        await this.galleryService
+          .uploadImage(
+            this.selectedFile,
+            user.uid
+          );    
 
       const postData = {
 
