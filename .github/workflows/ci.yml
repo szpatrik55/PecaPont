@@ -7,8 +7,8 @@ on:
       - master
   pull_request:
     branches:
-     - main
-     - master
+      - main
+      - master
 
 jobs:
   build-and-test:
@@ -31,4 +31,4 @@ jobs:
         run: npm run build
 
       - name: Run tests
-        run: echo "Tests temporarily disabled in CI due to DI mock issues"
+        run: npm test -- --watch=false --browsers=ChromeHeadless
