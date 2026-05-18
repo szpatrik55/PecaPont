@@ -4,6 +4,7 @@ import { Auth } from '@angular/fire/auth';
 import { Firestore } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { vi } from 'vitest';
+import { AuthService } from '../../services/auth';
 
 describe('BejelentkezesComponent', () => {
 let component: BejelentkezesComponent;
@@ -21,6 +22,16 @@ beforeEach(async () => {
 await TestBed.configureTestingModule({
 imports: [BejelentkezesComponent],
 providers: [
+{
+  provide: AuthService,
+  useValue: {
+    login: vi.fn(),
+    loginWithGoogle: vi.fn(),
+    register: vi.fn(),
+    logout: vi.fn(),
+    currentUser: null
+  }
+},
 { provide: Auth, useValue: mockAuth },
 { provide: Firestore, useValue: mockFirestore },
 {
