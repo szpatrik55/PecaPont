@@ -1,77 +1,173 @@
 # 🎣 PecaPont
 
-PecaPont egy modern webes alkalmazás, amely a horgászok számára egy helyen biztosít információt tavakról, versenyekről és aktuális hírekről.
+PecaPont egy Angular és Firebase alapú webalkalmazás, amely a horgászok számára biztosít központi platformot tavak, versenyek, hírek és foglalások kezelésére.
 
-A projekt célja egy **felhasználóbarát, gyors és skálázható horgászati információs platform** létrehozása.
-
----
-
-## 🚀 Fő funkciók
-
-* tavak listázása
-* horgászversenyek megjelenítése
-* hírek és aktualitások
-* reszponzív webes felület
-* Angular alapú modern frontend
+A projekt a Szegedi Tudományegyetemen készült szakdolgozat részeként.
 
 ---
 
-## 🛠 Tech stack
+## 🚀 Funkciók
 
-* **Frontend:** Angular
-* **Nyelv:** TypeScript
-* **Stílus:** SCSS
-* **Build:** Angular CLI
-* **Verziókezelés:** Git / GitHub
+### Felhasználói funkciók
+
+* regisztráció és bejelentkezés
+* Google alapú hitelesítés
+* tavak böngészése és keresése
+* tó részletes adatlapok
+* foglalási rendszer
+* fogások feltöltése
+* értékelések és vélemények
+* profil kezelés
+
+### Közösségi és szerkesztői funkciók
+
+* hírek publikálása
+* versenyek kezelése
+* galéria rendszer
+* közösségi tartalmak megjelenítése
+
+### Jogosultságkezelés
+
+* adminisztrátor
+* újságíró
+* szervező
+* tókezelő
+* felhasználó
 
 ---
 
-## ⚡ Quick Start
+## 🛠 Technológiák
+
+### Frontend
+
+* Angular
+* TypeScript
+* SCSS
+* Angular Signals
+* Angular Router
+
+### Backend / Cloud
+
+* Firebase
+* Firestore
+* Firebase Authentication
+* Firebase Storage
+* Firebase Hosting
+
+### Fejlesztői eszközök
+
+* GitHub
+* GitHub Actions
+* Vitest
+* Angular CLI
+* Draw.io
+
+### AI támogatás
+
+* ChatGPT
+* Gemini AI
+
+---
+
+## ⚡ Telepítés
 
 ### Függőségek telepítése
 
-npm install
+```bash
+npm install --legacy-peer-deps
+```
 
 ### Fejlesztői szerver indítása
 
+```bash
 ng serve
+```
 
-### Elérés
+### Alkalmazás elérése
 
+```text
 http://localhost:4200
+```
 
 ---
 
-## 🧪 Tesztek futtatása
+## 🏗 Build
 
-ng test
+```bash
+npm run build
+```
+
+---
+
+## 🧪 Tesztelés
+
+### Tesztek futtatása
+
+```bash
+npm test -- --watch=false
+```
+
+### Automatizált ellenőrzések
+
+* komponens tesztek
+* route guard tesztek
+* alapvető UI validációk
+* CI build ellenőrzés GitHub Actions segítségével
+
+### Manuálisan tesztelt funkciók
+
+* regisztráció
+* bejelentkezés
+* tófoglalás
+* tókezelői jóváhagyás / elutasítás
+* hírszerkesztés
+* versenyszerkesztés
+* fogás feltöltés
+* jogosultságkezelés
+
+---
+
+## 🔐 Biztonság
+
+A projekt Firebase Security Rules alapú jogosultságkezelést használ.
+
+A rendszer:
+
+* szerepkör alapú hozzáférés-kezelést alkalmaz
+* route guard védelmet használ
+* Firestore szabályokkal védi az adatokat
 
 ---
 
 ## 📂 Dokumentáció
 
-A szakdolgozati dokumentáció a `docs/` mappában található.
+A szakdolgozati és fejlesztői dokumentáció a repository részeként érhető el.
 
-### Fő részek
+Főbb dokumentumok:
 
-* Product Vision
-* Scope Contract
-* Capability Map
-* Architecture
-* ADR
-* Test Strategy
-* AI Documentation
+* architektúra
+* tesztelési dokumentáció
+* AI használati dokumentáció
+* Firestore rules
+* rendszertervek
+* mellékletek
 
 ---
 
-## 📘 Projekt cél
+## 🌐 Hosted alkalmazás
 
-A projekt a szakdolgozat részeként készül, AI támogatással fejlesztett, termékminőségű webalkalmazásként.
+Firebase Hosting segítségével publikálva.
 
-A dokumentáció és a fejlesztési döntések a repo részeként verziózott formában érhetők el.
+pecapont--pecapont-50489.europe-west4.hosted.app
 
 ---
 
 ## 👨‍💻 Fejlesztő
 
 Szabó Patrik Péter
+Szegedi Tudományegyetem
+Programtervező informatikus
+
+---
+
+A projekt szakdolgozati célból készült.
