@@ -91,6 +91,21 @@ http://localhost:4200
 
 ---
 
+## 🧪 Kipróbálás
+
+Az alkalmazás az alábbi próba felhasználókkal tesztelhető:
+
+| Szerepkör | Email | Jelszó |
+|---|---|---|
+| Adminisztrátor | admin@pecapont.com | PecaPont*1 |
+| Tókezelő | tokezelo@pecapont.com | PecaPont*1 |
+| Szervező | szervezo@pecapont.com | PecaPont*1 |
+| Újságíró | ujsagiro@pecapont.hu | PecaPont*1 |
+| Felhasználó | regisztrációval elérhető | |
+
+Bejelentkezés után a különböző jogosultsági szintekhez tartozó funkciók kipróbálhatók.
+
+
 ## 🏗 Build
 
 ```bash
